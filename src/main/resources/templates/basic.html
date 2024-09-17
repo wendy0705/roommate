@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>住宿或租屋表單</title>
+    <script>
+        function showForm() {
+            const accommodationType = document.querySelector('input[name="accommodationType"]:checked').value;
+            document.getElementById('dormitoryForm').style.display = accommodationType === 'dormitory' ? 'block' : 'none';
+            document.getElementById('rentalForm').style.display = accommodationType === 'rental' ? 'block' : 'none';
+        }
+
+        function showRentalDetails() {
+            const rented = document.querySelector('input[name="rented"]:checked').value;
+            document.getElementById('rentedForm').style.display = rented === 'true' ? 'block' : 'none';
+            document.getElementById('rentalSearchForm').style.display = rented === 'false' ? 'block' : 'none';
+        }
+    </script>
+</head>
+<body>
+<h1>住宿或租屋表單</h1>
+
+<!-- 選擇住宿或租屋 -->
+<label><input type="radio" name="accommodationType" value="dormitory" onclick="showForm()"> 宿舍</label>
+<label><input type="radio" name="accommodationType" value="rental" onclick="showForm()"> 租屋</label>
+
+<!-- 宿舍表單 -->
+<div id="dormitoryForm" style="display:none;">
+    <h2>宿舍資訊</h2>
+    <form>
+        <label>是否申請到宿舍: <input type="checkbox" name="appliedDorm" checked></label><br>
+        <label>學校名稱: <input type="text" name="school" value="國立台灣大學"></label><br>
+        <label>宿舍名稱: <input type="text" name="dormitoryName" value="自強宿舍"></label><br>
+        <label>房型: <input type="text" name="roomType" value="雙人房"></label><br>
+    </form>
+</div>
+
+<!-- 租屋表單 -->
+<div id="rentalForm" style="display:none;">
+    <h2>租屋資訊</h2>
+    <form>
+        <label>是否租到房子:
+            <label><input type="radio" name="rented" value="true" onclick="showRentalDetails()"> 是</label>
+            <label><input type="radio" name="rented" value="false" onclick="showRentalDetails()"> 否</label>
+        </label><br>
+
+        <!-- 如果租到房子，顯示以下表單 -->
+        <div id="rentedForm" style="display:none;">
+            <label>房屋名稱: <input type="text" name="houseName" value="和平大廈"></label><br>
+            <label>可供房間:</label><br>
+            <ul>
+                <li>單人房, 價格: <input type="number" name="singleRoomPrice" value="12000"></li>
+                <li>雙人房, 價格: <input type="number" name="doubleRoomPrice" value="18000"></li>
+            </ul>
+            <label>現有室友:</label><br>
+            <ul>
+                <li>單人房, 描述: <input type="text" name="singleRoommateDesc" value="男，學生，安靜"></li>
+                <li>雙人房, 描述: <input type="text" name="doubleRoommateDesc" value="女，上班族，養貓"></li>
+            </ul>
+            <h3>房屋詳情</h3>
+            <label>允許寵物: <input type="checkbox" name="petAllowed" checked></label><br>
+            <label>租期: <input type="text" name="rentalPeriod" value="12個月"></label><br>
+            <label>共用空間: <input type="text" name="sharedSpaces" value="客廳, 廚房, 衛浴"></label><br>
+            <label>設備: <input type="text" name="amenities" value="冷氣, 冰箱, 洗衣機"></label><br>
+            <label>額外費用: <input type="text" name="additionalFees" value="水電費, 網路費"></label><br>
+            <label>附近設施: <input type="text" name="nearbyFacilities" value="便利商店, 超市, 公園"></label><br>
+            <label>其他: <input type="text" name="otherDetails"
+                                value="維修政策: 每月檢查; 訪客限制: 訪客必須登記"></label><br>
+        </div>
+
+        <!-- 如果沒有租到房子，顯示以下表單 -->
+        <div id="rentalSearchForm" style="display:none;">
+            <h3>租屋搜尋條件</h3>
+            <label>租屋範圍:</label><br>
+            <label>東北緯度: <input type="text" name="northeastLat" value="25.056716982101378"></label><br>
+            <label>東北經度: <input type="text" name="northeastLng" value="121.56454169311523"></label><br>
+            <label>西南緯度: <input type="text" name="southwestLat" value="25.042409581176194"></label><br>
+            <label>西南經度: <input type="text" name="southwestLng" value="121.54325568237304"></label><br>
+            <label>房型: <input type="text" name="roomType" value="雙人房"></label><br>
+            <label>預算範圍: 最低 <input type="number" name="budgetMin" value="10000"> 最高 <input type="number"
+                                                                                                   name="budgetMax"
+                                                                                                   value="20000"></label><br>
+            <label>租期: <input type="text" name="rentalPeriod" value="6個月"></label><br>
+        </div>
+    </form>
+</div>
+</body>
+</html>
