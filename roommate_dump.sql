@@ -176,7 +176,7 @@ CREATE TABLE `dorm_data` (
   KEY `school_id` (`school_id`),
   CONSTRAINT `dorm_data_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
   CONSTRAINT `dorm_data_ibfk_2` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -185,7 +185,7 @@ CREATE TABLE `dorm_data` (
 
 LOCK TABLES `dorm_data` WRITE;
 /*!40000 ALTER TABLE `dorm_data` DISABLE KEYS */;
-INSERT INTO `dorm_data` VALUES (1,1,0,1),(2,2,1,1),(3,3,0,2),(4,4,0,2),(5,5,0,1),(6,6,1,2),(7,7,1,1),(8,8,0,2),(9,9,1,2),(10,10,1,2),(11,11,1,2),(12,12,1,2),(13,13,1,2),(14,14,0,1),(15,15,1,2);
+INSERT INTO `dorm_data` VALUES (3,1,1,1),(4,2,1,2),(5,3,1,2),(6,4,1,1),(7,5,0,2),(8,6,0,1),(9,7,0,1),(10,8,1,1),(11,9,1,2),(12,10,1,1),(13,11,0,1),(14,12,0,2),(15,13,0,2),(16,14,1,2),(17,15,0,2),(18,16,1,2),(19,17,1,1),(20,18,0,1),(21,19,1,2),(22,20,0,2),(23,21,1,2),(24,22,0,1),(25,23,0,2),(26,24,0,1),(27,25,1,1),(28,26,1,2),(29,27,0,2),(30,28,0,1),(31,29,0,2),(32,30,1,1),(33,31,0,1),(34,32,0,2),(35,33,1,1),(36,34,0,2),(37,35,1,2),(38,36,1,1),(39,37,0,1),(40,38,0,2),(41,39,0,1),(42,40,0,2),(43,41,0,1),(44,42,0,1),(45,43,1,2),(46,44,1,1),(47,45,0,1),(48,46,1,2),(49,47,1,1),(50,48,0,2),(51,49,1,1),(52,50,1,1);
 /*!40000 ALTER TABLE `dorm_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -368,13 +368,20 @@ CREATE TABLE `user` (
   `illegal_building` int DEFAULT NULL,
   `basement` int DEFAULT NULL,
   `windowless` int DEFAULT NULL,
-  `monday_schedule` int DEFAULT NULL,
-  `tuesday_schedule` int DEFAULT NULL,
-  `wednesday_schedule` int DEFAULT NULL,
-  `thursday_schedule` int DEFAULT NULL,
-  `friday_schedule` int DEFAULT NULL,
-  `saturday_schedule` int DEFAULT NULL,
-  `sunday_schedule` int DEFAULT NULL,
+  `monday_wakeup` int DEFAULT NULL,
+  `monday_sleep` int DEFAULT NULL,
+  `tuesday_wakeup` int DEFAULT NULL,
+  `tuesday_sleep` int DEFAULT NULL,
+  `wednesday_wakeup` int DEFAULT NULL,
+  `wednesday_sleep` int DEFAULT NULL,
+  `thursday_wakeup` int DEFAULT NULL,
+  `thursday_sleep` int DEFAULT NULL,
+  `friday_sleep` int DEFAULT NULL,
+  `friday_wakeup` int DEFAULT NULL,
+  `saturday_sleep` int DEFAULT NULL,
+  `saturday_wakeup` int DEFAULT NULL,
+  `sunday_wakeup` int DEFAULT NULL,
+  `sunday_sleep` int DEFAULT NULL,
   `cooking_location` int DEFAULT NULL,
   `dining_location` int DEFAULT NULL,
   `dining_alone` int DEFAULT NULL,
@@ -402,7 +409,7 @@ CREATE TABLE `user` (
   `interest_idol_chasing` int DEFAULT NULL,
   `interest_music` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -411,7 +418,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'user1@example.com','password1',1,0,1,0,0,1,23,23,23,23,23,1,1,1,0,1,0,5,3,1,2,1,3,24,2,1,'狗',1,0,1,0,1,0,1,0,1,0,0,1),(2,'user2@example.com','password2',0,1,0,1,1,0,22,22,22,22,22,0,0,2,1,0,1,4,2,2,1,2,1,22,1,0,NULL,0,1,1,1,0,1,0,1,0,1,1,0),(3,'user3@example.com','password3',1,0,1,0,1,0,21,21,21,21,21,10,10,0,2,1,1,3,4,0,0,2,2,26,0,1,'貓',1,1,0,0,1,0,1,1,1,0,0,1),(4,'user4@example.com','password4',0,1,0,1,0,1,20,20,20,20,20,12,12,1,1,0,1,2,5,1,2,0,0,20,2,1,'魚',0,1,1,1,0,1,0,0,1,1,0,1),(5,'user5@example.com','password5',1,0,1,0,1,0,19,19,19,19,19,0,0,2,0,1,0,5,1,0,1,1,2,25,1,0,NULL,1,0,1,0,1,1,0,1,1,0,0,1),(6,'user6@example.com','password6',0,1,1,0,0,1,18,18,18,18,18,14,14,1,2,1,1,1,3,2,0,2,3,28,0,1,'鳥',0,1,1,1,0,0,1,0,0,1,1,0),(7,'user7@example.com','password7',1,0,0,1,1,0,17,17,17,17,17,8,8,0,1,0,1,4,2,1,2,0,1,21,2,1,'倉鼠',1,1,0,0,1,1,0,1,1,0,0,1),(8,'user8@example.com','password8',0,1,1,0,0,1,16,16,16,16,16,9,9,2,0,1,0,3,4,0,1,1,2,23,1,0,NULL,0,0,1,1,1,0,1,0,1,1,1,0),(9,'user9@example.com','password9',1,0,0,1,1,0,15,15,15,15,15,11,11,1,2,0,1,5,2,2,0,2,3,27,0,1,'兔子',1,1,1,0,0,1,1,1,0,0,0,1),(10,'user10@example.com','password10',0,1,1,0,1,1,14,14,14,14,14,13,13,0,1,1,1,2,5,1,2,0,0,19,2,1,'龜',0,1,0,1,1,0,0,1,1,1,1,0),(11,'user11@example.com','password11',1,0,0,1,0,0,13,13,13,13,13,0,0,2,0,0,1,4,3,0,1,1,1,22,1,0,NULL,1,0,1,1,0,1,1,0,0,1,0,1),(12,'user12@example.com','password12',0,1,1,0,1,1,12,12,12,12,12,15,15,1,2,1,0,3,4,2,0,2,2,24,0,1,'狗',0,1,1,0,1,0,0,1,1,0,1,1),(13,'user13@example.com','password13',1,0,0,1,0,0,11,11,11,11,11,16,16,0,1,0,1,5,2,1,2,0,3,26,2,1,'貓',1,1,0,1,0,1,1,0,1,1,0,0),(14,'user14@example.com','password14',0,1,1,0,1,1,10,10,10,10,10,17,17,2,0,1,1,1,5,0,1,1,0,20,1,0,NULL,0,0,1,1,1,0,0,1,0,1,1,1),(15,'user15@example.com','password15',1,0,0,1,0,0,9,9,9,9,9,18,18,1,2,0,1,4,3,2,0,2,1,23,0,1,'魚',1,1,1,0,0,1,1,1,1,0,0,1);
+INSERT INTO `user` VALUES (1,'uwright@example.net','UG0eqn8yK@',0,1,1,0,1,0,19,23,17,22,2,11,3,19,2,3,19,0,20,17,0,0,0,0,5,4,2,2,1,2,25,1,1,'major',0,0,0,0,0,1,1,0,1,0,0,0),(2,'kimkaren@example.com','^9Nr)gMBjt',1,0,1,1,1,1,21,16,7,21,1,2,3,1,17,0,19,18,16,21,1,0,0,0,3,3,0,2,0,3,25,2,0,NULL,0,0,1,1,0,1,1,0,0,0,1,0),(3,'mjackson@example.com','Y5P7XI@ir#',1,0,1,0,1,1,2,6,16,3,12,1,8,6,14,18,1,0,10,4,1,1,1,1,4,5,0,0,0,1,22,0,0,NULL,0,1,0,1,0,1,0,1,0,1,1,1),(4,'kconway@example.net','_funcO0b7d',1,0,0,1,0,0,18,20,13,10,18,7,12,6,4,10,23,18,21,18,1,1,0,0,2,2,0,0,0,1,26,1,0,NULL,1,1,1,1,1,0,1,0,1,1,1,0),(5,'johnjenkins@example.org','m3$2iCFoG+',1,1,0,0,0,1,3,22,10,22,16,3,3,21,8,4,15,2,15,12,0,1,0,1,1,4,1,0,1,1,26,1,0,NULL,1,0,0,1,1,0,0,0,0,1,1,1),(6,'andre37@example.net','ez9NuqtA^!',1,0,1,0,1,0,7,15,22,9,10,5,13,10,7,13,12,17,14,4,0,1,1,1,3,1,0,2,1,1,21,0,1,'answer',1,0,1,1,0,1,0,0,0,1,1,0),(7,'tommykim@example.com','$8U#vNIbIb',1,1,1,1,1,1,0,17,23,9,0,1,6,22,22,11,21,16,9,3,1,0,0,1,3,3,0,2,1,2,24,0,1,'the',0,0,0,1,1,0,1,0,1,1,1,0),(8,'merrittchristina@example.net','q@6ODz*+Po',1,1,1,0,1,0,0,4,20,14,9,17,11,22,13,19,12,0,9,9,1,1,0,1,3,1,2,1,0,0,26,0,0,NULL,0,1,1,0,1,1,0,1,1,1,1,0),(9,'reyeschad@example.com','^9EeLzs+qB',0,0,1,1,1,1,4,8,6,14,10,20,12,9,13,7,3,1,10,5,0,1,1,1,2,2,2,0,1,2,21,2,0,NULL,1,1,1,1,1,1,1,1,0,1,0,1),(10,'thomas59@example.org','C#5VS5#fq$',0,0,0,1,0,1,21,12,17,14,23,1,6,0,4,3,7,1,13,5,1,0,1,1,4,4,1,2,1,3,26,2,0,NULL,0,0,0,0,1,1,0,0,0,0,0,1),(11,'umoore@example.com','dQ$bDYxi%3',1,1,0,1,1,1,11,17,16,8,14,23,18,3,15,17,5,19,21,10,0,1,0,1,1,5,1,0,1,3,27,0,0,NULL,1,0,0,0,1,1,0,0,1,1,0,1),(12,'smithcharles@example.com','UJz4BncC3$',0,0,0,0,0,0,15,23,16,23,5,20,9,3,10,14,9,18,1,2,0,1,0,1,4,3,1,1,2,0,22,0,0,NULL,0,1,1,0,0,0,0,1,0,1,0,1),(13,'trevinoshelby@example.net','r0&U0jlc#B',0,1,0,1,1,1,11,10,22,4,15,5,10,5,20,15,0,11,3,5,1,0,1,0,4,5,0,2,1,3,28,0,0,NULL,1,1,0,0,1,0,0,1,1,0,0,1),(14,'juan78@example.org','^r3NyyOyB4',0,0,1,0,1,0,21,0,16,19,6,18,16,8,18,14,8,20,22,22,1,1,0,0,5,5,2,0,2,1,20,0,0,NULL,0,1,0,1,1,1,1,1,0,1,1,0),(15,'kathleensullivan@example.net','_L3ZJDRvo0',1,1,0,0,1,0,6,3,12,10,9,23,18,21,18,0,6,0,15,13,0,1,1,1,5,5,2,2,2,3,21,0,1,'measure',1,0,0,0,1,1,1,0,1,1,1,1),(16,'blackgrace@example.com','VE3HX5BhN&',1,0,0,0,0,1,1,5,8,3,21,5,20,7,0,11,10,23,21,23,1,1,0,0,3,4,1,1,0,3,24,1,0,NULL,0,1,1,0,1,0,1,1,0,0,0,1),(17,'daniellekelley@example.org','*4Yw91Fh25',0,1,1,0,1,0,7,9,23,4,5,16,9,0,12,21,7,4,8,10,1,1,0,1,4,3,0,0,2,3,20,0,1,'role',1,1,1,1,0,1,1,1,0,1,0,1),(18,'ucarpenter@example.net','(1^GsVcl^3',0,0,0,1,0,0,4,11,20,11,18,13,14,20,18,7,17,1,18,0,1,0,0,0,3,2,1,2,2,2,22,2,0,NULL,1,0,1,0,0,0,1,0,1,0,0,0),(19,'courtney08@example.net','O63J$6SdX+',1,0,1,0,1,1,12,20,14,20,1,0,18,12,17,2,18,10,12,9,0,1,1,0,3,3,2,2,0,3,28,2,0,NULL,0,0,0,0,0,1,1,1,1,0,1,1),(20,'bryan16@example.org','!QU@WdkOZ8',1,0,0,1,0,1,20,8,2,17,15,12,21,19,19,4,22,2,19,17,0,0,1,1,1,4,2,2,2,0,23,1,0,NULL,1,1,1,0,0,1,0,0,1,0,1,0),(21,'hmendoza@example.com','a0u6ZQyc+t',0,1,0,1,1,0,8,19,13,7,10,11,15,2,2,15,22,23,23,6,1,0,0,0,5,4,0,1,0,2,22,1,1,'single',0,0,0,1,1,1,0,0,1,0,1,0),(22,'buckpatricia@example.org','J(&0ns0o4R',0,0,0,1,1,1,20,7,16,4,7,3,9,8,18,4,9,19,18,9,0,1,0,1,5,1,0,2,0,3,25,1,1,'financial',1,0,0,1,1,0,1,1,0,0,0,1),(23,'samanthasoto@example.org','!G1lUfYf%f',0,1,1,1,1,1,4,1,3,11,20,11,23,2,21,9,8,22,5,21,0,1,1,0,5,1,2,2,0,3,24,1,1,'structure',1,0,1,0,0,1,1,0,1,0,1,1),(24,'garciaalan@example.org','h!vjk8rcbP',0,0,0,0,1,0,21,8,0,1,15,19,16,2,18,21,5,2,21,18,1,1,1,0,4,3,0,1,2,0,28,1,1,'from',1,1,1,0,1,1,1,0,0,0,1,0),(25,'stephanieturner@example.net','C#3C2FolNi',0,1,0,1,1,1,20,14,19,7,13,19,20,20,7,11,1,13,5,11,0,0,1,0,4,3,0,1,2,1,24,0,1,'cup',1,0,1,0,1,1,0,1,0,0,1,0),(26,'monica57@example.com','Z*C)dz*e%4',0,0,1,0,0,0,15,21,13,2,2,1,22,1,13,17,15,19,10,17,0,0,0,0,3,5,2,1,1,1,28,1,1,'behavior',0,0,0,1,0,1,0,1,1,1,0,1),(27,'cmurray@example.com','!ZV3OJMo7$',1,0,1,0,1,1,19,18,15,0,12,4,3,9,9,2,2,23,23,13,1,1,0,0,4,1,2,1,2,2,25,1,0,NULL,1,0,0,0,0,0,0,0,1,1,1,0),(28,'sweeneyjeffery@example.org',')8BQ2M4)Wu',1,0,1,1,1,0,11,7,13,7,3,6,12,13,22,21,13,13,6,4,0,1,1,1,5,5,2,2,0,3,23,0,1,'brother',0,0,0,0,0,1,1,0,1,0,0,1),(29,'dsutton@example.com','@6AKIPta)V',1,0,1,1,0,1,22,23,7,13,18,1,12,10,4,22,0,20,15,3,0,1,0,1,5,2,0,2,0,0,27,0,1,'would',0,1,1,0,0,0,0,0,0,1,1,0),(30,'mharvey@example.net','1u6KaHv#+*',1,0,1,0,1,0,21,15,15,21,21,21,6,22,12,2,1,6,18,19,0,1,0,1,2,4,1,1,1,3,25,1,0,NULL,1,0,0,0,0,0,1,0,0,1,0,0),(31,'jeffrey13@example.org','i&a9XF8(Wx',0,1,1,0,0,0,18,2,21,21,14,12,11,10,18,21,1,14,8,16,1,0,0,0,1,1,1,2,1,3,28,0,0,NULL,0,0,0,0,0,0,1,0,0,0,0,0),(32,'christina59@example.org','i*%03ZHy)I',0,1,1,0,0,1,14,3,20,7,22,2,16,1,11,22,21,18,20,2,0,0,1,0,5,5,2,0,1,3,28,1,0,NULL,1,1,1,0,0,0,1,1,0,1,1,1),(33,'jessica12@example.net','09HLoznl^K',1,0,0,0,0,0,8,19,21,20,22,18,11,8,16,15,5,22,8,20,1,1,0,1,5,3,2,2,2,1,23,0,0,NULL,1,1,0,1,1,1,1,1,1,1,0,1),(34,'jessica28@example.org','As1%F0ZbCT',1,0,1,1,1,1,21,6,19,0,13,13,22,6,18,11,20,0,5,6,1,1,0,0,5,4,1,1,1,0,22,2,0,NULL,0,1,0,0,1,1,1,1,1,1,1,1),(35,'dawnbrown@example.net','@NHA3!7sP5',1,1,0,0,1,1,16,23,2,14,19,11,19,8,4,18,19,19,0,10,1,1,1,0,2,2,1,0,2,3,22,1,1,'whole',1,0,0,1,0,1,1,0,0,0,0,1),(36,'turnershelby@example.com','&3gWPScV!+',0,0,1,0,1,1,16,17,1,3,3,4,19,17,12,14,11,21,21,11,0,1,1,0,3,4,1,2,2,1,20,1,1,'age',0,1,0,0,1,0,1,1,1,1,1,0),(37,'melanie04@example.com','$7JSAmqe18',1,1,0,1,1,0,7,3,3,10,9,21,6,15,7,5,13,12,12,23,0,0,1,0,4,3,0,2,0,0,26,1,1,'environment',0,1,1,1,1,0,1,1,1,1,0,1),(38,'mariaarnold@example.org','6DxBqz)z#(',0,1,1,1,0,1,2,13,21,12,20,12,22,20,21,14,17,11,13,5,0,1,1,1,3,1,2,1,2,3,23,0,1,'agree',0,0,1,1,1,1,1,0,0,0,0,0),(39,'kleinashley@example.com',')9%V*%vl(y',0,1,0,1,0,0,17,19,6,9,2,3,21,9,6,12,16,7,8,4,1,0,1,0,4,2,2,0,1,0,24,2,1,'position',1,0,1,1,0,1,0,0,0,0,0,1),(40,'wlucero@example.net','&E3ERafnjY',1,0,1,1,0,0,9,17,9,16,23,3,15,21,11,19,20,16,0,4,1,0,0,1,4,3,2,1,1,0,23,0,0,NULL,1,0,1,0,1,1,1,1,1,1,1,0),(41,'pgarcia@example.net','8%IpAuf*^+',1,0,1,1,1,0,6,11,3,16,22,19,22,1,17,0,13,16,9,16,1,1,1,0,3,5,1,0,0,1,26,1,1,'defense',1,1,1,1,1,0,0,1,0,0,0,0),(42,'lorihunt@example.org','H9hD7hwY*X',1,1,1,0,1,0,22,10,11,18,6,22,15,21,7,6,8,5,12,16,1,1,1,0,4,1,1,2,1,0,25,0,1,'of',1,1,0,0,1,0,1,0,1,1,1,1),(43,'michaelmichelle@example.com','WUX%52ClRP',0,0,0,1,1,0,2,11,14,13,6,3,16,12,20,5,17,11,22,9,1,0,1,0,2,2,0,1,0,3,22,2,0,NULL,0,0,1,0,0,1,0,0,1,0,0,1),(44,'bromero@example.net','6aQiXvw+!G',1,1,0,1,1,1,14,17,11,1,8,8,22,15,13,19,21,10,0,15,1,0,0,1,5,2,0,0,1,0,21,0,1,'politics',0,0,1,1,1,1,0,1,0,1,0,1),(45,'autumn83@example.net','8rzn90Uv+3',0,1,1,0,0,0,12,11,22,1,12,23,8,10,21,23,21,20,6,18,0,0,0,1,3,3,0,0,1,0,24,2,1,'central',0,1,0,0,0,1,1,1,1,1,1,1),(46,'kelliehouston@example.com','!y4SFljPs9',1,0,0,0,0,1,20,11,5,13,22,3,6,2,3,20,7,20,4,14,1,0,1,1,2,1,2,0,2,1,23,1,0,NULL,0,0,1,0,1,1,1,0,1,0,0,1),(47,'jnewman@example.org','9bGWR1NS&b',0,0,0,1,1,1,5,2,15,4,0,13,13,10,11,4,12,2,16,1,1,0,0,0,1,1,2,2,1,2,26,2,0,NULL,1,0,0,1,0,1,1,0,0,0,0,0),(48,'wilsonpeter@example.net','(e(n1Yj%@U',0,1,1,0,1,1,6,6,13,12,14,7,3,20,16,13,21,21,9,14,0,0,0,0,2,5,0,1,2,1,24,2,0,NULL,1,0,1,1,0,0,1,1,1,1,1,1),(49,'jsparks@example.com','g0&LanjH_f',1,0,1,1,0,1,6,11,14,21,23,17,23,23,21,14,22,21,17,20,1,1,0,1,5,2,1,2,2,0,22,1,0,NULL,0,0,0,0,0,0,0,0,0,0,1,1),(50,'williamskathleen@example.com','Qa0ZtOY#S%',0,1,1,1,0,0,20,19,0,18,1,11,13,23,15,8,0,18,21,17,0,1,0,0,3,3,2,0,2,3,20,1,1,'industry',1,0,1,0,1,1,1,0,1,0,0,1),(51,'johnsmith@example.com','A5^h!9gB0@',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -434,7 +441,7 @@ CREATE TABLE `user_dorm_options` (
   CONSTRAINT `user_dorm_options_ibfk_1` FOREIGN KEY (`dorm_data_id`) REFERENCES `dorm_data` (`id`) ON DELETE CASCADE,
   CONSTRAINT `user_dorm_options_ibfk_2` FOREIGN KEY (`dorm_id`) REFERENCES `dorm` (`id`) ON DELETE CASCADE,
   CONSTRAINT `user_dorm_options_ibfk_3` FOREIGN KEY (`dorm_room_id`) REFERENCES `dorm_room` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -443,7 +450,7 @@ CREATE TABLE `user_dorm_options` (
 
 LOCK TABLES `user_dorm_options` WRITE;
 /*!40000 ALTER TABLE `user_dorm_options` DISABLE KEYS */;
-INSERT INTO `user_dorm_options` VALUES (1,1,1,1),(2,1,10,14),(3,1,11,16),(4,2,6,8),(5,3,20,27),(6,3,24,31),(7,3,18,25),(8,4,17,24),(9,4,29,36),(10,5,6,8),(11,6,25,32),(12,7,9,12),(13,8,21,28),(14,9,26,33),(15,10,22,29),(16,11,29,36),(17,12,27,34),(18,13,15,22),(19,14,10,17),(20,14,7,9),(21,14,2,4),(22,15,30,37);
+INSERT INTO `user_dorm_options` VALUES (1,3,8,10),(2,4,27,34),(3,5,30,37),(4,6,6,8),(5,7,31,38),(6,8,4,6),(7,9,9,13),(8,9,10,14),(9,10,2,3),(10,11,12,19),(11,12,1,2),(12,13,6,8),(13,13,11,16),(14,13,8,11),(15,14,26,33),(16,15,31,38),(17,15,21,28),(18,16,20,27),(19,17,23,30),(20,17,15,22),(21,17,16,23),(22,18,28,35),(23,19,9,12),(24,20,9,12),(25,21,18,25),(26,22,13,20),(27,22,16,23),(28,23,16,23),(29,24,10,14),(30,25,13,20),(31,25,12,19),(32,25,16,23),(33,26,2,4),(34,26,2,3),(35,26,2,4),(36,27,3,5),(37,28,20,27),(38,29,29,36),(39,29,15,22),(40,30,4,6),(41,30,2,4),(42,30,10,14),(43,31,28,35),(44,31,14,21),(45,32,8,11),(46,33,9,12),(47,34,15,22),(48,34,24,31),(49,34,19,26),(50,35,5,7),(51,36,21,28),(52,37,23,30),(53,38,10,17),(54,39,7,9),(55,39,8,10),(56,39,9,12),(57,40,14,21),(58,41,9,13),(59,42,16,23),(60,43,3,5),(61,43,5,7),(62,43,9,13),(63,44,9,13),(64,44,5,7),(65,45,16,23),(66,46,10,15),(67,47,6,8),(68,47,1,1),(69,47,1,1),(70,48,21,28),(71,49,6,8),(72,50,27,34),(73,50,27,34),(74,51,1,1),(75,52,5,7);
 /*!40000 ALTER TABLE `user_dorm_options` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -529,4 +536,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-17 14:56:57
+-- Dump completed on 2024-09-18  6:12:57

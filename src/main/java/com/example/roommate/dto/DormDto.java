@@ -13,12 +13,12 @@ public class DormDto {
     @JsonProperty("applied_dorm")
     private boolean appliedDorm;
 
-    @JsonProperty("school")
+    @JsonProperty("school_id")
     private Long schoolId;
 
-    @JsonProperty("dormitory")
+    @JsonProperty("dormitory_id")
     private List<Long> dormitoryIds;
 
-    @JsonProperty("room_type")
+    @JsonProperty("room_type_id")
     private List<Long> roomTypesIds;
 }
