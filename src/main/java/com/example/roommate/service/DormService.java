@@ -1,6 +1,6 @@
 package com.example.roommate.service;
 
-import com.example.roommate.dto.DormDto;
+import com.example.roommate.dto.habits.DormDto;
 import com.example.roommate.entity.*;
 import com.example.roommate.repository.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -79,22 +79,6 @@ public class DormService {
                 dormDto.getDormitoryIds(),
                 dormDto.getRoomTypesIds()
         );
-    }
-
-    private Dorm createDorm(String dormName, School school) {
-        Dorm dorm = new Dorm();
-        dorm.setDormName(dormName);
-        dorm.setSchool(school);
-        dormRepository.save(dorm);
-        return dorm;
-    }
-
-    private DormRoom createDormRoom(String roomType, Dorm dorm) {
-        DormRoom dormRoom = new DormRoom();
-        dormRoom.setRoomType(roomType);
-        dormRoom.setDorm(dorm);
-        dormRoomRepository.save(dormRoom);
-        return dormRoom;
     }
 }
 

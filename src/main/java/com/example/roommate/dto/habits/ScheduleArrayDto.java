@@ -1,4 +1,4 @@
-package com.example.roommate.dto;
+package com.example.roommate.dto.habits;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

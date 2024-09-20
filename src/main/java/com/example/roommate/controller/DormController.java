@@ -1,9 +1,10 @@
 package com.example.roommate.controller;
 
-import com.example.roommate.dto.DormDto;
+import com.example.roommate.dto.habits.DormDto;
 import com.example.roommate.service.DormService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,24 +14,25 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @Slf4j
-@RequestMapping
+@RequestMapping("/api/1.0/dorm")
 @RestController
 @RequiredArgsConstructor
 public class DormController {
 
     private final DormService dormService;
 
-    @PostMapping("/submitDormData")
-    public ResponseEntity<?> aveAndFindMatchingUsers(@RequestBody DormDto dormDto) {
+    @PostMapping
+    public ResponseEntity<?> saveDormData(@RequestBody DormDto dormDto) {
+        dormService.saveDormData(dormDto, 51L);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 
-//        dormService.saveDormData(dormDto, 51L);
+
+    @PostMapping("/search")
+    public ResponseEntity<List<Long>> searchDormMatches(@RequestBody DormDto dormDto) {
         List<Long> matchingUserIds = dormService.findMatchingUserIds(dormDto);
         return ResponseEntity.ok(matchingUserIds);
-//        boolean isMatchFound = dormService.compareDormData(appliedDorm, school, dormitoryName, roomType);
-//        if (isMatchFound) {
-//            return ResponseEntity.ok("已找到相似宿舍資料！");
-//        } else {
-//            return ResponseEntity.ok("沒有找到相似的宿舍資料。");
-//        }
     }
+
+
 }

@@ -10,8 +10,8 @@ import java.util.List;
 public interface UserDormOptionsRepository extends JpaRepository<UserDormOptions, Long> {
 
     @Query("SELECT DISTINCT u2.id " +
-            "FROM DormData dd1 " +
-            "JOIN dd1.user u1 " +
+            "FROM User u1 " +
+            "JOIN u1.dormData dd1 " +
             "JOIN dd1.school s " +
             "JOIN dd1.userDormOptions udo1 " +
             "JOIN udo1.dorm d " +

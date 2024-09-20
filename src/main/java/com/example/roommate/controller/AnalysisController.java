@@ -1,6 +1,6 @@
 package com.example.roommate.controller;
 
-import com.example.roommate.dto.PreferenceDto;
+import com.example.roommate.dto.habits.PreferenceDto;
 import com.example.roommate.service.SimilarityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,26 +14,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-@RequestMapping("/data")
+@RequestMapping("/api/1.0/analysis")
 @RestController
 @RequiredArgsConstructor
-public class SimilarityController {
+public class AnalysisController {
 
     private final SimilarityService similarityService;
 
-    @PostMapping("/similarity")
+    @PostMapping
     public ResponseEntity<?> getResult(@RequestBody PreferenceDto preferenceDto) {
         Map<String, Object> response = similarityService.analysis(preferenceDto);
         Map<String, Object> result = new HashMap<>();
         result.put("data", response);
         return ResponseEntity.ok(result);
     }
-
-//    @PostMapping("/weight")
-//    public ResponseEntity<?> getweightedResult() {
-//
-//        return ResponseEntity.ok(result);
-//    }
 
 }
 

@@ -1,6 +1,6 @@
 package com.example.roommate.service;
 
-import com.example.roommate.dto.*;
+import com.example.roommate.dto.habits.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

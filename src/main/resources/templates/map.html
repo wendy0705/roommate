@@ -5,46 +5,25 @@
     <title>Simple Marker</title>
     <!-- The callback parameter is required, so we use console.debug as a noop -->
     <script th:inline="javascript">
-        var apiKey = [[${googleMapsApiKey}]];
+        var apiKey = /*[[${googleMapsApiKey}]]*/ 'defaultKey';
         var script = document.createElement('script');
         script.src = 'https://maps.googleapis.com/maps/api/js?key=' + apiKey + '&callback=initMap&libraries=drawing&v=beta';
         script.defer = true;
         document.head.appendChild(script);
     </script>
-
-    <style>
-        /* Always set the map height explicitly to define the size of the div
-         * element that contains the map. */
-        gmp-map {
-            height: 100%;
-        }
-
-        /* Optional: Makes the sample page fill the window. */
-        html,
-        body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        #map {
-            height: 75%;
-            width: 50%;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/map.css">
 </head>
 <body>
 <div id="map"></div>
 
 <script>
-    async function initMap() {
+    function initMap() {
         // 請求所需的庫
-        const { Map } = await google.maps.importLibrary("maps");
-        const { DrawingManager } = await google.maps.importLibrary("drawing");
+
 
         const mapOptions = {
             zoom: 12,
-            center: { lat: 25.033, lng: 121.5654 }, // 台北的經緯度
+            center: {lat: 25.033, lng: 121.5654}, // 台北的經緯度
         };
 
         // 創建地圖
@@ -66,7 +45,7 @@
         let rectangles = [];
 
         // 當完成繪製矩形時觸發事件
-        google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
+        google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
             if (event.type === google.maps.drawing.OverlayType.RECTANGLE) {
                 const rectangle = event.overlay;
                 rectangles.push(rectangle); // 保存新繪製的矩形

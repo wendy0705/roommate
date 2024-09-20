@@ -1,6 +1,6 @@
 package com.example.roommate.utils;
 
-import com.example.roommate.dto.*;
+import com.example.roommate.dto.habits.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
