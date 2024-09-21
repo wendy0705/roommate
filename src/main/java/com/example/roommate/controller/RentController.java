@@ -26,9 +26,9 @@ public class RentController {
         return ResponseEntity.ok(200);
     }
 
-    @GetMapping("/rented/search")
+    @GetMapping("/rented")
     public ResponseEntity<List<Long>> searchRentedMatches() {
-        List<Long> matchingUserIds = rentService.findMatchingUserIds();
+        List<Long> matchingUserIds = rentService.findRentedMatches();
         return ResponseEntity.ok(matchingUserIds);
     }
 
@@ -39,9 +39,9 @@ public class RentController {
         return ResponseEntity.ok(200);
     }
 
-    @GetMapping("/not-rented/search")
+    @GetMapping("/not-rented")
     public ResponseEntity<List<Long>> searchNotRentedMatches() {
-        List<Long> matchingUserIds = rentService.findMatchingUserIds();
+        List<Long> matchingUserIds = rentService.findNotRentedMatches();
         return ResponseEntity.ok(matchingUserIds);
     }
 

@@ -112,8 +112,13 @@ public class RentService {
         }
     }
 
-    public List<Long> findMatchingUserIds() {
+    public List<Long> findRentedMatches() {
+        return nonRentedDataRepository.findNotRentedMatches(
+                42L
+        );
+    }
 
+    public List<Long> findNotRentedMatches() {
         List<Long> userIds = new ArrayList<>();
 
         List<Long> matchingNotRentedUsers = nonRentedDataRepository.findMatchingUsers(
@@ -127,7 +132,6 @@ public class RentService {
         userIds.addAll(matchingRentedUsers);
 
         return userIds;
-
     }
 }
 

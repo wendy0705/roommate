@@ -19,8 +19,19 @@ public interface NonRentedDataRepository extends JpaRepository<NonRentedData, Lo
             "WHERE n1.user.id = :currentUserId " +
             "AND n1.user.id <> n2.user.id")
     List<Long> findMatchingUsers(
-
             @Param("currentUserId") Long currentUserId
     );
+
+    @Query("SELECT DISTINCT n.user.id FROM NonRentedData n " +
+            "JOIN WantedRoom wr ON wr.nonRentedData.id = n.id " +
+            "JOIN RentedHouseData r ON r.user.id = :currentUserId " +
+            "JOIN r.availableRooms ar " +
+            "WHERE r.addressLat BETWEEN n.regionSwLat AND n.regionNeLat " +
+            "AND r.addressLng BETWEEN n.regionSwLng AND n.regionNeLng " +
+            "AND ar.rentalRoom.id = wr.rentalRoom.id " +
+            "AND ar.price BETWEEN wr.lowPrice AND wr.highPrice " +
+            "AND ar.rentalPeriod <= n.rentalPeriod " +
+            "AND n.user.id <> :currentUserId")
+    List<Long> findNotRentedMatches(@Param("currentUserId") Long currentUserId);
 }
 

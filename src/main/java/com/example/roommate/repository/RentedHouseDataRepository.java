@@ -19,6 +19,5 @@ public interface RentedHouseDataRepository extends JpaRepository<RentedHouseData
             "AND ar.rentalPeriod <= n.rentalPeriod " +
             "AND r.user.id <> :currentUserId")
     List<Long> findMatchingUsers(@Param("currentUserId") Long currentUserId);
-
 }
 
