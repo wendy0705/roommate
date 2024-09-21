@@ -1,6 +1,6 @@
 package com.example.roommate.controller;
 
-import com.example.roommate.dto.habits.DormDto;
+import com.example.roommate.dto.dorm.DormDto;
 import com.example.roommate.service.DormService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,12 +27,10 @@ public class DormController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-
     @PostMapping("/search")
-    public ResponseEntity<List<Long>> searchDormMatches(@RequestBody DormDto dormDto) {
-        List<Long> matchingUserIds = dormService.findMatchingUserIds(dormDto);
+    public ResponseEntity<List<Long>> searchDormMatches() {
+        List<Long> matchingUserIds = dormService.findMatchingUserIds(3L);
         return ResponseEntity.ok(matchingUserIds);
     }
-
 
 }

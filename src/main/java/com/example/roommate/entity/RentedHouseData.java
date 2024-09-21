@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -29,6 +31,9 @@ public class RentedHouseData {
 
     @Column(name = "details", columnDefinition = "json")
     private String details;
+
+    @OneToMany(mappedBy = "rentedHouseData", cascade = CascadeType.ALL)
+    private List<AvailableRoom> availableRooms;
 
 }
 

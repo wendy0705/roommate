@@ -1,4 +1,4 @@
-package com.example.roommate.dto.habits;
+package com.example.roommate.dto.dorm;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

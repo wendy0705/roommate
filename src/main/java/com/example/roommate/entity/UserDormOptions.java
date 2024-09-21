@@ -13,7 +13,7 @@ public class UserDormOptions {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "dorm_data_id")
     private DormData dormData;
 

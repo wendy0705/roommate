@@ -16,18 +16,18 @@ public class WantedRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "low_price", nullable = false)
+    @Column(name = "low_price")
     private Integer lowPrice;
 
-    @Column(name = "high_price", nullable = false)
+    @Column(name = "high_price")
     private Integer highPrice;
 
     @ManyToOne
-    @JoinColumn(name = "data_id", nullable = false)
+    @JoinColumn(name = "data_id")
     private NonRentedData nonRentedData;
 
     @ManyToOne
-    @JoinColumn(name = "room_id", nullable = false)
+    @JoinColumn(name = "room_id")
     private RentalRoom rentalRoom;
 
 }

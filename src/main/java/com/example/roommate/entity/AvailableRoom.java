@@ -25,4 +25,6 @@ public class AvailableRoom {
     @Column(name = "price")
     private Integer price;
 
+    @Column(name = "rental_period")
+    private Integer rentalPeriod;
 }

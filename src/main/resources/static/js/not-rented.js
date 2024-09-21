@@ -1,3 +1,8 @@
+window.onload = function () {
+    initMap();
+    loadRoomTypes();
+};
+
 function submitForm() {
     console.log("submit");
     const neLat = document.getElementById("neLat").value;
@@ -58,6 +63,7 @@ function loadRoomTypes() {
     fetch('/api/1.0/data/room-types')
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             const container = document.getElementById('roomTypeContainer');
             container.innerHTML = ''; // 清空现有内容
 
@@ -76,7 +82,7 @@ function loadRoomTypes() {
                 // 创建标签 <label>
                 const label = document.createElement('label');
                 label.htmlFor = `roomType_${roomType.id}`;
-                label.textContent = roomType.roomType;
+                label.textContent = roomType.room_type;
 
                 // 创建最低预算输入框
                 const lowPriceInput = document.createElement('input');

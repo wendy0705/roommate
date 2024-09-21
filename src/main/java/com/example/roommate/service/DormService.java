@@ -1,6 +1,6 @@
 package com.example.roommate.service;
 
-import com.example.roommate.dto.habits.DormDto;
+import com.example.roommate.dto.dorm.DormDto;
 import com.example.roommate.entity.*;
 import com.example.roommate.repository.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -72,12 +72,9 @@ public class DormService {
 
     }
 
-
-    public List<Long> findMatchingUserIds(DormDto dormDto) {
+    public List<Long> findMatchingUserIds(Long currentUserId) {
         return userDormOptionsRepository.findMatchingUserIds(
-                dormDto.getSchoolId(),
-                dormDto.getDormitoryIds(),
-                dormDto.getRoomTypesIds()
+                currentUserId
         );
     }
 }

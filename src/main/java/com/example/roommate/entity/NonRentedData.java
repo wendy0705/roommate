@@ -15,22 +15,22 @@ public class NonRentedData {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "region_ne_lat", nullable = false)
+    @Column(name = "region_ne_lat")
     private double regionNeLat;
 
-    @Column(name = "region_ne_lng", nullable = false)
+    @Column(name = "region_ne_lng")
     private double regionNeLng;
 
-    @Column(name = "region_sw_lat", nullable = false)
+    @Column(name = "region_sw_lat")
     private double regionSwLat;
 
-    @Column(name = "region_sw_lng", nullable = false)
+    @Column(name = "region_sw_lng")
     private double regionSwLng;
 
-    @Column(name = "rental_period", nullable = false)
+    @Column(name = "rental_period")
     private Integer rentalPeriod;
 
 }

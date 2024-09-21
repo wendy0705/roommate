@@ -25,12 +25,14 @@
 <div id="availableRooms">
     <h2>可提供房間</h2>
     <div class="room">
-        <label for="roomType2">選擇房型：</label>
-        <select id="roomType2" name="roomType">
+        <a>選擇房型：</a>
+        <select class="roomType" name="roomType">
             <!-- 房型選項將動態加載 -->
         </select>
-        <label for="price1">價格:</label>
-        <input type="number" id="price1" placeholder="12000">
+        <a>價格:</a>
+        <input type="number" class="price" placeholder="12000">
+        <a>最短租期（月）:</a>
+        <input type="number" class="period" placeholder="6">
     </div>
     <button type="button" onclick="addRoom()">新增房間</button>
 </div>
@@ -39,14 +41,12 @@
 <div id="currentRoommates">
     <h2>目前的室友</h2>
     <div class="roommate">
-        <!--        <label for="roommateType1">房型:</label>-->
-        <!--        <input type="text" id="roommateType1" placeholder="單人房">-->
-        <label for="roomType3">選擇房型：</label>
-        <select id="roomType3" name="roomType">
+        <a>選擇房型：</a>
+        <select class="roomType" name="roomType">
             <!-- 房型選項將動態加載 -->
         </select>
-        <label for="description1">描述:</label>
-        <input type="text" id="description1" placeholder="男，學生，安靜">
+        <a>描述:</a>
+        <input type="text" class="description" placeholder="男，學生，安靜">
     </div>
     <button type="button" onclick="addRoommate()">新增室友</button>
 </div>
@@ -90,10 +90,7 @@
     script.defer = true;
     document.head.appendChild(script);
 </script>
-<script>
-    loadRoomTypes('roomType2');
-    loadRoomTypes('roomType3');
-</script>
+
 <script src="/js/rented.js"></script>
 </body>
 </html>

@@ -19,13 +19,12 @@ public interface UserDormOptionsRepository extends JpaRepository<UserDormOptions
             "JOIN UserDormOptions udo2 ON udo1.dorm = udo2.dorm AND udo1.dormRoom = udo2.dormRoom " +
             "JOIN udo2.dormData dd2 " +
             "JOIN dd2.user u2 " +
-            "WHERE s.id = :schoolId " +
-            "AND d.id IN :dormitoryIds " +
-            "AND dr.id IN :roomTypesIds " +
+            "WHERE u1.id = :currentUserId " +
+            "AND s.id = dd2.school.id " +
+            "AND d.id = udo2.dorm.id " +
+            "AND dr.id = udo2.dormRoom.id " +
             "AND u1.id <> u2.id")
-    List<Long> findMatchingUserIds(@Param("schoolId") Long schoolId,
-                                   @Param("dormitoryIds") List<Long> dormitoryIds,
-                                   @Param("roomTypesIds") List<Long> roomTypesIds);
+    List<Long> findMatchingUserIds(@Param("currentUserId") Long currentUserId);
 
 }
 

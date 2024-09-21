@@ -1,60 +1,27 @@
-document.addEventListener('DOMContentLoaded', function () {
+window.onload = function () {
     initMap();
     loadRoomTypes();
-});
+};
 
 function loadRoomTypes() {
     fetch('/api/1.0/data/room-types')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
         .then(data => {
-            const container = document.getElementById('roomTypeContainer');
-            container.innerHTML = ''; // 清空现有内容
+            const roomTypeSelects = document.querySelectorAll('.roomType');
 
-            data.forEach(roomType => {
-                // 创建一个 <div> 来包裹复选框和输入框
-                const wrapperDiv = document.createElement('div');
-                wrapperDiv.classList.add('roomTypeOption');
-
-                // 创建复选框
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.id = `roomType_${roomType.id}`;
-                checkbox.name = 'roomTypes';
-                checkbox.value = roomType.id;
-
-                // 创建标签 <label>
-                const label = document.createElement('label');
-                label.htmlFor = `roomType_${roomType.id}`;
-                label.textContent = roomType.roomType;
-
-                // 创建最低预算输入框
-                const lowPriceInput = document.createElement('input');
-                lowPriceInput.type = 'number';
-                lowPriceInput.placeholder = '最低预算';
-                lowPriceInput.classList.add('lowPrice');
-                lowPriceInput.disabled = true; // 初始禁用
-
-                // 创建最高预算输入框
-                const highPriceInput = document.createElement('input');
-                highPriceInput.type = 'number';
-                highPriceInput.placeholder = '最高预算';
-                highPriceInput.classList.add('highPrice');
-                highPriceInput.disabled = true; // 初始禁用
-
-                // 当复选框被选中时，启用对应的输入框
-                checkbox.addEventListener('change', function () {
-                    lowPriceInput.disabled = !this.checked;
-                    highPriceInput.disabled = !this.checked;
+            roomTypeSelects.forEach(roomTypeSelect => {
+                roomTypeSelect.innerHTML = ''; // 清空現有的選項
+                data.forEach(roomType => {
+                    const option = document.createElement('option');
+                    option.value = roomType.id;
+                    option.textContent = roomType.room_type;
+                    roomTypeSelect.appendChild(option);
                 });
-
-                // 将元素添加到 wrapperDiv
-                wrapperDiv.appendChild(checkbox);
-                wrapperDiv.appendChild(label);
-                wrapperDiv.appendChild(lowPriceInput);
-                wrapperDiv.appendChild(highPriceInput);
-
-                // 将 wrapperDiv 添加到容器中
-                container.appendChild(wrapperDiv);
             });
         })
         .catch(error => console.error('Error loading room types:', error));
@@ -99,32 +66,47 @@ function geocodeAddress() {
 let roomCounter = 1;
 let roommateCounter = 1;
 
-// 新增房間
 function addRoom() {
-    roomCounter++;
-    const roomDiv = document.createElement('div');
-    roomDiv.classList.add('room');
-    roomDiv.innerHTML = `
-        <label for="roomType${roomCounter}">房型:</label>
-        <input type="text" id="roomType${roomCounter}" placeholder="輸入房型">
-        <label for="price${roomCounter}">價格:</label>
-        <input type="number" id="price${roomCounter}" placeholder="輸入價格">
-    `;
-    document.getElementById('availableRooms').appendChild(roomDiv);
+    // 選取房間容器
+    const availableRooms = document.getElementById('availableRooms');
+
+    // 複製現有的房間表單
+    const roomTemplate = document.querySelector('.room').cloneNode(true);
+
+    // 清空新的房間表單中的輸入欄位（如價格等）
+    roomTemplate.querySelector('input[type="number"]').value = '';
+
+    // 將新的房間表單添加到房間容器中
+    availableRooms.appendChild(roomTemplate);
+
+    // 重新加載房型選項
+    loadRoomTypesForNewRoom(roomTemplate.querySelector('.roomType'));
 }
 
-// 新增室友
 function addRoommate() {
-    roommateCounter++;
-    const roommateDiv = document.createElement('div');
-    roommateDiv.classList.add('roommate');
-    roommateDiv.innerHTML = `
-        <label for="roommateType${roommateCounter}">房型:</label>
-        <input type="text" id="roommateType${roommateCounter}" placeholder="輸入房型">
-        <label for="description${roommateCounter}">描述:</label>
-        <input type="text" id="description${roommateCounter}" placeholder="輸入描述">
-    `;
-    document.getElementById('currentRoommates').appendChild(roommateDiv);
+    const currentRoommates = document.getElementById('currentRoommates');
+    const roommateTemplate = document.querySelector('.roommate').cloneNode(true);
+    roommateTemplate.querySelector('input[type="text"]').value = ''; // 清空描述欄位
+    currentRoommates.appendChild(roommateTemplate);
+
+    // 重新加載房型選項到新增的房型選擇框
+    loadRoomTypesForNewRoom(roommateTemplate.querySelector('.roomType'));
+}
+
+
+function loadRoomTypesForNewRoom(roomTypeSelect) {
+    fetch('/api/1.0/data/room-types')
+        .then(response => response.json())
+        .then(data => {
+            roomTypeSelect.innerHTML = '';
+            data.forEach(roomType => {
+                const option = document.createElement('option');
+                option.value = roomType.id;
+                option.textContent = roomType.room_type;
+                roomTypeSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error loading room types:', error));
 }
 
 // 提交表單
@@ -136,28 +118,50 @@ function submitForm() {
 
     // 收集可提供房間的資料
     const availableRooms = [];
-    for (let i = 1; i <= roomCounter; i++) {
-        const roomType = document.getElementById(`roomType${i}`).value;
-        const price = document.getElementById(`price${i}`).value;
-        availableRooms.push({roomType, price});
-    }
+
+    const roomElements = document.querySelectorAll('#availableRooms .room');
+
+// 假設房型數量與價格數量相同
+    roomElements.forEach((roomElement) => {
+        const roomTypeSelect = roomElement.querySelector('.roomType');
+        const room_type = roomTypeSelect.value;
+
+        const priceInput = roomElement.querySelector('.price');
+        const price = priceInput.value;
+
+        const periodInput = roomElement.querySelector('.period');
+        const period = periodInput.value;
+
+        if (room_type && price) {
+            availableRooms.push({room_type, price, period});
+        }
+    });
 
     // 收集現有室友的資料
     const currentRoommates = [];
-    for (let i = 1; i <= roommateCounter; i++) {
-        const roomType = document.getElementById(`roommateType${i}`).value;
-        const description = document.getElementById(`description${i}`).value;
-        currentRoommates.push({roomType, description});
-    }
+    const roommateElements = document.querySelectorAll('#currentRoommates .roommate');
+
+    roommateElements.forEach((roommateElement) => {
+        const roomTypeSelect = roommateElement.querySelector('.roomType');
+        const room_type = roomTypeSelect.value;
+
+        const descriptionInput = roommateElement.querySelector('.description');
+        const description = descriptionInput.value;
+
+        if (room_type && description) {
+            currentRoommates.push({room_type, description});
+        }
+    });
+
 
     // 收集詳細資料
     const details = {
-        petAllowed: document.getElementById("petAllowed").value === "true",
-        rentalPeriod: document.getElementById("rentalPeriod").value,
-        sharedSpaces: document.getElementById("sharedSpaces").value,
+        pet_allowed: document.getElementById("petAllowed").value === "true",
+        rental_period: document.getElementById("rentalPeriod").value,
+        shared_spaces: document.getElementById("sharedSpaces").value,
         amenities: document.getElementById("amenities").value,
-        additionalFees: document.getElementById("additionalFees").value,
-        nearbyFacilities: document.getElementById("nearbyFacilities").value,
+        additional_fees: document.getElementById("additionalFees").value,
+        nearby_facilities: document.getElementById("nearbyFacilities").value,
         other: document.getElementById("other").value
     };
 
@@ -165,9 +169,9 @@ function submitForm() {
     const rentalData = {
         ne_lat: neLat,
         ne_lng: neLng,
-        houseName: houseName,
-        availableRooms: availableRooms,
-        currentRoommates: currentRoommates,
+        house_name: houseName,
+        available_rooms: availableRooms,
+        current_roommates: currentRoommates,
         details: details
     };
 
@@ -179,7 +183,7 @@ function submitForm() {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({rental: rentalData}),
+        body: JSON.stringify(rentalData),
     })
         .then(response => response.json())
         .then(data => {
