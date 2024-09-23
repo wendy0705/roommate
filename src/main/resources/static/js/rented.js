@@ -188,6 +188,7 @@ function submitForm() {
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
+            window.location.href = '/api/1.0/matched';
         })
         .catch((error) => {
             console.error('Error:', error);

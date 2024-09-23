@@ -1,9 +1,10 @@
 package com.example.roommate.utils;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
+@Slf4j
 public class SimilarityCalculationUtils {
 
     public static int compareTwoChoices(int a, int b) {
@@ -22,7 +23,7 @@ public class SimilarityCalculationUtils {
     }
 
     public static double calculateMaxDistance(int interval, int numFeatures, int length) {
-        return Math.sqrt(length * Math.pow(interval, numFeatures));
+        return Math.sqrt(length * numFeatures * Math.pow(interval, 2));
     }
 
     public static double calculateSimilarityPercentage(Integer[] vector1, Integer[] vector2, double maxDistance, boolean isTimeCalculation) {
@@ -77,25 +78,6 @@ public class SimilarityCalculationUtils {
 
         double percentage = distance / maxDistance;
         return percentage;
-    }
-
-    public static <T> boolean calculateUnorderedJaccardSimilarity(Set<T> setA, Set<T> setB, double threshold) {
-        double similarity = calculateUnorderedJaccardSimilarity(setA, setB);
-        return similarity > threshold;
-    }
-
-    public static <T> double calculateUnorderedJaccardSimilarity(Set<T> setA, Set<T> setB) {
-        if (setA.isEmpty() && setB.isEmpty()) {
-            return 1.0;
-        }
-
-        Set<T> intersection = new HashSet<>(setA);
-        intersection.retainAll(setB);
-
-        Set<T> union = new HashSet<>(setA);
-        union.addAll(setB);
-
-        return (double) intersection.size() / union.size();
     }
 
     public static <T> double calculateOrderedJaccardSimilarity(List<T> listA, List<T> listB) {

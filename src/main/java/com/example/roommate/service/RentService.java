@@ -112,22 +112,22 @@ public class RentService {
         }
     }
 
-    public List<Long> findRentedMatches() {
+    public List<Long> findRentedMatches(Long userId) {
         return nonRentedDataRepository.findNotRentedMatches(
-                42L
+                userId
         );
     }
 
-    public List<Long> findNotRentedMatches() {
+    public List<Long> findNotRentedMatches(Long userId) {
         List<Long> userIds = new ArrayList<>();
 
         List<Long> matchingNotRentedUsers = nonRentedDataRepository.findMatchingUsers(
-                30L
+                userId
         );
         userIds.addAll(matchingNotRentedUsers);
 
         List<Long> matchingRentedUsers = rentedHouseDataRepository.findMatchingUsers(
-                30L
+                userId
         );
         userIds.addAll(matchingRentedUsers);
 

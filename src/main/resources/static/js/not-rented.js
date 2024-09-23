@@ -4,7 +4,6 @@ window.onload = function () {
 };
 
 function submitForm() {
-    console.log("submit");
     const neLat = document.getElementById("neLat").value;
     const neLng = document.getElementById("neLng").value;
     const swLat = document.getElementById("swLat").value;
@@ -55,7 +54,11 @@ function submitForm() {
         body: JSON.stringify(formData)
     })
         .then(response => response.json())
-        .then(data => console.log('Form submitted successfully:', data))
+        .then(data => {
+            console.log('Form submitted successfully:', data);
+
+            window.location.href = '/api/1.0/matched';
+        })
         .catch((error) => console.error('Error submitting form:', error));
 }
 

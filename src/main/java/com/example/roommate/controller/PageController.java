@@ -40,4 +40,9 @@ public class PageController {
         model.addAttribute("googleMapsApiKey", googleMapsApiKey);
         return "rented";
     }
+
+    @GetMapping("/matched")
+    public String showMatchedUsers() {
+        return "matched";
+    }
 }
