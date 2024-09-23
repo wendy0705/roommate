@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
             dataContainer.innerHTML = data.map(item => {
                 const match = item.match;
                 const nonRentedData = item.nonRentedData || [];
-                
+
                 const matchInfo = `
                 <div class="match-container">
                     <h3>Matched User ID: ${match.userId2}</h3>
