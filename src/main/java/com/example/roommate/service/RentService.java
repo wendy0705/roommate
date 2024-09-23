@@ -11,11 +11,13 @@ import com.example.roommate.repository.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RentService {
@@ -69,6 +71,7 @@ public class RentService {
 
     public void saveRentedData(RentedDto rentedDto, Long userId) {
         try {
+            log.info(String.valueOf(userId));
             RentedHouseData rentedHouseData = new RentedHouseData();
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new RuntimeException("User not found"));

@@ -177,7 +177,6 @@ function submitForm() {
 
     console.log(rentalData);
 
-    // 發送資料到後端
     fetch('/api/1.0/rent/rented', {
         method: 'POST',
         headers: {
@@ -188,7 +187,8 @@ function submitForm() {
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
-            window.location.href = '/api/1.0/matched';
+            console.log("location.href");
+            window.location.href = '/api/1.0/rented-matched';
         })
         .catch((error) => {
             console.error('Error:', error);

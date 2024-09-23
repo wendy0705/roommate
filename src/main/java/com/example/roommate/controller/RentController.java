@@ -29,7 +29,6 @@ public class RentController {
 
     @PostMapping("/rented")
     public ResponseEntity<?> saveRentedData(@RequestBody RentedDto rentedDto) {
-        log.info("RentController saveRentedData");
         System.out.println(rentedDto);
         rentService.saveRentedData(rentedDto, 52L);
         return ResponseEntity.ok(200);
@@ -39,10 +38,12 @@ public class RentController {
     public ResponseEntity<?> searchRentedMatches() {
         Long myId = 52L;
         List<Long> matchingUserIds = rentService.findRentedMatches(myId);
+        log.info("matching:" + matchingUserIds.toString());
 
         for (Long matchingUserId : matchingUserIds) {
             PreferenceDto preferenceDto = userService.getByUserId(matchingUserId);
             Map<String, Object> response = analysisService.analysis(preferenceDto);
+            log.info("response:" + response.toString());
             analysisService.save(myId, matchingUserId, response);
         }
 
@@ -54,13 +55,13 @@ public class RentController {
     @PostMapping("/not-rented")
     public ResponseEntity<?> submitNotRented(@RequestBody NotRentedDto notRentedDto) {
         System.out.println(notRentedDto);
-        rentService.saveNotRentedData(notRentedDto, 54L);
+        rentService.saveNotRentedData(notRentedDto, 51L);
         return ResponseEntity.ok(200);
     }
 
     @GetMapping("/not-rented")
     public ResponseEntity<?> searchNotRentedMatches() {
-        Long myId = 54L;
+        Long myId = 51L;
         List<Long> matchingUserIds = rentService.findNotRentedMatches(myId);
 
         for (Long matchingUserId : matchingUserIds) {

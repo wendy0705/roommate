@@ -41,8 +41,13 @@ public class PageController {
         return "rented";
     }
 
-    @GetMapping("/matched")
-    public String showMatchedUsers() {
-        return "matched";
+    @GetMapping("/rented-matched")
+    public String showRentedMatchedUsers() {
+        return "rented-matched";
+    }
+
+    @GetMapping("/not-rented-matched")
+    public String showNotRentedMatchedUsers() {
+        return "not-rented-matched";
     }
 }

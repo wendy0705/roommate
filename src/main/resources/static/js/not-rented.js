@@ -57,7 +57,7 @@ function submitForm() {
         .then(data => {
             console.log('Form submitted successfully:', data);
 
-            window.location.href = '/api/1.0/matched';
+            window.location.href = '/api/1.0/not-rented-matched';
         })
         .catch((error) => console.error('Error submitting form:', error));
 }
