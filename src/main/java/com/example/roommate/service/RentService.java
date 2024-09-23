@@ -14,8 +14,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -116,25 +117,31 @@ public class RentService {
     }
 
     public List<Long> findRentedMatches(Long userId) {
-        return nonRentedDataRepository.findNotRentedMatches(
+        List<Long> matchingUserIds = nonRentedDataRepository.findNotRentedMatches(
                 userId
         );
+//        List<NonRentedMatchDto> nonRentedMatches = nonRentedDataRepository.getNonRentedInfo(matchingUserIds);
+//
+//        List<RentedHouseMatchDto> rentedHouseMatches = rentedHouseDataRepository.getRentedHouseInfo(matchingUserIds);
+
+//        return new RentedMatchesResponseDto(matchingUserIds, nonRentedMatches, rentedHouseMatches);
+        return matchingUserIds;
     }
 
-    public List<Long> findNotRentedMatches(Long userId) {
-        List<Long> userIds = new ArrayList<>();
+    public Map<Long, Integer> findNotRentedMatches(Long userId) {
+        Map<Long, Integer> userIdsWithSource = new HashMap<>();
 
-        List<Long> matchingNotRentedUsers = nonRentedDataRepository.findMatchingUsers(
-                userId
-        );
-        userIds.addAll(matchingNotRentedUsers);
+        List<Long> matchingNotRentedUsers = nonRentedDataRepository.findMatchingUsers(userId);
+        for (Long matchingUserId : matchingNotRentedUsers) {
+            userIdsWithSource.put(matchingUserId, 0);
+        }
+        
+        List<Long> matchingRentedUsers = rentedHouseDataRepository.findMatchingUsers(userId);
+        for (Long matchingUserId : matchingRentedUsers) {
+            userIdsWithSource.put(matchingUserId, 1);
+        }
 
-        List<Long> matchingRentedUsers = rentedHouseDataRepository.findMatchingUsers(
-                userId
-        );
-        userIds.addAll(matchingRentedUsers);
-
-        return userIds;
+        return userIdsWithSource;
     }
 }
 

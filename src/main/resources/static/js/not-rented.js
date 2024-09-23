@@ -4,6 +4,7 @@ window.onload = function () {
 };
 
 function submitForm() {
+    const userId = document.getElementById('userIdInput').value;
     const neLat = document.getElementById("neLat").value;
     const neLng = document.getElementById("neLng").value;
     const swLat = document.getElementById("swLat").value;
@@ -45,8 +46,10 @@ function submitForm() {
     };
 
     console.log(formData);
+    
+    console.log(document.cookie);
 
-    fetch('/api/1.0/rent/not-rented', {
+    fetch(`/api/1.0/rent/not-rented/${userId}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -78,13 +81,23 @@ function loadRoomTypes() {
                 // 创建复选框
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
-                checkbox.id = `roomType_${roomType.id}`;
+                checkbox.id = `
+    roomType_$
+    {
+        roomType.id
+    }
+    `;
                 checkbox.name = 'roomTypes';
                 checkbox.value = roomType.id;
 
                 // 创建标签 <label>
                 const label = document.createElement('label');
-                label.htmlFor = `roomType_${roomType.id}`;
+                label.htmlFor = `
+    roomType_$
+    {
+        roomType.id
+    }
+    `;
                 label.textContent = roomType.room_type;
 
                 // 创建最低预算输入框

@@ -1,5 +1,6 @@
 package com.example.roommate.repository;
 
+import com.example.roommate.dto.rented.RentedHouseMatchDto;
 import com.example.roommate.entity.RentedHouseData;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,5 +20,14 @@ public interface RentedHouseDataRepository extends JpaRepository<RentedHouseData
             "AND ar.rentalPeriod <= n.rentalPeriod " +
             "AND r.user.id <> :currentUserId")
     List<Long> findMatchingUsers(@Param("currentUserId") Long currentUserId);
+
+    @Query("SELECT new com.example.roommate.dto.rented.RentedHouseMatchDto(r.addressLat, r.addressLng, r.houseName, a.price, rm.roomType) " +
+            "FROM RentedHouseData r " +
+            "JOIN AvailableRoom a ON r.id = a.rentedHouseData.id " +
+            "JOIN RentalRoom rm ON a.rentalRoom.id = rm.id " +
+            "WHERE r.user.id = :userId")
+    List<RentedHouseMatchDto> getRentedHouseInfo(@Param("userId") Long userId);
+
 }
+
 

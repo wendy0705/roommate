@@ -112,6 +112,7 @@ function loadRoomTypesForNewRoom(roomTypeSelect) {
 // 提交表單
 function submitForm() {
     // 獲取表單數據
+    const userId = document.getElementById('userIdInput').value;
     const houseName = document.getElementById("houseName").value;
     const neLat = document.getElementById("neLat").value;
     const neLng = document.getElementById("neLng").value;
@@ -177,7 +178,9 @@ function submitForm() {
 
     console.log(rentalData);
 
-    fetch('/api/1.0/rent/rented', {
+    document.cookie = `userId=${userId}; path=/`;
+
+    fetch(`/api/1.0/rent/rented/${userId}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

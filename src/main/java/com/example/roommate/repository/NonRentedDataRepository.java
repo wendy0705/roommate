@@ -1,5 +1,6 @@
 package com.example.roommate.repository;
 
+import com.example.roommate.dto.notrented.NonRentedMatchDto;
 import com.example.roommate.entity.NonRentedData;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -33,5 +34,14 @@ public interface NonRentedDataRepository extends JpaRepository<NonRentedData, Lo
             "AND ar.rentalPeriod <= n.rentalPeriod " +
             "AND n.user.id <> :currentUserId")
     List<Long> findNotRentedMatches(@Param("currentUserId") Long currentUserId);
+
+    @Query("SELECT new com.example.roommate.dto.notrented.NonRentedMatchDto(n.regionNeLat, n.regionNeLng, n.regionSwLat, n.regionSwLng, " +
+            "n.rentalPeriod, w.lowPrice, w.highPrice, r.roomType) " +
+            "FROM NonRentedData n " +
+            "JOIN WantedRoom w ON n.id = w.nonRentedData.id " +
+            "JOIN RentalRoom r ON w.rentalRoom.id = r.id " +
+            "WHERE n.user.id = :userId")
+    List<NonRentedMatchDto> getNonRentedInfo(@Param("userId") Long userId);
+
 }
 
