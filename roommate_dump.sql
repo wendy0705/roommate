@@ -27,12 +27,13 @@ CREATE TABLE `available_room` (
   `data_id` bigint DEFAULT NULL,
   `room_id` bigint DEFAULT NULL,
   `price` int DEFAULT NULL,
+  `rental_period` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `data_id` (`data_id`),
   KEY `room_id` (`room_id`),
   CONSTRAINT `available_room_ibfk_1` FOREIGN KEY (`data_id`) REFERENCES `rented_house_data` (`id`) ON DELETE CASCADE,
   CONSTRAINT `available_room_ibfk_2` FOREIGN KEY (`room_id`) REFERENCES `rental_room` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,6 +42,7 @@ CREATE TABLE `available_room` (
 
 LOCK TABLES `available_room` WRITE;
 /*!40000 ALTER TABLE `available_room` DISABLE KEYS */;
+INSERT INTO `available_room` VALUES (1,1,4,7055,NULL),(2,1,3,7600,NULL),(3,2,3,5530,NULL),(4,3,1,6557,NULL),(5,3,3,5166,NULL),(6,4,4,4845,NULL),(7,5,2,5511,NULL),(8,5,4,4161,NULL),(9,5,3,7622,NULL),(10,6,1,4823,NULL),(11,6,1,6871,NULL),(12,6,3,5112,NULL),(13,7,1,4199,NULL),(14,7,2,5483,NULL),(15,7,2,7340,NULL),(16,8,1,7677,NULL),(17,9,4,6880,NULL),(18,9,2,4000,NULL),(19,9,1,5861,NULL),(20,10,3,6324,NULL),(21,10,4,5515,NULL),(22,10,4,6845,NULL),(23,11,4,5606,NULL),(24,12,2,5535,NULL),(25,12,3,7592,NULL),(26,12,3,5357,NULL),(27,13,1,6577,NULL),(28,13,4,4975,NULL),(29,14,3,7026,NULL),(30,14,1,4389,NULL),(31,14,3,7655,NULL),(32,15,3,7863,NULL),(33,15,3,4505,NULL),(34,16,3,6623,NULL),(35,17,3,5531,NULL),(36,18,2,4249,NULL),(37,18,1,5789,NULL),(38,18,3,4695,NULL),(39,19,3,7090,NULL),(40,19,4,5736,NULL),(41,20,3,6493,NULL),(42,21,3,6724,NULL),(43,21,2,6376,NULL),(44,22,3,5299,NULL),(45,22,4,7416,NULL),(46,22,4,7896,NULL),(47,23,1,6195,NULL),(48,23,2,5882,NULL),(49,24,3,6014,NULL),(50,24,3,5352,NULL),(51,24,4,7578,NULL),(52,25,2,6337,NULL),(53,25,1,6939,NULL);
 /*!40000 ALTER TABLE `available_room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -146,7 +148,7 @@ CREATE TABLE `dorm` (
   PRIMARY KEY (`id`),
   KEY `school_id` (`school_id`),
   CONSTRAINT `dorm_ibfk_1` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -155,7 +157,7 @@ CREATE TABLE `dorm` (
 
 LOCK TABLES `dorm` WRITE;
 /*!40000 ALTER TABLE `dorm` DISABLE KEYS */;
-INSERT INTO `dorm` VALUES (1,'莊敬 2 舍',1),(2,'莊敬 3 舍',1),(3,'自強 5 舍',1),(4,'自強 6 舍',1),(5,'自強 1 舍',1),(6,'自強 9 舍',1),(7,'自強 10 舍',1),(8,'莊敬 1 舍',1),(9,'莊敬 9 舍',1),(10,'自強 7 舍',1),(11,'自強 8 舍',1),(12,'男一舍',2),(13,'男二舍',2),(14,'男三舍',2),(15,'男四舍',2),(16,'男五舍',2),(17,'男六舍',2),(18,'男七舍',2),(19,'男八舍',2),(20,'男研一舍',2),(21,'男研三舍',2),(22,'大一女舍',2),(23,'女一舍',2),(24,'女二舍',2),(25,'女三舍',2),(26,'女四舍',2),(27,'女五舍',2),(28,'女六舍',2),(29,'女八舍',2),(30,'女九舍',2),(31,'女研一舍',2),(32,'女研三舍',2);
+INSERT INTO `dorm` VALUES (1,'莊敬 1 舍',1),(2,'莊敬 9 舍',1),(3,'自強 7 舍',1),(4,'自強 8 舍',1),(5,'自強 9 舍',1),(6,'自強 10 舍',1),(7,'莊敬 2 舍',1),(8,'莊敬 3 舍',1),(9,'自強 5 舍',1),(10,'自強 6 舍',1),(11,'自強 1 舍',1),(12,'自強 3 舍',1),(13,'男一舍',2),(14,'男二舍',2),(15,'男三舍',2),(16,'男四舍',2),(17,'男五舍',2),(18,'男六舍',2),(19,'男七舍',2),(20,'男八舍',2),(21,'男研一舍',2),(22,'男研三舍',2),(23,'大一女舍',2),(24,'女一舍',2),(25,'女二舍',2),(26,'女三舍',2),(27,'女四舍',2),(28,'女五舍',2),(29,'女六舍',2),(30,'女八舍',2),(31,'女九舍',2),(32,'女研一舍',2),(33,'女研三舍',2);
 /*!40000 ALTER TABLE `dorm` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -176,7 +178,7 @@ CREATE TABLE `dorm_data` (
   KEY `school_id` (`school_id`),
   CONSTRAINT `dorm_data_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
   CONSTRAINT `dorm_data_ibfk_2` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -185,7 +187,6 @@ CREATE TABLE `dorm_data` (
 
 LOCK TABLES `dorm_data` WRITE;
 /*!40000 ALTER TABLE `dorm_data` DISABLE KEYS */;
-INSERT INTO `dorm_data` VALUES (3,1,1,1),(4,2,1,2),(5,3,1,2),(6,4,1,1),(7,5,0,2),(8,6,0,1),(9,7,0,1),(10,8,1,1),(11,9,1,2),(12,10,1,1),(13,11,0,1),(14,12,0,2),(15,13,0,2),(16,14,1,2),(17,15,0,2),(18,16,1,2),(19,17,1,1),(20,18,0,1),(21,19,1,2),(22,20,0,2),(23,21,1,2),(24,22,0,1),(25,23,0,2),(26,24,0,1),(27,25,1,1),(28,26,1,2),(29,27,0,2),(30,28,0,1),(31,29,0,2),(32,30,1,1),(33,31,0,1),(34,32,0,2),(35,33,1,1),(36,34,0,2),(37,35,1,2),(38,36,1,1),(39,37,0,1),(40,38,0,2),(41,39,0,1),(42,40,0,2),(43,41,0,1),(44,42,0,1),(45,43,1,2),(46,44,1,1),(47,45,0,1),(48,46,1,2),(49,47,1,1),(50,48,0,2),(51,49,1,1),(52,50,1,1);
 /*!40000 ALTER TABLE `dorm_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -212,7 +213,7 @@ CREATE TABLE `dorm_room` (
 
 LOCK TABLES `dorm_room` WRITE;
 /*!40000 ALTER TABLE `dorm_room` DISABLE KEYS */;
-INSERT INTO `dorm_room` VALUES (1,'雅房，下舖',1),(2,'雅房，上舖',1),(3,'雅房，下舖',2),(4,'雅房，上舖',2),(5,'雅房，上下舖',3),(6,'雅房，上下舖',4),(7,'1/3 套 shared bathroom，上下舖',5),(8,'雅房，上下舖',6),(9,'套房，下舖',7),(10,'雅房，下舖',8),(11,'雅房，上下舖',8),(12,'雅房，下舖',9),(13,'雅房，上下舖',9),(14,'雅房，下舖',10),(15,'雅房，上舖',10),(16,'雅房，上下舖',11),(17,'雅房，上下舖',10),(18,'雅房，上下舖',11),(19,'住4人',12),(20,'住4人設電梯',13),(21,'住4人',14),(22,'住4人',15),(23,'住4人',16),(24,'住4人',17),(25,'住4人',18),(26,'住4人設電梯',19),(27,'住2人',20),(28,'住2人設電梯',21),(29,'住4人',22),(30,'住4人',23),(31,'住4人',24),(32,'住4人',25),(33,'住4人',26),(34,'住4人',27),(35,'住4人設電梯',28),(36,'住4人使用電熱水器',29),(37,'住4人使用電熱水器',30),(38,'住2人設電梯',31),(39,'住2人設電梯',32);
+INSERT INTO `dorm_room` VALUES (1,'2人雅房 - 莊一',1),(2,'4人雅房 - 莊一',1),(3,'2人雅房 - 莊九',2),(4,'3人雅房 - 莊九',2),(5,'4人雅房 - 莊九',2),(6,'4人雅房 - 自七',3),(7,'4人雅房 - 自八',4),(8,'4人雅房 - 自九',5),(9,'2人套房 - 自十',6),(10,'2人雅房 - 莊二',7),(11,'4人雅房 - 莊二',7),(12,'2人雅房 - 莊三',8),(13,'4人雅房 - 莊三',8),(14,'4人雅房 - 自五',9),(15,'4人雅房 - 自六',10),(16,'2人套房 - 自一',11),(17,'2人雅房 - 自九',5),(18,'2人套房 - 自十',6),(19,'4人雅房 - 男一',13),(20,'4人雅房 - 男二',14),(21,'4人雅房 - 男三',15),(22,'4人雅房 - 男四',16),(23,'4人雅房 - 男五',17),(24,'4人雅房 - 男六',18),(25,'4人雅房 - 男七',19),(26,'4人雅房 - 男八',20),(27,'2人套房 - 男研一',21),(28,'2人套房 - 男研三',22),(29,'4人雅房 - 大一女',23),(30,'4人雅房 - 女一',24),(31,'4人雅房 - 女二',25),(32,'4人雅房 - 女三',26),(33,'4人雅房 - 女四',27),(34,'4人雅房 - 女五',28),(35,'4人雅房 - 女六',29),(36,'4人雅房 - 女八',30),(37,'4人套房 - 女九',31),(38,'2人套房 - 女研一',32),(39,'2人套房 - 女研三',33);
 /*!40000 ALTER TABLE `dorm_room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -226,15 +227,15 @@ DROP TABLE IF EXISTS `non_rented_data`;
 CREATE TABLE `non_rented_data` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `user_id` bigint DEFAULT NULL,
-  `region_ne_lat` bigint DEFAULT NULL,
-  `region_ne_lng` bigint DEFAULT NULL,
-  `region_sw_lat` bigint DEFAULT NULL,
-  `region_sw_lng` bigint DEFAULT NULL,
+  `region_ne_lat` double DEFAULT NULL,
+  `region_ne_lng` double DEFAULT NULL,
+  `region_sw_lat` double DEFAULT NULL,
+  `region_sw_lng` double DEFAULT NULL,
   `rental_period` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `non_rented_data_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -243,6 +244,7 @@ CREATE TABLE `non_rented_data` (
 
 LOCK TABLES `non_rented_data` WRITE;
 /*!40000 ALTER TABLE `non_rented_data` DISABLE KEYS */;
+INSERT INTO `non_rented_data` VALUES (1,26,25.0489541,121.5546222,25.0373731,121.5406316,12),(2,27,25.0368361,121.559453,25.0180942,121.54098950000001,6),(3,28,25.041015,121.5483191,25.0217712,121.5302786,12),(4,29,25.037255,121.5440381,25.026495299999997,121.5271161,6),(5,30,25.0445871,121.5463355,25.027566800000002,121.5292087,6),(6,31,25.0470309,121.5522994,25.0347305,121.53274449999999,12),(7,32,25.0443562,121.5526012,25.0307217,121.5372098,6),(8,33,25.0307671,121.5550963,25.0129633,121.5383965,12),(9,34,25.0479838,121.5536264,25.0335272,121.5394381,12),(10,35,25.046231,121.5467567,25.0311435,121.5312246,6),(11,36,25.0444231,121.5440888,25.0253784,121.5293389,12),(12,37,25.0360283,121.5458911,25.0223005,121.5309728,6),(13,38,25.0497075,121.5428444,25.0390764,121.53179060000001,6),(14,39,25.0347462,121.5463423,25.0206458,121.52665320000001,12),(15,40,25.0498549,121.5423671,25.0324647,121.5287069,6),(16,41,25.0441473,121.5405194,25.0311675,121.52184439999999,12),(17,42,25.0345664,121.5452057,25.022020299999998,121.5311095,6),(18,43,25.0447634,121.5478092,25.0333356,121.53369070000001,12),(19,44,25.0394326,121.5423462,25.0245065,121.5226953,6),(20,45,25.0499859,121.5418174,25.0305466,121.5275383,12),(21,46,25.0362202,121.5436049,25.020231499999998,121.52669750000001,6),(22,47,25.0445341,121.554722,25.0305088,121.5361049,6),(23,48,25.0363721,121.5543312,25.021611800000002,121.5392521,6),(24,49,25.0386553,121.5587529,25.0210339,121.5399124,6),(25,50,25.0462431,121.5436171,25.0306682,121.52754230000001,12),(43,51,25.043367023919984,121.57020651855468,25.039323356985395,121.54136740722656,6),(44,52,25.05300907619956,121.56677329101562,25.050132091590466,121.54342734375,6),(45,53,25.043989114691254,121.56934821166992,25.039012300160426,121.54205405273437,6);
 /*!40000 ALTER TABLE `non_rented_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -263,7 +265,7 @@ CREATE TABLE `occupied_room` (
   KEY `room_id` (`room_id`),
   CONSTRAINT `occupied_room_ibfk_1` FOREIGN KEY (`data_id`) REFERENCES `rented_house_data` (`id`) ON DELETE CASCADE,
   CONSTRAINT `occupied_room_ibfk_2` FOREIGN KEY (`room_id`) REFERENCES `rental_room` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -272,6 +274,7 @@ CREATE TABLE `occupied_room` (
 
 LOCK TABLES `occupied_room` WRITE;
 /*!40000 ALTER TABLE `occupied_room` DISABLE KEYS */;
+INSERT INTO `occupied_room` VALUES (1,'女，學生',1,2),(2,'女，學生',1,4),(3,'男，工程師',2,4),(4,'女，老師',3,3),(5,'男，工程師',3,1),(6,'女，學生',4,2),(7,'女，老師',5,4),(8,'女，學生',5,1),(9,'女，學生',6,3),(10,'女，學生',7,4),(11,'女，學生',7,3),(12,'男，工程師',8,4),(13,'男，工程師',8,3),(14,'男，工程師',9,1),(15,'女，老師',10,2),(16,'男，工程師',11,1),(17,'女，學生',11,3),(18,'女，學生',12,3),(19,'女，學生',13,3),(20,'男，工程師',13,3),(21,'女，學生',14,4),(22,'女，學生',14,3),(23,'男，工程師',15,1),(24,'男，工程師',15,1),(25,'女，老師',16,1),(26,'女，老師',17,1),(27,'男，工程師',18,1),(28,'男，工程師',18,3),(29,'女，學生',19,1),(30,'女，學生',19,1),(31,'男，工程師',20,4),(32,'女，學生',21,3),(33,'女，學生',22,4),(34,'女，老師',22,3),(35,'男，工程師',23,1),(36,'女，老師',24,1),(37,'男，工程師',25,3),(38,'男，工程師',25,1);
 /*!40000 ALTER TABLE `occupied_room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -284,9 +287,9 @@ DROP TABLE IF EXISTS `rental_room`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `rental_room` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `room_type` bigint DEFAULT NULL,
+  `room_type` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -295,6 +298,7 @@ CREATE TABLE `rental_room` (
 
 LOCK TABLES `rental_room` WRITE;
 /*!40000 ALTER TABLE `rental_room` DISABLE KEYS */;
+INSERT INTO `rental_room` VALUES (1,'單人雅房'),(2,'雙人雅房'),(3,'單人套房'),(4,'雙人套房');
 /*!40000 ALTER TABLE `rental_room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -308,14 +312,14 @@ DROP TABLE IF EXISTS `rented_house_data`;
 CREATE TABLE `rented_house_data` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `user_id` bigint DEFAULT NULL,
-  `address_lat` bigint DEFAULT NULL,
-  `address_lng` bigint DEFAULT NULL,
+  `address_lat` double DEFAULT NULL,
+  `address_lng` double DEFAULT NULL,
   `house_name` varchar(255) DEFAULT NULL,
   `details` json DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `rented_house_data_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -324,6 +328,7 @@ CREATE TABLE `rented_house_data` (
 
 LOCK TABLES `rented_house_data` WRITE;
 /*!40000 ALTER TABLE `rented_house_data` DISABLE KEYS */;
+INSERT INTO `rented_house_data` VALUES (1,1,25.0948369,121.5871939,'安和住宅','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": true, \"rental_period\": 6, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(2,2,25.0311826,121.5823672,'安和住宅','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": true, \"rental_period\": 6, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(3,3,25.0915771,121.5945197,'仁愛公寓','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": false, \"rental_period\": 12, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(4,4,25.0542029,121.5593069,'忠孝大樓','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": false, \"rental_period\": 12, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(5,5,25.0785577,121.5336259,'忠孝大樓','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": true, \"rental_period\": 12, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(6,6,25.0233772,121.5064481,'安和住宅','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": false, \"rental_period\": 12, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(7,7,25.0469983,121.5385379,'忠孝大樓','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": false, \"rental_period\": 12, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(8,8,25.0909998,121.5579659,'和平大廈','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": true, \"rental_period\": 6, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(9,9,25.0458194,121.5650297,'和平大廈','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": true, \"rental_period\": 6, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(10,10,25.0409791,121.5198372,'和平大廈','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": false, \"rental_period\": 12, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(11,11,25.0781699,121.5381959,'信義雅苑','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": false, \"rental_period\": 12, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(12,12,25.0083331,121.5687788,'忠孝大樓','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": false, \"rental_period\": 6, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(13,13,25.0444951,121.5266921,'仁愛公寓','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": false, \"rental_period\": 12, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(14,14,25.005067,121.529841,'仁愛公寓','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": true, \"rental_period\": 6, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(15,15,25.0669384,121.5157484,'忠孝大樓','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": true, \"rental_period\": 6, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(16,16,25.0340372,121.5295407,'和平大廈','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": false, \"rental_period\": 6, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(17,17,25.0631908,121.5743581,'信義雅苑','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": false, \"rental_period\": 6, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(18,18,25.0072467,121.5778128,'忠孝大樓','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": true, \"rental_period\": 6, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(19,19,25.0948756,121.5721751,'信義雅苑','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": true, \"rental_period\": 6, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(20,20,25.0418289,121.5165849,'信義雅苑','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": true, \"rental_period\": 6, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(21,21,25.053775,121.5696121,'安和住宅','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": true, \"rental_period\": 6, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(22,22,25.0709904,121.5519381,'和平大廈','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": true, \"rental_period\": 6, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(23,23,25.0660011,121.5466096,'仁愛公寓','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": false, \"rental_period\": 6, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(24,24,25.007072,121.522432,'和平大廈','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": true, \"rental_period\": 6, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}'),(25,25,25.0124992,121.5593702,'忠孝大樓','{\"other\": \"這房子很棒！\", \"amenities\": \"冰箱、微波爐\", \"pet_allowed\": true, \"rental_period\": 12, \"shared_spaces\": \"廚房、客廳\", \"additional_fees\": \"水電費\", \"nearby_facilities\": \"距捷運站5分鐘\"}');
 /*!40000 ALTER TABLE `rented_house_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -409,7 +414,7 @@ CREATE TABLE `user` (
   `interest_idol_chasing` int DEFAULT NULL,
   `interest_music` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -418,7 +423,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'uwright@example.net','UG0eqn8yK@',0,1,1,0,1,0,19,23,17,22,2,11,3,19,2,3,19,0,20,17,0,0,0,0,5,4,2,2,1,2,25,1,1,'major',0,0,0,0,0,1,1,0,1,0,0,0),(2,'kimkaren@example.com','^9Nr)gMBjt',1,0,1,1,1,1,21,16,7,21,1,2,3,1,17,0,19,18,16,21,1,0,0,0,3,3,0,2,0,3,25,2,0,NULL,0,0,1,1,0,1,1,0,0,0,1,0),(3,'mjackson@example.com','Y5P7XI@ir#',1,0,1,0,1,1,2,6,16,3,12,1,8,6,14,18,1,0,10,4,1,1,1,1,4,5,0,0,0,1,22,0,0,NULL,0,1,0,1,0,1,0,1,0,1,1,1),(4,'kconway@example.net','_funcO0b7d',1,0,0,1,0,0,18,20,13,10,18,7,12,6,4,10,23,18,21,18,1,1,0,0,2,2,0,0,0,1,26,1,0,NULL,1,1,1,1,1,0,1,0,1,1,1,0),(5,'johnjenkins@example.org','m3$2iCFoG+',1,1,0,0,0,1,3,22,10,22,16,3,3,21,8,4,15,2,15,12,0,1,0,1,1,4,1,0,1,1,26,1,0,NULL,1,0,0,1,1,0,0,0,0,1,1,1),(6,'andre37@example.net','ez9NuqtA^!',1,0,1,0,1,0,7,15,22,9,10,5,13,10,7,13,12,17,14,4,0,1,1,1,3,1,0,2,1,1,21,0,1,'answer',1,0,1,1,0,1,0,0,0,1,1,0),(7,'tommykim@example.com','$8U#vNIbIb',1,1,1,1,1,1,0,17,23,9,0,1,6,22,22,11,21,16,9,3,1,0,0,1,3,3,0,2,1,2,24,0,1,'the',0,0,0,1,1,0,1,0,1,1,1,0),(8,'merrittchristina@example.net','q@6ODz*+Po',1,1,1,0,1,0,0,4,20,14,9,17,11,22,13,19,12,0,9,9,1,1,0,1,3,1,2,1,0,0,26,0,0,NULL,0,1,1,0,1,1,0,1,1,1,1,0),(9,'reyeschad@example.com','^9EeLzs+qB',0,0,1,1,1,1,4,8,6,14,10,20,12,9,13,7,3,1,10,5,0,1,1,1,2,2,2,0,1,2,21,2,0,NULL,1,1,1,1,1,1,1,1,0,1,0,1),(10,'thomas59@example.org','C#5VS5#fq$',0,0,0,1,0,1,21,12,17,14,23,1,6,0,4,3,7,1,13,5,1,0,1,1,4,4,1,2,1,3,26,2,0,NULL,0,0,0,0,1,1,0,0,0,0,0,1),(11,'umoore@example.com','dQ$bDYxi%3',1,1,0,1,1,1,11,17,16,8,14,23,18,3,15,17,5,19,21,10,0,1,0,1,1,5,1,0,1,3,27,0,0,NULL,1,0,0,0,1,1,0,0,1,1,0,1),(12,'smithcharles@example.com','UJz4BncC3$',0,0,0,0,0,0,15,23,16,23,5,20,9,3,10,14,9,18,1,2,0,1,0,1,4,3,1,1,2,0,22,0,0,NULL,0,1,1,0,0,0,0,1,0,1,0,1),(13,'trevinoshelby@example.net','r0&U0jlc#B',0,1,0,1,1,1,11,10,22,4,15,5,10,5,20,15,0,11,3,5,1,0,1,0,4,5,0,2,1,3,28,0,0,NULL,1,1,0,0,1,0,0,1,1,0,0,1),(14,'juan78@example.org','^r3NyyOyB4',0,0,1,0,1,0,21,0,16,19,6,18,16,8,18,14,8,20,22,22,1,1,0,0,5,5,2,0,2,1,20,0,0,NULL,0,1,0,1,1,1,1,1,0,1,1,0),(15,'kathleensullivan@example.net','_L3ZJDRvo0',1,1,0,0,1,0,6,3,12,10,9,23,18,21,18,0,6,0,15,13,0,1,1,1,5,5,2,2,2,3,21,0,1,'measure',1,0,0,0,1,1,1,0,1,1,1,1),(16,'blackgrace@example.com','VE3HX5BhN&',1,0,0,0,0,1,1,5,8,3,21,5,20,7,0,11,10,23,21,23,1,1,0,0,3,4,1,1,0,3,24,1,0,NULL,0,1,1,0,1,0,1,1,0,0,0,1),(17,'daniellekelley@example.org','*4Yw91Fh25',0,1,1,0,1,0,7,9,23,4,5,16,9,0,12,21,7,4,8,10,1,1,0,1,4,3,0,0,2,3,20,0,1,'role',1,1,1,1,0,1,1,1,0,1,0,1),(18,'ucarpenter@example.net','(1^GsVcl^3',0,0,0,1,0,0,4,11,20,11,18,13,14,20,18,7,17,1,18,0,1,0,0,0,3,2,1,2,2,2,22,2,0,NULL,1,0,1,0,0,0,1,0,1,0,0,0),(19,'courtney08@example.net','O63J$6SdX+',1,0,1,0,1,1,12,20,14,20,1,0,18,12,17,2,18,10,12,9,0,1,1,0,3,3,2,2,0,3,28,2,0,NULL,0,0,0,0,0,1,1,1,1,0,1,1),(20,'bryan16@example.org','!QU@WdkOZ8',1,0,0,1,0,1,20,8,2,17,15,12,21,19,19,4,22,2,19,17,0,0,1,1,1,4,2,2,2,0,23,1,0,NULL,1,1,1,0,0,1,0,0,1,0,1,0),(21,'hmendoza@example.com','a0u6ZQyc+t',0,1,0,1,1,0,8,19,13,7,10,11,15,2,2,15,22,23,23,6,1,0,0,0,5,4,0,1,0,2,22,1,1,'single',0,0,0,1,1,1,0,0,1,0,1,0),(22,'buckpatricia@example.org','J(&0ns0o4R',0,0,0,1,1,1,20,7,16,4,7,3,9,8,18,4,9,19,18,9,0,1,0,1,5,1,0,2,0,3,25,1,1,'financial',1,0,0,1,1,0,1,1,0,0,0,1),(23,'samanthasoto@example.org','!G1lUfYf%f',0,1,1,1,1,1,4,1,3,11,20,11,23,2,21,9,8,22,5,21,0,1,1,0,5,1,2,2,0,3,24,1,1,'structure',1,0,1,0,0,1,1,0,1,0,1,1),(24,'garciaalan@example.org','h!vjk8rcbP',0,0,0,0,1,0,21,8,0,1,15,19,16,2,18,21,5,2,21,18,1,1,1,0,4,3,0,1,2,0,28,1,1,'from',1,1,1,0,1,1,1,0,0,0,1,0),(25,'stephanieturner@example.net','C#3C2FolNi',0,1,0,1,1,1,20,14,19,7,13,19,20,20,7,11,1,13,5,11,0,0,1,0,4,3,0,1,2,1,24,0,1,'cup',1,0,1,0,1,1,0,1,0,0,1,0),(26,'monica57@example.com','Z*C)dz*e%4',0,0,1,0,0,0,15,21,13,2,2,1,22,1,13,17,15,19,10,17,0,0,0,0,3,5,2,1,1,1,28,1,1,'behavior',0,0,0,1,0,1,0,1,1,1,0,1),(27,'cmurray@example.com','!ZV3OJMo7$',1,0,1,0,1,1,19,18,15,0,12,4,3,9,9,2,2,23,23,13,1,1,0,0,4,1,2,1,2,2,25,1,0,NULL,1,0,0,0,0,0,0,0,1,1,1,0),(28,'sweeneyjeffery@example.org',')8BQ2M4)Wu',1,0,1,1,1,0,11,7,13,7,3,6,12,13,22,21,13,13,6,4,0,1,1,1,5,5,2,2,0,3,23,0,1,'brother',0,0,0,0,0,1,1,0,1,0,0,1),(29,'dsutton@example.com','@6AKIPta)V',1,0,1,1,0,1,22,23,7,13,18,1,12,10,4,22,0,20,15,3,0,1,0,1,5,2,0,2,0,0,27,0,1,'would',0,1,1,0,0,0,0,0,0,1,1,0),(30,'mharvey@example.net','1u6KaHv#+*',1,0,1,0,1,0,21,15,15,21,21,21,6,22,12,2,1,6,18,19,0,1,0,1,2,4,1,1,1,3,25,1,0,NULL,1,0,0,0,0,0,1,0,0,1,0,0),(31,'jeffrey13@example.org','i&a9XF8(Wx',0,1,1,0,0,0,18,2,21,21,14,12,11,10,18,21,1,14,8,16,1,0,0,0,1,1,1,2,1,3,28,0,0,NULL,0,0,0,0,0,0,1,0,0,0,0,0),(32,'christina59@example.org','i*%03ZHy)I',0,1,1,0,0,1,14,3,20,7,22,2,16,1,11,22,21,18,20,2,0,0,1,0,5,5,2,0,1,3,28,1,0,NULL,1,1,1,0,0,0,1,1,0,1,1,1),(33,'jessica12@example.net','09HLoznl^K',1,0,0,0,0,0,8,19,21,20,22,18,11,8,16,15,5,22,8,20,1,1,0,1,5,3,2,2,2,1,23,0,0,NULL,1,1,0,1,1,1,1,1,1,1,0,1),(34,'jessica28@example.org','As1%F0ZbCT',1,0,1,1,1,1,21,6,19,0,13,13,22,6,18,11,20,0,5,6,1,1,0,0,5,4,1,1,1,0,22,2,0,NULL,0,1,0,0,1,1,1,1,1,1,1,1),(35,'dawnbrown@example.net','@NHA3!7sP5',1,1,0,0,1,1,16,23,2,14,19,11,19,8,4,18,19,19,0,10,1,1,1,0,2,2,1,0,2,3,22,1,1,'whole',1,0,0,1,0,1,1,0,0,0,0,1),(36,'turnershelby@example.com','&3gWPScV!+',0,0,1,0,1,1,16,17,1,3,3,4,19,17,12,14,11,21,21,11,0,1,1,0,3,4,1,2,2,1,20,1,1,'age',0,1,0,0,1,0,1,1,1,1,1,0),(37,'melanie04@example.com','$7JSAmqe18',1,1,0,1,1,0,7,3,3,10,9,21,6,15,7,5,13,12,12,23,0,0,1,0,4,3,0,2,0,0,26,1,1,'environment',0,1,1,1,1,0,1,1,1,1,0,1),(38,'mariaarnold@example.org','6DxBqz)z#(',0,1,1,1,0,1,2,13,21,12,20,12,22,20,21,14,17,11,13,5,0,1,1,1,3,1,2,1,2,3,23,0,1,'agree',0,0,1,1,1,1,1,0,0,0,0,0),(39,'kleinashley@example.com',')9%V*%vl(y',0,1,0,1,0,0,17,19,6,9,2,3,21,9,6,12,16,7,8,4,1,0,1,0,4,2,2,0,1,0,24,2,1,'position',1,0,1,1,0,1,0,0,0,0,0,1),(40,'wlucero@example.net','&E3ERafnjY',1,0,1,1,0,0,9,17,9,16,23,3,15,21,11,19,20,16,0,4,1,0,0,1,4,3,2,1,1,0,23,0,0,NULL,1,0,1,0,1,1,1,1,1,1,1,0),(41,'pgarcia@example.net','8%IpAuf*^+',1,0,1,1,1,0,6,11,3,16,22,19,22,1,17,0,13,16,9,16,1,1,1,0,3,5,1,0,0,1,26,1,1,'defense',1,1,1,1,1,0,0,1,0,0,0,0),(42,'lorihunt@example.org','H9hD7hwY*X',1,1,1,0,1,0,22,10,11,18,6,22,15,21,7,6,8,5,12,16,1,1,1,0,4,1,1,2,1,0,25,0,1,'of',1,1,0,0,1,0,1,0,1,1,1,1),(43,'michaelmichelle@example.com','WUX%52ClRP',0,0,0,1,1,0,2,11,14,13,6,3,16,12,20,5,17,11,22,9,1,0,1,0,2,2,0,1,0,3,22,2,0,NULL,0,0,1,0,0,1,0,0,1,0,0,1),(44,'bromero@example.net','6aQiXvw+!G',1,1,0,1,1,1,14,17,11,1,8,8,22,15,13,19,21,10,0,15,1,0,0,1,5,2,0,0,1,0,21,0,1,'politics',0,0,1,1,1,1,0,1,0,1,0,1),(45,'autumn83@example.net','8rzn90Uv+3',0,1,1,0,0,0,12,11,22,1,12,23,8,10,21,23,21,20,6,18,0,0,0,1,3,3,0,0,1,0,24,2,1,'central',0,1,0,0,0,1,1,1,1,1,1,1),(46,'kelliehouston@example.com','!y4SFljPs9',1,0,0,0,0,1,20,11,5,13,22,3,6,2,3,20,7,20,4,14,1,0,1,1,2,1,2,0,2,1,23,1,0,NULL,0,0,1,0,1,1,1,0,1,0,0,1),(47,'jnewman@example.org','9bGWR1NS&b',0,0,0,1,1,1,5,2,15,4,0,13,13,10,11,4,12,2,16,1,1,0,0,0,1,1,2,2,1,2,26,2,0,NULL,1,0,0,1,0,1,1,0,0,0,0,0),(48,'wilsonpeter@example.net','(e(n1Yj%@U',0,1,1,0,1,1,6,6,13,12,14,7,3,20,16,13,21,21,9,14,0,0,0,0,2,5,0,1,2,1,24,2,0,NULL,1,0,1,1,0,0,1,1,1,1,1,1),(49,'jsparks@example.com','g0&LanjH_f',1,0,1,1,0,1,6,11,14,21,23,17,23,23,21,14,22,21,17,20,1,1,0,1,5,2,1,2,2,0,22,1,0,NULL,0,0,0,0,0,0,0,0,0,0,1,1),(50,'williamskathleen@example.com','Qa0ZtOY#S%',0,1,1,1,0,0,20,19,0,18,1,11,13,23,15,8,0,18,21,17,0,1,0,0,3,3,2,0,2,3,20,1,1,'industry',1,0,1,0,1,1,1,0,1,0,0,1),(51,'johnsmith@example.com','A5^h!9gB0@',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `user` VALUES (1,'miguel46@example.net','+)1pNwi7)B',1,0,1,1,0,1,8,0,23,0,13,3,15,8,23,22,19,17,2,6,0,0,0,1,5,5,0,2,1,1,22,2,1,'important',1,0,1,0,1,0,1,1,0,0,0,1),(2,'robertleon@example.net','H*^6N4R2Rj',0,0,1,0,1,0,6,10,9,11,4,20,19,0,3,18,2,14,8,18,1,0,0,1,4,1,2,1,0,1,25,1,0,NULL,1,0,1,1,1,0,0,1,0,1,0,0),(3,'monroejames@example.com','k+6hayTaT!',1,1,0,1,1,1,17,1,21,8,2,16,7,11,18,7,4,16,14,13,0,1,1,1,4,4,1,2,1,0,27,0,1,'born',0,1,0,0,1,1,1,1,0,1,1,0),(4,'oburke@example.net','f0WAJPNA)A',1,0,0,1,1,1,8,21,1,15,18,0,0,4,23,1,6,0,8,2,0,1,1,1,5,1,1,1,2,3,27,0,0,NULL,0,1,0,0,1,0,1,1,0,0,0,0),(5,'sarah74@example.com','E9MgHgR(@G',0,0,0,1,0,1,7,4,15,9,1,9,20,7,14,14,16,12,9,18,1,0,1,0,2,3,2,1,2,2,26,1,1,'dinner',0,1,1,0,1,0,1,0,1,0,0,1),(6,'wiseshelby@example.org','wnjc9HSe@b',0,1,0,0,1,0,6,6,23,4,11,6,18,12,9,12,10,18,17,6,1,0,1,0,2,3,2,0,1,3,22,2,1,'all',1,1,1,1,1,1,1,0,0,0,0,0),(7,'alan25@example.net','Z7DnBVbH(9',1,0,0,0,0,1,14,21,4,22,19,22,9,5,5,21,15,17,23,22,1,1,0,1,4,2,2,0,2,1,22,0,1,'strong',1,0,1,0,1,1,1,1,0,1,0,1),(8,'levydeborah@example.org','q_Fv3BWz(K',1,0,0,0,1,1,8,9,16,22,7,2,3,20,9,12,1,12,5,6,0,0,1,0,4,5,0,2,0,3,28,1,1,'report',0,1,0,1,0,0,1,0,1,0,0,1),(9,'courtneyhendrix@example.org','2wQdMtkb&O',1,1,1,0,0,0,5,1,22,13,2,16,22,6,11,18,19,2,15,22,0,1,1,1,3,3,0,0,1,3,21,1,1,'seven',0,0,1,0,0,0,0,1,0,1,1,0),(10,'jennifermartin@example.net','uQpzv$@**2',1,0,1,0,0,0,18,0,3,22,12,16,15,15,6,16,10,14,4,7,0,1,1,1,5,1,2,2,1,1,28,1,0,NULL,0,0,1,0,0,0,1,1,1,1,0,0),(11,'rnelson@example.org','+5XcKg1M9q',1,0,1,1,1,0,5,1,20,2,21,7,11,23,7,12,0,7,8,13,0,1,0,1,4,2,0,1,0,2,27,2,0,NULL,1,1,0,0,1,1,0,0,1,1,1,1),(12,'susanjohnson@example.net','5(uF62Nr$i',1,1,0,0,1,1,15,21,12,4,9,11,1,7,22,1,21,10,21,13,1,1,1,0,1,4,2,1,1,0,21,1,0,NULL,0,0,0,1,1,0,1,1,0,0,1,0),(13,'jaredadams@example.com','c84)sNFs&@',1,1,1,1,1,1,8,14,20,22,20,16,14,21,16,10,17,19,18,2,0,1,1,1,5,2,0,1,2,1,22,2,0,NULL,1,1,0,0,0,0,1,0,0,0,1,1),(14,'orivera@example.org','@qIf2iEF8W',0,1,0,0,1,1,11,12,10,22,15,8,13,16,1,1,9,15,7,6,1,0,0,1,3,1,2,2,0,1,24,0,1,'only',0,0,0,1,1,1,1,0,1,0,0,0),(15,'wendy34@example.net','RjZExRCk%5',1,1,0,1,1,1,16,20,14,8,3,15,10,0,0,5,10,0,9,16,0,0,1,0,2,2,0,1,0,2,28,1,0,NULL,1,0,1,0,0,0,0,0,0,1,0,1),(16,'stephaniehouston@example.org','A@83P3Ou5M',1,0,1,0,0,0,11,13,16,17,13,17,19,18,5,8,0,15,15,1,0,0,0,1,1,1,0,2,0,1,25,0,1,'support',0,1,0,0,1,1,0,1,0,1,0,0),(17,'derekrobinson@example.net','l)or1PJnm(',0,1,0,0,1,0,0,0,16,6,17,2,21,22,8,21,10,15,22,10,0,1,0,1,5,1,0,2,1,1,25,0,0,NULL,0,1,0,1,0,0,1,0,1,1,0,0),(18,'curtisbowman@example.org','8rC9QX)n+!',1,0,1,1,0,1,12,22,15,7,12,22,8,13,21,11,21,12,20,19,1,1,0,1,4,1,2,1,2,1,21,1,0,NULL,1,1,1,0,1,0,1,0,0,1,1,1),(19,'zacharyking@example.com','I01PgghfO(',0,0,0,1,0,0,4,18,19,10,15,19,10,4,4,17,2,1,14,21,0,1,0,0,1,1,2,2,2,1,26,2,0,NULL,1,1,0,1,1,0,0,0,0,0,0,1),(20,'halemargaret@example.net','_K_0lRCuO!',1,1,1,0,0,1,15,11,1,11,9,3,21,5,11,22,18,15,15,21,0,0,0,0,5,2,0,2,2,2,25,1,1,'arrive',1,1,0,1,1,0,1,0,0,1,1,0),(21,'gutierrezthomas@example.org','thsCqmTX%0',1,0,0,1,1,0,16,8,3,16,4,20,18,6,4,12,17,16,16,0,0,1,1,0,4,4,1,2,0,3,28,0,1,'institution',0,1,0,0,0,1,0,0,0,1,1,0),(22,'wjohnson@example.org','874KemEe%g',1,0,1,1,0,1,6,15,18,11,4,20,12,6,21,16,10,5,5,7,0,0,1,1,4,2,0,1,0,1,26,0,0,NULL,1,0,1,0,1,1,1,0,0,1,1,0),(23,'andrearodriguez@example.org','@utHixl8J2',0,1,0,1,0,0,17,16,2,13,18,22,5,4,23,21,18,13,22,3,0,1,0,1,5,1,0,1,2,3,22,1,0,NULL,0,1,0,0,1,0,0,0,1,0,1,1),(24,'wbrown@example.net','nuv7SlQ8&_',0,1,0,1,1,0,23,12,9,4,7,23,17,11,9,2,7,10,0,20,1,1,1,1,5,2,2,0,2,1,21,1,1,'vote',1,1,1,1,1,0,0,1,1,0,0,1),(25,'jamesgardner@example.com','7%u6Q3j)Hp',1,1,0,0,0,1,23,23,7,0,1,11,15,0,3,14,18,9,6,4,0,1,0,1,1,1,2,2,1,2,24,2,0,NULL,1,1,0,0,1,0,1,1,1,1,0,0),(26,'shawnknight@example.net','_@z%7G6bBz',1,0,1,0,1,1,9,13,14,15,22,4,9,8,23,3,19,22,15,19,0,0,1,1,5,1,2,0,2,1,20,2,1,'conference',0,0,1,0,1,0,1,1,0,0,1,0),(27,'dunnvanessa@example.com','DtKEV9Vu$A',0,1,0,1,1,0,13,19,0,21,2,17,5,17,15,23,4,0,6,12,0,0,1,1,5,4,1,2,2,1,28,0,0,NULL,1,1,0,0,1,1,0,1,1,1,1,1),(28,'christopherguzman@example.net','RAB0iFEw*)',1,0,1,1,0,1,5,0,10,7,14,5,3,20,22,3,12,10,15,21,0,0,0,1,3,4,2,1,0,3,20,2,1,'business',0,0,0,0,0,0,0,1,1,1,1,1),(29,'scottmelanie@example.org','c6qJCHeD@C',1,1,0,0,1,0,14,4,1,2,11,19,11,3,1,1,10,10,19,20,0,0,1,1,3,4,1,2,1,2,21,1,0,NULL,0,0,0,0,0,1,0,1,1,0,0,0),(30,'richard49@example.com','4p&c8PtufT',1,1,1,1,1,0,11,2,18,1,2,10,22,13,3,11,20,10,22,22,1,1,1,1,3,4,1,2,0,3,23,1,1,'way',0,1,0,1,0,1,1,0,0,0,1,1),(31,'megan54@example.com','(pHy5^w*c7',0,0,1,1,0,0,11,21,17,14,20,6,19,3,6,0,19,12,3,5,1,1,1,0,4,4,0,2,0,2,26,0,1,'community',0,1,0,1,1,0,0,1,0,1,1,0),(32,'tammy33@example.com','5@9ReXuU@&',0,1,1,0,1,0,22,7,22,12,16,1,21,4,23,7,9,6,18,16,0,1,0,0,3,1,1,1,1,3,22,2,1,'office',1,1,0,0,0,1,1,1,1,1,0,0),(33,'lindalowe@example.net','Sr4(4KJi(o',0,1,1,1,0,0,14,2,15,21,19,12,20,13,21,14,20,18,20,9,1,0,0,1,3,4,0,2,0,0,27,1,1,'ok',1,1,1,0,0,1,0,1,0,0,0,1),(34,'mirandadelgado@example.org','7Y@98E(y!0',0,1,0,1,0,1,0,17,13,21,11,21,23,10,0,20,11,20,17,2,0,1,0,0,4,1,2,2,1,1,25,0,1,'drop',1,1,1,0,1,1,0,1,0,0,1,0),(35,'qali@example.net','&_61UuXJRb',0,0,0,0,1,1,11,7,14,13,1,20,0,19,10,10,5,11,10,7,0,1,0,1,5,3,0,2,0,1,25,0,1,'since',0,1,0,1,0,0,1,0,0,1,0,0),(36,'jeremykelley@example.net','&9EJoy3mtP',1,1,1,0,0,1,4,11,10,16,14,17,0,3,12,2,6,14,10,9,0,1,1,1,4,5,0,1,2,2,24,0,0,NULL,1,1,1,1,0,0,0,1,0,0,1,0),(37,'connerlisa@example.com','(rMZy%oF^1',1,0,1,0,0,0,15,8,13,1,1,17,2,20,22,13,4,15,15,5,0,0,1,1,3,2,1,0,1,0,22,1,1,'someone',0,1,1,0,1,1,1,1,1,0,0,1),(38,'robert01@example.org','0sw5#qH^^Z',0,0,0,0,1,0,9,11,21,5,22,22,1,21,10,8,19,14,7,6,1,0,0,1,5,5,0,2,0,2,21,0,1,'condition',1,1,1,1,0,0,1,1,0,1,1,1),(39,'andre81@example.net','2G+HMKXw($',0,1,0,1,0,1,17,0,23,23,21,4,7,1,2,8,8,22,22,18,0,1,0,0,4,1,1,0,2,2,24,0,1,'hotel',1,1,1,0,0,0,0,1,1,1,0,0),(40,'garneralexandria@example.com','qS0DmaAk%P',0,0,0,1,0,0,15,14,22,19,23,12,14,9,6,21,13,13,0,14,0,0,1,1,2,3,2,2,1,1,26,2,0,NULL,0,1,0,1,0,0,1,0,1,1,1,1),(41,'christopherking@example.org','&U6!^Lwch0',0,0,1,0,0,0,23,18,14,12,15,19,16,8,9,8,21,4,23,16,1,0,1,1,2,1,0,1,1,1,21,1,0,NULL,0,0,1,1,1,0,1,0,1,0,0,1),(42,'jenniferburke@example.net','*nvrCG9a2Q',0,0,0,0,0,1,8,4,3,11,6,12,14,20,1,19,20,10,18,14,1,1,1,0,5,5,1,1,1,2,23,0,0,NULL,0,1,1,0,0,1,0,1,1,0,1,0),(43,'williamhorton@example.com','oi+K99OvNM',1,1,1,1,1,1,16,0,13,17,2,21,2,12,21,9,8,23,22,1,0,0,0,0,4,4,2,0,0,2,28,1,1,'without',0,0,1,1,1,0,0,1,1,1,1,0),(44,'natalie34@example.com','$w8T$9UshC',0,0,0,1,1,1,3,9,9,21,19,23,17,14,6,7,4,6,5,23,1,1,0,0,5,1,2,2,1,2,25,0,1,'left',1,0,1,1,1,0,0,1,0,1,1,0),(45,'campbellsteve@example.org','j54Ib+fU&@',0,1,0,0,1,1,0,22,0,12,17,0,10,16,14,14,23,14,5,11,1,1,1,0,2,1,0,2,1,0,25,1,1,'can',0,0,1,0,1,0,0,0,1,1,1,0),(46,'jmiller@example.com','7gPx%D!)*D',1,1,0,1,0,1,9,15,15,14,12,16,8,19,7,10,10,9,17,3,0,0,1,1,3,5,2,0,2,2,26,2,1,'manager',0,0,1,0,0,1,0,1,1,0,1,1),(47,'bcarr@example.org','s!!Crtr!%8',1,1,1,0,0,0,5,12,16,1,14,7,21,14,6,13,23,21,6,1,0,0,1,1,1,3,2,0,0,2,25,1,1,'close',1,0,1,1,1,0,1,1,0,1,0,1),(48,'irobinson@example.net','!63VW1!e(7',0,1,1,0,1,1,11,21,14,18,22,10,11,7,17,12,3,5,4,23,0,0,0,0,4,2,0,0,0,1,26,0,1,'yourself',0,1,0,1,1,0,0,0,1,1,0,1),(49,'markwebster@example.org','nl3sCi39m!',1,1,1,0,0,0,17,13,9,1,16,20,10,3,3,10,23,3,20,9,0,1,0,1,4,4,1,0,2,1,28,2,0,NULL,0,1,1,1,0,0,1,1,1,1,1,0),(50,'jmarquez@example.net','!dLBBeTvV4',0,1,0,0,0,1,4,20,2,21,12,17,10,3,3,17,2,22,11,4,1,1,1,1,2,4,0,0,0,1,24,2,1,'market',0,1,0,1,0,1,0,1,0,0,0,1),(51,'ksantiago@example.net','+71mEJhX9&',1,1,0,0,1,1,18,2,10,9,20,13,4,21,7,18,12,7,16,22,1,1,0,0,3,4,0,0,0,3,25,1,1,'feel',1,0,0,0,0,1,0,0,0,1,1,1),(52,'hursttiffany@example.org','h^y0NPjQ*c',0,1,1,1,0,0,10,2,11,2,15,2,2,19,8,2,12,11,11,2,1,0,0,1,3,4,1,2,2,3,20,1,1,'air',1,0,1,0,0,0,0,0,1,0,1,0),(53,'jonathankoch@example.net','ZuRIlRGm#3',1,1,1,0,1,1,1,12,7,4,9,20,19,15,3,18,11,1,23,3,0,0,1,0,4,3,1,0,2,2,20,2,1,'door',1,0,0,1,0,0,0,1,1,1,0,0),(54,'mthompson@example.net',')NaI@3ArS(',0,1,1,0,0,1,0,10,22,14,11,3,18,22,9,19,12,10,19,15,1,1,0,0,2,1,0,1,1,1,25,1,0,NULL,0,1,1,1,1,1,0,1,0,1,1,1),(55,'adamjones@example.net','wA2WbkU6)f',1,0,0,1,0,1,12,23,22,8,19,16,22,0,8,13,1,23,21,13,1,1,0,0,5,1,1,0,1,2,25,2,1,'sell',0,0,0,1,0,1,0,1,1,0,1,0),(56,'danielhampton@example.org','*!(IBU7x97',0,0,1,1,1,1,8,12,21,18,19,17,20,10,13,23,6,6,19,11,0,0,0,1,3,1,2,1,1,2,28,0,0,NULL,1,1,0,1,0,1,1,1,0,1,1,0),(57,'ubridges@example.com','&7Sk*XIe_q',1,1,1,1,0,0,21,3,13,23,0,21,19,14,19,19,9,19,16,13,0,0,0,1,3,2,0,1,0,1,25,2,1,'case',1,1,0,0,1,0,1,0,1,0,0,0),(58,'jodi92@example.net','9GDX8GaM&Z',0,0,1,0,0,1,21,8,10,19,4,13,2,9,14,19,16,1,20,2,1,0,0,0,2,2,1,1,0,2,24,2,1,'past',1,1,1,0,1,1,1,1,0,0,0,0),(59,'hernandezkevin@example.net','8406AXxt!P',0,0,0,0,1,0,2,3,5,11,3,20,1,16,8,2,10,19,12,18,1,1,0,1,5,3,1,1,0,1,27,2,0,NULL,0,1,1,1,1,0,1,0,0,0,0,1),(60,'lhoffman@example.org','*ev8YS0It$',1,0,1,1,1,1,12,18,4,11,1,8,13,20,21,17,16,5,2,1,1,1,1,0,5,5,1,2,1,3,23,0,0,NULL,0,0,1,0,1,0,0,1,1,0,1,0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -441,7 +446,7 @@ CREATE TABLE `user_dorm_options` (
   CONSTRAINT `user_dorm_options_ibfk_1` FOREIGN KEY (`dorm_data_id`) REFERENCES `dorm_data` (`id`) ON DELETE CASCADE,
   CONSTRAINT `user_dorm_options_ibfk_2` FOREIGN KEY (`dorm_id`) REFERENCES `dorm` (`id`) ON DELETE CASCADE,
   CONSTRAINT `user_dorm_options_ibfk_3` FOREIGN KEY (`dorm_room_id`) REFERENCES `dorm_room` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -450,7 +455,6 @@ CREATE TABLE `user_dorm_options` (
 
 LOCK TABLES `user_dorm_options` WRITE;
 /*!40000 ALTER TABLE `user_dorm_options` DISABLE KEYS */;
-INSERT INTO `user_dorm_options` VALUES (1,3,8,10),(2,4,27,34),(3,5,30,37),(4,6,6,8),(5,7,31,38),(6,8,4,6),(7,9,9,13),(8,9,10,14),(9,10,2,3),(10,11,12,19),(11,12,1,2),(12,13,6,8),(13,13,11,16),(14,13,8,11),(15,14,26,33),(16,15,31,38),(17,15,21,28),(18,16,20,27),(19,17,23,30),(20,17,15,22),(21,17,16,23),(22,18,28,35),(23,19,9,12),(24,20,9,12),(25,21,18,25),(26,22,13,20),(27,22,16,23),(28,23,16,23),(29,24,10,14),(30,25,13,20),(31,25,12,19),(32,25,16,23),(33,26,2,4),(34,26,2,3),(35,26,2,4),(36,27,3,5),(37,28,20,27),(38,29,29,36),(39,29,15,22),(40,30,4,6),(41,30,2,4),(42,30,10,14),(43,31,28,35),(44,31,14,21),(45,32,8,11),(46,33,9,12),(47,34,15,22),(48,34,24,31),(49,34,19,26),(50,35,5,7),(51,36,21,28),(52,37,23,30),(53,38,10,17),(54,39,7,9),(55,39,8,10),(56,39,9,12),(57,40,14,21),(58,41,9,13),(59,42,16,23),(60,43,3,5),(61,43,5,7),(62,43,9,13),(63,44,9,13),(64,44,5,7),(65,45,16,23),(66,46,10,15),(67,47,6,8),(68,47,1,1),(69,47,1,1),(70,48,21,28),(71,49,6,8),(72,50,27,34),(73,50,27,34),(74,51,1,1),(75,52,5,7);
 /*!40000 ALTER TABLE `user_dorm_options` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -479,13 +483,12 @@ CREATE TABLE `user_match` (
   `light_percentage` decimal(8,2) DEFAULT NULL,
   `alarm_percentage` decimal(8,2) DEFAULT NULL,
   `friend_percentage` decimal(8,2) DEFAULT NULL,
-  `weighted_percentage` decimal(8,2) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_match` (`user_id_1`,`user_id_2`),
   KEY `user_id_2` (`user_id_2`),
   CONSTRAINT `user_match_ibfk_1` FOREIGN KEY (`user_id_1`) REFERENCES `user` (`id`) ON DELETE CASCADE,
   CONSTRAINT `user_match_ibfk_2` FOREIGN KEY (`user_id_2`) REFERENCES `user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -494,6 +497,7 @@ CREATE TABLE `user_match` (
 
 LOCK TABLES `user_match` WRITE;
 /*!40000 ALTER TABLE `user_match` DISABLE KEYS */;
+INSERT INTO `user_match` VALUES (1,51,30,1,0.55,0.33,0.58,0.00,0.79,1,0,1.00,1,0.20,0.00,0.50,0.50),(2,51,32,1,0.75,0.33,0.50,0.50,0.85,1,1,0.00,0,0.40,0.50,0.50,0.00),(3,51,35,1,0.75,0.33,0.58,0.50,0.77,1,1,0.50,0,0.60,0.00,0.00,0.50),(4,51,38,1,0.50,0.00,0.67,0.50,0.79,0,0,0.50,0,0.80,0.00,0.00,0.50),(5,51,40,0,0.55,0.33,0.50,0.50,0.82,0,1,1.00,0,0.80,0.00,1.00,0.00),(6,51,44,1,1.00,0.00,0.67,0.50,0.80,1,0,0.00,0,0.40,0.00,1.00,0.00),(7,51,47,1,0.44,0.00,0.42,0.00,0.82,0,1,1.00,1,0.60,1.00,1.00,0.50),(8,53,30,1,0.55,0.33,0.58,0.00,0.79,1,0,1.00,1,0.20,0.00,0.50,0.50),(9,53,32,1,0.75,0.33,0.50,0.50,0.85,1,1,0.00,0,0.40,0.50,0.50,0.00),(10,53,35,1,0.75,0.33,0.58,0.50,0.77,1,1,0.50,0,0.60,0.00,0.00,0.50),(11,53,38,1,0.50,0.00,0.67,0.50,0.79,0,0,0.50,0,0.80,0.00,0.00,0.50),(12,53,40,0,0.55,0.33,0.50,0.50,0.82,0,1,1.00,0,0.80,0.00,1.00,0.00),(13,53,44,1,1.00,0.00,0.67,0.50,0.80,1,0,0.00,0,0.40,0.00,1.00,0.00),(14,53,47,1,0.44,0.00,0.42,0.00,0.82,0,1,1.00,1,0.60,1.00,1.00,0.50),(15,53,51,1,0.55,0.33,0.50,0.00,0.81,1,0,0.00,1,0.40,1.00,0.00,0.50);
 /*!40000 ALTER TABLE `user_match` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -515,7 +519,7 @@ CREATE TABLE `wanted_room` (
   KEY `room_id` (`room_id`),
   CONSTRAINT `wanted_room_ibfk_1` FOREIGN KEY (`data_id`) REFERENCES `non_rented_data` (`id`) ON DELETE CASCADE,
   CONSTRAINT `wanted_room_ibfk_2` FOREIGN KEY (`room_id`) REFERENCES `rental_room` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -524,6 +528,7 @@ CREATE TABLE `wanted_room` (
 
 LOCK TABLES `wanted_room` WRITE;
 /*!40000 ALTER TABLE `wanted_room` DISABLE KEYS */;
+INSERT INTO `wanted_room` VALUES (1,4326,7509,1,4),(2,3587,5726,1,1),(3,4391,7049,1,2),(4,3557,5561,2,3),(5,3420,5861,2,2),(6,4858,7505,2,1),(7,4188,8150,3,1),(8,3183,7040,3,4),(9,4293,6974,4,3),(10,4991,7704,4,1),(11,3745,6731,5,3),(12,4135,6745,6,2),(13,3238,7172,6,4),(14,3538,6072,6,3),(15,4689,8369,7,3),(16,3887,6254,8,4),(17,4683,8106,9,4),(18,3279,6131,9,1),(19,3950,7865,9,3),(20,4952,7647,10,3),(21,4632,7411,10,2),(22,4007,7973,11,3),(23,3110,6368,12,2),(24,4243,7366,12,3),(25,4002,6486,13,2),(26,4969,7840,13,3),(27,3765,6052,13,1),(28,3042,6403,14,3),(29,3264,7148,15,4),(30,4775,6924,15,3),(31,4250,7588,15,2),(32,4913,6935,16,3),(33,3262,5304,17,3),(34,3781,7492,17,2),(35,4762,7491,18,1),(36,3701,6433,18,4),(37,4645,7764,18,3),(38,4661,8118,19,3),(39,4248,6937,20,4),(40,3829,7420,20,3),(41,4430,7017,20,1),(42,4944,8837,21,3),(43,3789,7096,21,1),(44,4741,8198,21,2),(45,4442,6639,22,2),(46,4402,8337,23,3),(47,4878,8708,23,2),(48,3795,6435,23,1),(49,4746,8365,24,2),(50,3035,6094,24,3),(51,3077,5285,25,3),(52,4311,6623,25,4),(87,3000,7000,43,1),(88,5000,10000,43,3),(89,4000,9000,44,1),(90,7000,10000,44,3),(91,3000,7000,45,1),(92,5000,9000,45,3);
 /*!40000 ALTER TABLE `wanted_room` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -536,4 +541,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-18  6:12:57
+-- Dump completed on 2024-09-23  9:04:46
