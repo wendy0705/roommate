@@ -8,7 +8,9 @@
 
 <body>
 <input type="text" id="userIdInput" placeholder="請輸入使用者 ID">
-<button id="confirmButton">確認</button>
+<br>
+<br>
+<br>
 <div id="rentalForm">
 
     <!--    <label for="roomType">框出欲居住的區域：</label>-->
@@ -32,24 +34,6 @@
 
     <button type="button" onclick="submitForm()">送出</button>
 </div>
-
-<script>
-    // 取得按鈕和輸入框的 DOM 元素
-    const userIdInput = document.getElementById('userIdInput');
-    const confirmButton = document.getElementById('confirmButton');
-
-    // 當按下按鈕時，隱藏輸入框
-    confirmButton.addEventListener('click', function () {
-        // 檢查是否有輸入值
-        const userId = userIdInput.value;
-        // 隱藏輸入框
-        userIdInput.style.display = 'none';
-        confirmButton.style.display = 'none';
-
-        // 這裡可以存儲 userId 或執行其他操作
-        document.cookie = `userId=${userId}; path=/`;
-    });
-</script>
 
 <script th:inline="javascript">
     var apiKey = /*[[${googleMapsApiKey}]]*/ 'defaultKey';

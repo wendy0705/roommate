@@ -49,10 +49,11 @@ public class RentController {
         List<Long> matchingUserIds = rentService.findRentedMatches(myId);
         log.info("matching:" + matchingUserIds.toString());
         List<MatchDetailDto> matchDetails = new ArrayList<>();
+        PreferenceDto myIdPreference = userService.getByUserId(myId);
 
         for (Long matchingUserId : matchingUserIds) {
-            PreferenceDto preferenceDto = userService.getByUserId(matchingUserId);
-            Map<String, Object> response = analysisService.analysis(preferenceDto);
+            PreferenceDto othersPreference = userService.getByUserId(matchingUserId);
+            Map<String, Object> response = analysisService.analysis(myIdPreference, othersPreference);
             log.info("response:" + response.toString());
             analysisService.save(myId, matchingUserId, response);
 
@@ -78,13 +79,14 @@ public class RentController {
         Map<Long, Integer> userIdsWithSource = rentService.findNotRentedMatches(myId);
         log.info(userIdsWithSource.toString());
         List<MatchDetailDto> matchDetails = new ArrayList<>();
+        PreferenceDto myIdPreference = userService.getByUserId(myId);
 
         for (Map.Entry<Long, Integer> entry : userIdsWithSource.entrySet()) {
             Long matchingUserId = entry.getKey();
             Integer source = entry.getValue();
 
-            PreferenceDto preferenceDto = userService.getByUserId(matchingUserId);
-            Map<String, Object> response = analysisService.analysis(preferenceDto);
+            PreferenceDto othersPreference = userService.getByUserId(matchingUserId);
+            Map<String, Object> response = analysisService.analysis(myIdPreference, othersPreference);
             analysisService.save(myId, matchingUserId, response);
 
             UserMatch match = analysisService.findByUserId1AndUserId2(myId, matchingUserId)

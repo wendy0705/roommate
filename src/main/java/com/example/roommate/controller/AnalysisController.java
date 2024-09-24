@@ -1,6 +1,5 @@
 package com.example.roommate.controller;
 
-import com.example.roommate.dto.habits.PreferenceDto;
 import com.example.roommate.entity.UserMatch;
 import com.example.roommate.service.AnalysisService;
 import com.example.roommate.service.UserService;
@@ -8,9 +7,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -22,15 +23,15 @@ public class AnalysisController {
     private final UserService userService;
     private final AnalysisService analysisService;
 
-    @PostMapping
-    public ResponseEntity<?> analysisAndSaveSimilarity(@RequestBody PreferenceDto preferenceDto) {
-        userService.createUser(preferenceDto);
-        Map<String, Object> response = analysisService.analysis(preferenceDto);
+//    @PostMapping
+//    public ResponseEntity<?> analysisAndSaveSimilarity(@RequestBody PreferenceDto preferenceDto) {
+//        userService.createUser(preferenceDto);
+//        Map<String, Object> response = analysisService.analysis(preferenceDto);
 //        analysisService.save(30L, 49L, response);
 //        Map<String, Object> result = new HashMap<>();
 //        result.put("data", response);
-        return ResponseEntity.ok(response);
-    }
+//        return ResponseEntity.ok(response);
+//    }
 
     @GetMapping
     public ResponseEntity<?> getSimilarity(@RequestParam Long userId) {

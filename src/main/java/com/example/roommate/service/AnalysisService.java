@@ -23,26 +23,25 @@ public class AnalysisService {
 
     private final UserMatchRepository userMatchRepository;
 
-    public Map<String, Object> analysis(PreferenceDto personA) {
+    public Map<String, Object> analysis(PreferenceDto myPreference, PreferenceDto othersPreference) {
 
-        PreferenceDto personB = getFakeData();
 
         Map<String, Object> result = new HashMap<>();
 
-        result.put("shareroom_same_or_not", compareTwoChoices(personA.getShareRoom(), personB.getShareRoom())); // 2
-        result.put("condition_percentage", compareConditons(personA, personB)); // 5
-        result.put("schedule_percentage", compareSchedule(personA, personB)); // 12
-        result.put("cook_location_same_or_not", compareTwoChoices(personA.getCookingLocation(), personB.getCookingLocation())); // 2
-        result.put("dining_location_same_or_not", compareTwoChoices(personA.getDiningLocation(), personB.getDiningLocation())); // 2
-        result.put("dining_percentage", compareDiningHabits(personA, personB)); // 3
-        result.put("noise_percentage", compareNoiseSensitivity(personA, personB)); // 4
-        result.put("alarm_percentage", compareSimpleDistance(personA.getAlarmHabit(), personB.getAlarmHabit(), 2)); // 3
-        result.put("light_percentage", compareSimpleDistance(personA.getLightSensitivity(), personB.getLightSensitivity(), 2)); // 3
-        result.put("friend_percentage", compareSimpleDistance(personA.getFriendshipHabit(), personB.getFriendshipHabit(), 2)); // 3
-        result.put("weather_percentage", compareSimpleDistance(personA.getHotWeatherPreference().getPreference(), personB.getHotWeatherPreference().getPreference(), 3)); // 4
-        result.put("humid_percentage", compareSimpleDistance(personA.getHumidityPreference(), personB.getHumidityPreference(), 2)); // 3
-        result.put("pet_same_or_not", compareTwoChoices(personA.getPet().getHasPet(), personB.getPet().getHasPet())); // 2
-        result.put("interest_percentage", compareInterest(personA, personB)); // 12
+        result.put("shareroom_same_or_not", compareTwoChoices(myPreference.getShareRoom(), othersPreference.getShareRoom())); // 2
+        result.put("condition_percentage", compareConditons(myPreference, othersPreference)); // 5
+        result.put("schedule_percentage", compareSchedule(myPreference, othersPreference)); // 12
+        result.put("cook_location_same_or_not", compareTwoChoices(myPreference.getCookingLocation(), othersPreference.getCookingLocation())); // 2
+        result.put("dining_location_same_or_not", compareTwoChoices(myPreference.getDiningLocation(), othersPreference.getDiningLocation())); // 2
+        result.put("dining_percentage", compareDiningHabits(myPreference, othersPreference)); // 3
+        result.put("noise_percentage", compareNoiseSensitivity(myPreference, othersPreference)); // 4
+        result.put("alarm_percentage", compareSimpleDistance(myPreference.getAlarmHabit(), othersPreference.getAlarmHabit(), 2)); // 3
+        result.put("light_percentage", compareSimpleDistance(myPreference.getLightSensitivity(), othersPreference.getLightSensitivity(), 2)); // 3
+        result.put("friend_percentage", compareSimpleDistance(myPreference.getFriendshipHabit(), othersPreference.getFriendshipHabit(), 2)); // 3
+        result.put("weather_percentage", compareSimpleDistance(myPreference.getHotWeatherPreference().getPreference(), othersPreference.getHotWeatherPreference().getPreference(), 3)); // 4
+        result.put("humid_percentage", compareSimpleDistance(myPreference.getHumidityPreference(), othersPreference.getHumidityPreference(), 2)); // 3
+        result.put("pet_same_or_not", compareTwoChoices(myPreference.getPet().getHasPet(), othersPreference.getPet().getHasPet())); // 2
+        result.put("interest_percentage", compareInterest(myPreference, othersPreference)); // 12
 
         return result;
     }

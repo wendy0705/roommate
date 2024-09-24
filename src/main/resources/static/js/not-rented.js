@@ -46,7 +46,8 @@ function submitForm() {
     };
 
     console.log(formData);
-    
+
+    document.cookie = `userId=${userId}; path=/`;
     console.log(document.cookie);
 
     fetch(`/api/1.0/rent/not-rented/${userId}`, {
@@ -103,14 +104,14 @@ function loadRoomTypes() {
                 // 创建最低预算输入框
                 const lowPriceInput = document.createElement('input');
                 lowPriceInput.type = 'number';
-                lowPriceInput.placeholder = '最低预算';
+                lowPriceInput.placeholder = '最低預算';
                 lowPriceInput.classList.add('lowPrice');
                 lowPriceInput.disabled = true; // 初始禁用，只有在勾选复选框时启用
 
                 // 创建最高预算输入框
                 const highPriceInput = document.createElement('input');
                 highPriceInput.type = 'number';
-                highPriceInput.placeholder = '最高预算';
+                highPriceInput.placeholder = '最高預算';
                 highPriceInput.classList.add('highPrice');
                 highPriceInput.disabled = true; // 初始禁用
 
