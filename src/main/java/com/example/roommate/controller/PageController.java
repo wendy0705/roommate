@@ -37,9 +37,19 @@ public class PageController {
         } else {
             model.addAttribute("mapType", ""); // 無選擇
         }
-        
+
         model.addAttribute("googleMapsApiKey", googleMapsApiKey);
         return "rental-form"; // 主模板頁面
+    }
+
+    @GetMapping("/header")
+    public String showHeader() {
+        return "header";
+    }
+
+    @GetMapping("/mainpage")
+    public String showMainpage() {
+        return "mainpage";
     }
 
     @GetMapping("/rented-matched")

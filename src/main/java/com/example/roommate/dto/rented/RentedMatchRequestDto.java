@@ -1,4 +1,4 @@
-package com.example.roommate.dto.common;
+package com.example.roommate.dto.rented;
 
 import com.example.roommate.dto.habits.PreferenceDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class MatchRequestDto {
+public class RentedMatchRequestDto {
     @JsonProperty("my_preference")
     private PreferenceDto myPreference;
 

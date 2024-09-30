@@ -29,6 +29,11 @@ function notRentedInit(map) {
             console.log("北东角 (NE): " + ne.lat() + ", " + ne.lng());
             console.log("南西角 (SW): " + sw.lat() + ", " + sw.lng());
 
+            document.getElementById("neLat").value = ne.lat();
+            document.getElementById("neLng").value = ne.lng();
+            document.getElementById("swLat").value = sw.lat();
+            document.getElementById("swLng").value = sw.lng();
+
             if (rectangles.length > 1) {
                 var secondRectangleBounds = rectangles[rectangles.length - 1].getBounds();
                 var firstRectangleBounds = rectangles[rectangles.length - 2].getBounds();
@@ -105,20 +110,39 @@ function submitForm() {
     document.cookie = `userId=${userId}; path=/`;
     console.log(document.cookie);
 
-    fetch(`/rent/not-rented/${userId}`, {
+    fetch(`api/1.0/rent/not-rented/${userId}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData)
     })
+        .then(response => {
+            if (response.ok) {
+                console.log('POST success, now fetching matching user IDs...');
+                // 2. POST 成功後，發送 GET 請求來獲取 matchingUserIds
+                return fetch(`/api/1.0/rent/not-rented/${userId}`, {  // 假設有一個 GET 請求用來獲取 matchingUserIds
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+            } else {
+                throw new Error('POST request failed');
+            }
+        })
         .then(response => response.json())
         .then(data => {
-            console.log('Form submitted successfully:', data);
+            const matchingUserIds = data;
+            console.log('Success:', matchingUserIds);
 
-            window.location.href = '/not-rented-matched';
+            localStorage.setItem('matchingUserIds', JSON.stringify(matchingUserIds));
+
+            window.location.href = '/habits';
         })
-        .catch((error) => console.error('Error submitting form:', error));
+        .catch((error) => {
+            console.error('Error:', error);
+        });
 }
 
 function loadRoomTypes() {

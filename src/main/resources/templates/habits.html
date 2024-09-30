@@ -238,25 +238,13 @@
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
-    let matchingUserIds = [];
+    let matchingUserIds;
+
     document.addEventListener('DOMContentLoaded', function () {
-        // 從 localStorage 中取出 matchingUserIds
+
         matchingUserIds = JSON.parse(localStorage.getItem('matchingUserIds')) || [];
 
-        // 打印 matchingUserIds 到控制台
         console.log('Matching User IDs:', matchingUserIds);
-
-        // 如果需要對 matchingUserIds 做進一步操作，請在這裡處理
-        if (matchingUserIds.length > 0) {
-            // 例如，根據 ID 執行一些 AJAX 請求或更新 UI
-            // 可以在這裡發送請求來獲取與這些用戶 ID 有關的更多數據
-            matchingUserIds.forEach(userId => {
-                console.log(`Processing User ID: ${userId}`);
-                // 在這裡處理每個匹配的用戶 ID
-            });
-        } else {
-            console.log("No matching user IDs found.");
-        }
     });
 
     function toggleButtonGroup(button) {
@@ -446,29 +434,79 @@
 
         console.log(myId);
 
-        fetch(`/api/1.0/analysis/match?myId=${myId}`, { // 將 myId 作為請求參數
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                my_preference,  // 傳遞 my_preference 作為 JSON 屬性
-                matching_user_ids: matchingUserIds
-            }),// 發送表單數據作為 JSON 格式
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Fetched data:', data);
-
-                // 將數據存儲在 localStorage 中
-                localStorage.setItem('matchResults', JSON.stringify(data));
-
-                // 跳轉到結果頁面
-                window.location.href = '/rented-matched';
+        if (Array.isArray(matchingUserIds)) {
+            // 處理 List<Long>，發送到 rented 的 API
+            fetch(`/api/1.0/analysis/rented/match?myId=${myId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    my_preference,
+                    matching_user_ids: matchingUserIds
+                }),
             })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Fetched data:', data);
+
+                    localStorage.setItem('matchResults', JSON.stringify(data));
+
+                    window.location.href = '/rented-matched';
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        } else if (typeof matchingUserIds === 'object' && matchingUserIds !== null) {
+
+            fetch(`/api/1.0/analysis/not-rented/match?myId=${myId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    my_preference,
+                    matching_user_ids: matchingUserIds
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Fetched data:', data);
+
+                    localStorage.setItem('matchResults', JSON.stringify(data));
+
+                    window.location.href = '/not-rented-matched';
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        } else {
+            console.log('Invalid data format for matchingUserIds.');
+        }
+
+        // fetch(`/api/1.0/analysis/rented/match?myId=${myId}`, { // 將 myId 作為請求參數
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({
+        //         my_preference,  // 傳遞 my_preference 作為 JSON 屬性
+        //         matching_user_ids: matchingUserIds
+        //     }),// 發送表單數據作為 JSON 格式
+        // })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         console.log('Fetched data:', data);
+        //
+        //         // 將數據存儲在 localStorage 中
+        //         localStorage.setItem('matchResults', JSON.stringify(data));
+        //
+        //         // 跳轉到結果頁面
+        //         window.location.href = '/rented-matched';
+        //     })
+        //     .catch((error) => {
+        //         console.error('Error:', error);
+        //     });
     });
 
 </script>
