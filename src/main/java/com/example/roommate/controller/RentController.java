@@ -40,7 +40,7 @@ public class RentController {
     @PostMapping("/rented/{myId}")
     public ResponseEntity<?> saveRentedData(@RequestBody RentedDto rentedDto, @PathVariable Long myId) {
         System.out.println(rentedDto);
-        rentService.saveRentedData(rentedDto, myId);
+        rentService.saveRentedData(rentedDto, myId); // save basic data
         return ResponseEntity.ok(200);
     }
 
@@ -48,28 +48,29 @@ public class RentController {
     public ResponseEntity<?> searchRentedMatches(@PathVariable Long myId) {
         List<Long> matchingUserIds = rentService.findRentedMatches(myId);
         log.info("matching:" + matchingUserIds.toString());
-        List<MatchDetailDto> matchDetails = new ArrayList<>();
-        PreferenceDto myIdPreference = userService.getByUserId(myId);
-
-        for (Long matchingUserId : matchingUserIds) {
-            PreferenceDto othersPreference = userService.getByUserId(matchingUserId);
-            Map<String, Object> response = analysisService.analysis(myIdPreference, othersPreference);
-            log.info("response:" + response.toString());
-            analysisService.save(myId, matchingUserId, response);
-
-            UserMatch match = analysisService.findByUserId1AndUserId2(myId, matchingUserId)
-                    .orElseThrow(() -> new RuntimeException("UserMatch not found for userId: " + matchingUserId));
-
-            List<NonRentedMatchDto> nonRentedData = nonRentedDataRepository.getNonRentedInfo(matchingUserId);
-            MatchDetailDto matchDetail = new MatchDetailDto(matchingUserId, match, nonRentedData, null);
-            matchDetails.add(matchDetail);
-        }
-        return ResponseEntity.ok(matchDetails);
+        return ResponseEntity.ok(matchingUserIds);
+//        List<MatchDetailDto> matchDetails = new ArrayList<>();
+//        PreferenceDto myIdPreference = userService.getByUserId(myId);
+//
+//        for (Long matchingUserId : matchingUserIds) {
+//            PreferenceDto othersPreference = userService.getByUserId(matchingUserId);
+//            Map<String, Object> response = analysisService.analysis(myIdPreference, othersPreference);
+//            log.info("response:" + response.toString());
+//            analysisService.save(myId, matchingUserId, response);
+//
+//            UserMatch match = analysisService.findByUserId1AndUserId2(myId, matchingUserId)
+//                    .orElseThrow(() -> new RuntimeException("UserMatch not found for userId: " + matchingUserId));
+//
+//            List<NonRentedMatchDto> nonRentedData = nonRentedDataRepository.getNonRentedInfo(matchingUserId);
+//            MatchDetailDto matchDetail = new MatchDetailDto(matchingUserId, match, nonRentedData, null);
+//            matchDetails.add(matchDetail);
+//        }
+//        return ResponseEntity.ok(matchDetails);
     }
 
     @PostMapping("/not-rented/{myId}")
     public ResponseEntity<?> submitNotRented(@RequestBody NotRentedDto notRentedDto, @PathVariable Long myId) {
-        rentService.saveNotRentedData(notRentedDto, myId);
+        rentService.saveNotRentedData(notRentedDto, myId); //save basic data
         return ResponseEntity.ok(200);
     }
 

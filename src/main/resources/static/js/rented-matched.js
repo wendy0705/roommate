@@ -1,34 +1,19 @@
-function getCookieValue(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-}
+window.onload = function () {
+    // 從 localStorage 中取出匹配結果
+    const matchResults = JSON.parse(localStorage.getItem('matchResults'));
 
-document.addEventListener('DOMContentLoaded', function () {
-    const userId = getCookieValue('userId');
+    if (!matchResults) {
+        console.error('No match results found');
+        return;
+    }
 
-    fetch(`/api/1.0/rent/rented/${userId}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to fetch data');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Fetched data:', data);
+    const dataContainer = document.getElementById('data-container');
 
-            const dataContainer = document.getElementById('data-container');
+    dataContainer.innerHTML = matchResults.map(item => {
+        const match = item.match;
+        const nonRentedData = item.nonRentedData || [];
 
-            dataContainer.innerHTML = data.map(item => {
-                const match = item.match;
-                const nonRentedData = item.nonRentedData || [];
-
-                const matchInfo = `
+        const matchInfo = `
                 <div class="match-container">
                     <h3>Matched User ID: ${match.userId2}</h3>
                     <p><strong>寵物相同:</strong> ${match.petSameOrNot ? '是' : '否'}</p>
@@ -48,8 +33,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             `;
 
-                // 非出租房屋信息
-                const nonRentedInfo = nonRentedData.length > 0 ? `
+        // 非出租房屋信息
+        const nonRentedInfo = nonRentedData.length > 0 ? `
             <div class="non-rented-info">
                 <h4>尚未找到房子，房間需求：</h4>
                 ${nonRentedData.map(nr => `
@@ -63,15 +48,11 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
         ` : '';
 
-                return `
+        return `
             <div class="match-container">
                 ${matchInfo}
                 ${nonRentedInfo}
             </div>
         `;
-            }).join('');
-        })
-        .catch((error) => {
-            console.error('Error fetching data:', error);
-        });
-});
+    }).join('');
+};

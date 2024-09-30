@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Shop</title>
+    <style>
+        :root {
+            --primary-color: #27214d;
+            --secondary-color: #e67e5a;
+            --background-color: #f9e0d9;
+            --text-color: #333;
+            --border-radius: 30px;
+            --box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--box-shadow);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        nav ul {
+            display: flex;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .header-icons {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-icons > * {
+            margin-left: 15px;
+            color: var(--primary-color);
+            font-size: 20px;
+        }
+
+        .main-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .search-bar {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-bar button {
+            padding: 15px 30px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .hero-image {
+            flex: 1;
+            text-align: right;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 50%;
+            border: 10px solid #f0c05a;
+        }
+
+        .pro-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #4a90e2;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .hero-image {
+                margin-top: 30px;
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+        }
+    </style>
+
+    <link rel="stylesheet" href="styles.css">
+    <!-- 您可以在這裡添加 Font Awesome 或其他圖標庫的鏈接 -->
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="logo">🐾</div>
+        <nav>
+            <ul>
+                <li><a href="#">HOME</a></li>
+                <li><a href="#">CATEGORIES</a></li>
+                <li><a href="#">BLOG</a></li>
+                <li><a href="#">CONTACT</a></li>
+            </ul>
+        </nav>
+        <div class="header-icons">
+            <span>🔍</span>
+            <span>🛒</span>
+        </div>
+    </header>
+    <div class="main-content">
+        <div class="hero-text">
+            <h1>The best place to buy top quality products for your pets</h1>
+            <p class="subtitle">Shop by pet, brand or products on sale!</p>
+            <div class="search-bar">
+                <input type="text" placeholder="What are you looking for?">
+                <button>Search</button>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="path_to_your_dog_image.jpg" alt="Cute dog">
+        </div>
+    </div>
+    <div class="pro-badge">Pro</div>
+</div>
+</body>
+</html>

@@ -186,12 +186,28 @@ function submitForm() {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(rentalData),
+    }).then(response => {
+        if (response.ok) {
+            console.log('POST success, now fetching matching user IDs...');
+            // 2. POST 成功後，發送 GET 請求來獲取 matchingUserIds
+            return fetch(`/api/1.0/rent/rented/${userId}`, {  // 假設有一個 GET 請求用來獲取 matchingUserIds
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+        } else {
+            throw new Error('POST request failed');
+        }
     })
         .then(response => response.json())
         .then(data => {
-            console.log('Success:', data);
-            console.log("location.href");
-            window.location.href = '/api/1.0/rented-matched';
+            const matchingUserIds = data; // 假設 API 返回的結果包含 matchingUserIds
+            console.log('Success:', matchingUserIds);
+
+            localStorage.setItem('matchingUserIds', JSON.stringify(matchingUserIds));
+
+            window.location.href = '/habits';
         })
         .catch((error) => {
             console.error('Error:', error);

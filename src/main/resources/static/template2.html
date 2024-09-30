@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>室友媒合平台</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --background-color: #ecf0f1;
+            --text-color: #34495e;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: white;
+            box-shadow: var(--box-shadow);
+            padding: 15px 0;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: bold;
+        }
+
+        .main-content {
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        .slogan {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+
+        .sub-slogan {
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+
+        .icon-container {
+            margin-bottom: 30px;
+        }
+
+        .icon {
+            font-size: 60px;
+            color: var(--primary-color);
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .cta-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-button.primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .cta-button.secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .cta-button:hover {
+            opacity: 0.9;
+        }
+
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 30px 0;
+            margin-top: 60px;
+        }
+
+        footer .container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .footer-section {
+            flex: 1;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 15px;
+        }
+
+        .footer-section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            footer .container {
+                flex-direction: column;
+            }
+
+            .footer-section {
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="styles.css">
+    <!-- 您可以在這裡添加 Font Awesome 或其他圖標庫的鏈接 -->
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="logo">RoommateMatch</div>
+        <nav>
+            <ul>
+                <li><a href="#">首頁</a></li>
+                <li><a href="#">尋找室友</a></li>
+                <li><a href="#">刊登房源</a></li>
+                <li><a href="#">關於我們</a></li>
+                <li><a href="#">聯絡我們</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="main-content">
+    <div class="container">
+        <div class="icon-container">
+            <span class="icon">🏠🔍</span>
+        </div>
+        <h1 class="slogan">尋找完美室友</h1>
+        <p class="sub-slogan">分享理想空間</p>
+        <div class="cta-buttons">
+            <button class="cta-button primary">我要住宿舍</button>
+            <button class="cta-button secondary">我要租屋</button>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <div class="footer-section">
+            <h3>關於我們</h3>
+            <ul>
+                <li><a href="#">公司簡介</a></li>
+                <li><a href="#">使用條款</a></li>
+                <li><a href="#">隱私政策</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>幫助中心</h3>
+            <ul>
+                <li><a href="#">常見問題</a></li>
+                <li><a href="#">安全指南</a></li>
+                <li><a href="#">聯絡客服</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>關注我們</h3>
+            <ul>
+                <li><a href="#">Facebook</a></li>
+                <li><a href="#">Instagram</a></li>
+                <li><a href="#">Twitter</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

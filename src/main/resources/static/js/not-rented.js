@@ -50,7 +50,7 @@ function submitForm() {
     document.cookie = `userId=${userId}; path=/`;
     console.log(document.cookie);
 
-    fetch(`/api/1.0/rent/not-rented/${userId}`, {
+    fetch(`/rent/not-rented/${userId}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -61,13 +61,13 @@ function submitForm() {
         .then(data => {
             console.log('Form submitted successfully:', data);
 
-            window.location.href = '/api/1.0/not-rented-matched';
+            window.location.href = '/not-rented-matched';
         })
         .catch((error) => console.error('Error submitting form:', error));
 }
 
 function loadRoomTypes() {
-    fetch('/api/1.0/data/room-types')
+    fetch('/data/room-types')
         .then(response => response.json())
         .then(data => {
             console.log(data);

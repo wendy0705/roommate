@@ -3,6 +3,7 @@ package com.example.roommate.service;
 import com.example.roommate.dto.habits.*;
 import com.example.roommate.entity.User;
 import com.example.roommate.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,70 +15,77 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User createUser(PreferenceDto preferenceDto) {
-        User user = new User();
-        user.setShareRoom(preferenceDto.getShareRoom());
+    public User savePreferenceById(Long userId, PreferenceDto preferenceDto) {
 
-        // 存取 specialConditions
-        user.setHauntedHouse(preferenceDto.getSpecialConditions().getHauntedHouse());
-        user.setRooftopExtension(preferenceDto.getSpecialConditions().getRooftopExtension());
-        user.setIllegalBuilding(preferenceDto.getSpecialConditions().getIllegalBuilding());
-        user.setBasement(preferenceDto.getSpecialConditions().getBasement());
-        user.setWindowless(preferenceDto.getSpecialConditions().getWindowless());
+        Optional<User> existingUserOptional = userRepository.findById(userId);
+        if (existingUserOptional.isPresent()) {
+            User user = existingUserOptional.get();
+            user.setShareRoom(preferenceDto.getShareRoom());
 
-        // 存取 schedule
-        user.setMondayWakeup(preferenceDto.getSchedule().getMonday()[0]);
-        user.setMondaySleep(preferenceDto.getSchedule().getMonday()[1]);
-        user.setTuesdayWakeup(preferenceDto.getSchedule().getTuesday()[0]);
-        user.setTuesdaySleep(preferenceDto.getSchedule().getTuesday()[1]);
-        user.setWednesdayWakeup(preferenceDto.getSchedule().getWednesday()[0]);
-        user.setWednesdaySleep(preferenceDto.getSchedule().getWednesday()[1]);
+            // 存取 specialConditions
+            user.setHauntedHouse(preferenceDto.getSpecialConditions().getHauntedHouse());
+            user.setRooftopExtension(preferenceDto.getSpecialConditions().getRooftopExtension());
+            user.setIllegalBuilding(preferenceDto.getSpecialConditions().getIllegalBuilding());
+            user.setBasement(preferenceDto.getSpecialConditions().getBasement());
+            user.setWindowless(preferenceDto.getSpecialConditions().getWindowless());
 
-        user.setThursdayWakeup(preferenceDto.getSchedule().getThursday()[0]);
-        user.setThursdaySleep(preferenceDto.getSchedule().getThursday()[1]);
+            // 存取 schedule
+            user.setMondayWakeup(preferenceDto.getSchedule().getMonday()[0]);
+            user.setMondaySleep(preferenceDto.getSchedule().getMonday()[1]);
+            user.setTuesdayWakeup(preferenceDto.getSchedule().getTuesday()[0]);
+            user.setTuesdaySleep(preferenceDto.getSchedule().getTuesday()[1]);
+            user.setWednesdayWakeup(preferenceDto.getSchedule().getWednesday()[0]);
+            user.setWednesdaySleep(preferenceDto.getSchedule().getWednesday()[1]);
 
-        user.setFridayWakeup(preferenceDto.getSchedule().getFriday()[0]);
-        user.setFridaySleep(preferenceDto.getSchedule().getFriday()[1]);
+            user.setThursdayWakeup(preferenceDto.getSchedule().getThursday()[0]);
+            user.setThursdaySleep(preferenceDto.getSchedule().getThursday()[1]);
 
-        user.setSaturdayWakeup(preferenceDto.getSchedule().getSaturday()[0]);
-        user.setSaturdaySleep(preferenceDto.getSchedule().getSaturday()[1]);
+            user.setFridayWakeup(preferenceDto.getSchedule().getFriday()[0]);
+            user.setFridaySleep(preferenceDto.getSchedule().getFriday()[1]);
 
-        user.setSundayWakeup(preferenceDto.getSchedule().getSunday()[0]);
-        user.setSundaySleep(preferenceDto.getSchedule().getSunday()[1]);
+            user.setSaturdayWakeup(preferenceDto.getSchedule().getSaturday()[0]);
+            user.setSaturdaySleep(preferenceDto.getSchedule().getSaturday()[1]);
 
-        // 存取其他資料
-        user.setCookingLocation(preferenceDto.getCookingLocation());
-        user.setDiningLocation(preferenceDto.getDiningLocation());
-        user.setDiningAlone(preferenceDto.getDiningHabits().getAlone());
-        user.setDiningNotAlone(preferenceDto.getDiningHabits().getNotAlone());
-        user.setSleepNoise(preferenceDto.getNoiseSensitivity().getSleep());
-        user.setWorkNoise(preferenceDto.getNoiseSensitivity().getStudyOrWork());
-        user.setAlarmHabit(preferenceDto.getAlarmHabit());
-        user.setLightSensitivity(preferenceDto.getLightSensitivity());
-        user.setFriendshipHabit(preferenceDto.getFriendshipHabit());
+            user.setSundayWakeup(preferenceDto.getSchedule().getSunday()[0]);
+            user.setSundaySleep(preferenceDto.getSchedule().getSunday()[1]);
 
-        // 存取 weather 和 pet
-        user.setHotWeatherPreference(preferenceDto.getHotWeatherPreference().getPreference());
-        user.setTemperature(preferenceDto.getHotWeatherPreference().getTemperature());
-        user.setHumidityPreference(preferenceDto.getHumidityPreference());
-        user.setHasPet(preferenceDto.getPet().getHasPet());
-        user.setPetType(preferenceDto.getPet().getPetType());
+            // 存取其他資料
+            user.setCookingLocation(preferenceDto.getCookingLocation());
+            user.setDiningLocation(preferenceDto.getDiningLocation());
+            user.setDiningAlone(preferenceDto.getDiningHabits().getAlone());
+            user.setDiningNotAlone(preferenceDto.getDiningHabits().getNotAlone());
+            user.setSleepNoise(preferenceDto.getNoiseSensitivity().getSleep());
+            user.setWorkNoise(preferenceDto.getNoiseSensitivity().getStudyOrWork());
+            user.setAlarmHabit(preferenceDto.getAlarmHabit());
+            user.setLightSensitivity(preferenceDto.getLightSensitivity());
+            user.setFriendshipHabit(preferenceDto.getFriendshipHabit());
 
-        // 存取 interest
-        user.setInterestSports(preferenceDto.getInterest().getSports());
-        user.setInterestTravel(preferenceDto.getInterest().getTravel());
-        user.setInterestReading(preferenceDto.getInterest().getReading());
-        user.setInterestWineTasting(preferenceDto.getInterest().getWineTasting());
-        user.setInterestDrama(preferenceDto.getInterest().getDrama());
-        user.setInterestAstrology(preferenceDto.getInterest().getAstrology());
-        user.setInterestProgramming(preferenceDto.getInterest().getProgramming());
-        user.setInterestHiking(preferenceDto.getInterest().getHiking());
-        user.setInterestGaming(preferenceDto.getInterest().getGaming());
-        user.setInterestPainting(preferenceDto.getInterest().getPainting());
-        user.setInterestIdolChasing(preferenceDto.getInterest().getIdolChasing());
-        user.setInterestMusic(preferenceDto.getInterest().getMusic());
+            // 存取 weather 和 pet
+            user.setHotWeatherPreference(preferenceDto.getHotWeatherPreference().getPreference());
+            user.setTemperature(preferenceDto.getHotWeatherPreference().getTemperature());
+            user.setHumidityPreference(preferenceDto.getHumidityPreference());
+            user.setHasPet(preferenceDto.getPet().getHasPet());
+            user.setPetType(preferenceDto.getPet().getPetType());
 
-        return userRepository.save(user);
+            // 存取 interest
+            user.setInterestSports(preferenceDto.getInterest().getSports());
+            user.setInterestTravel(preferenceDto.getInterest().getTravel());
+            user.setInterestReading(preferenceDto.getInterest().getReading());
+            user.setInterestWineTasting(preferenceDto.getInterest().getWineTasting());
+            user.setInterestDrama(preferenceDto.getInterest().getDrama());
+            user.setInterestAstrology(preferenceDto.getInterest().getAstrology());
+            user.setInterestProgramming(preferenceDto.getInterest().getProgramming());
+            user.setInterestHiking(preferenceDto.getInterest().getHiking());
+            user.setInterestGaming(preferenceDto.getInterest().getGaming());
+            user.setInterestPainting(preferenceDto.getInterest().getPainting());
+            user.setInterestIdolChasing(preferenceDto.getInterest().getIdolChasing());
+            user.setInterestMusic(preferenceDto.getInterest().getMusic());
+
+            return userRepository.save(user);
+        } else {
+            // 如果 userId 對應的用戶不存在，根據需求進行處理（拋出錯誤或其他處理）
+            throw new EntityNotFoundException("User with id " + userId + " not found");
+        }
     }
 
     public PreferenceDto getByUserId(Long userId) {
