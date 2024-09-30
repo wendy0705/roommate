@@ -3,7 +3,6 @@
 
 <head>
     <title>Simple Marker</title>
-    <!-- The callback parameter is required, so we use console.debug as a noop -->
     <script th:inline="javascript">
         var apiKey = /*[[${googleMapsApiKey}]]*/ 'defaultKey';
         var script = document.createElement('script');
@@ -13,78 +12,11 @@
     </script>
     <link rel="stylesheet" href="/css/map.css">
 </head>
+
 <body>
-<div id="map"></div>
+<div id="map" data-map-type="/*[[${mapType}]]*/"></div> <!-- 使用 data-map-type 指定地圖功能 -->
 
-<script>
-    function initMap() {
-
-        const mapOptions = {
-            zoom: 12,
-            center: {lat: 25.033, lng: 121.5654}, // 台北的經緯度
-        };
-
-        // 創建地圖
-        const map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-        // 設置 DrawingManager 用於繪製矩形
-        const drawingManager = new google.maps.drawing.DrawingManager({
-            drawingMode: google.maps.drawing.OverlayType.RECTANGLE,
-            drawingControl: true,
-            drawingControlOptions: {
-                position: google.maps.ControlPosition.TOP_CENTER,
-                drawingModes: ['rectangle'],
-            },
-        });
-
-        drawingManager.setMap(map);
-
-        // 儲存繪製的矩形
-        let rectangles = [];
-
-        // 當完成繪製矩形時觸發事件
-        google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
-            if (event.type === google.maps.drawing.OverlayType.RECTANGLE) {
-                const rectangle = event.overlay;
-                rectangles.push(rectangle); // 保存新繪製的矩形
-
-                const bounds = rectangle.getBounds();
-                const ne = bounds.getNorthEast();  // 右上角
-                const sw = bounds.getSouthWest();  // 左下角
-
-                // 打印矩形的四個角的經緯度
-                console.log("北東角 (NE): " + ne.lat() + ", " + ne.lng());
-                console.log("南西角 (SW): " + sw.lat() + ", " + sw.lng());
-
-                if (rectangles.length > 1) {
-                    var secondRectangleBounds = rectangles[rectangles.length - 1].getBounds(); // 最新的矩形
-                    var firstRectangleBounds = rectangles[rectangles.length - 2].getBounds(); // 倒數第二個矩形
-
-                    if (haveIntersection(firstRectangleBounds, secondRectangleBounds)) {
-                        console.log("兩個矩形有交集");
-                    } else {
-                        console.log("兩個矩形沒有交集");
-                    }
-                }
-            }
-        });
-
-        function haveIntersection(bounds1, bounds2) {
-            var ne1 = bounds1.getNorthEast();
-            var sw1 = bounds1.getSouthWest();
-
-            var ne2 = bounds2.getNorthEast();
-            var sw2 = bounds2.getSouthWest();
-
-            if (sw1.lat() > ne2.lat() || ne1.lat() < sw2.lat() ||
-                sw1.lng() > ne2.lng() || ne1.lng() < sw2.lng()) {
-                return false;
-            }
-
-            return true;
-        }
-    }
-</script>
 </body>
 </html>
+
 

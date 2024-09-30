@@ -27,41 +27,52 @@ function loadRoomTypes() {
         .catch(error => console.error('Error loading room types:', error));
 }
 
-let map, geocoder;
+function rentedInit(map) {
+    const geocoder = new google.maps.Geocoder();
 
-function initMap() {
-    geocoder = new google.maps.Geocoder();
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 25.033, lng: 121.5654}, // 台北的經緯度
-        zoom: 12,
-    });
+    // 定义 geocodeAddress 函数
+    function geocodeAddress() {
+        const address = document.getElementById('addressInput').value;
+        console.log(address);
+
+        geocoder.geocode({address: address}, function (results, status) {
+            if (status === 'OK') {
+                if (results && results[0]) {
+
+                    const lat = results[0].geometry.location.lat();
+                    const lng = results[0].geometry.location.lng();
+
+                    document.getElementById("neLat").value = lat;
+                    document.getElementById("neLng").value = lng;
+                    
+
+                    // 设置地图中心
+                    map.setCenter(results[0].geometry.location);
+
+                    // 在地图上添加标记
+                    new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location
+                    });
+
+                } else {
+                    console.error('No valid results found');
+                }
+            } else {
+                console.error('Geocode failed with status:', status);
+            }
+        });
+    }
+
+    // 确保在页面加载后绑定事件
+    const geocodeButton = document.getElementById('geocodeButton');
+    if (geocodeButton) {
+        geocodeButton.addEventListener('click', geocodeAddress);
+    } else {
+        console.error('geocodeButton 元素未找到');
+    }
 }
 
-function geocodeAddress() {
-    const address = document.getElementById("addressInput").value;
-
-    geocoder.geocode({address: address}, function (results, status) {
-        if (status === 'OK') {
-            const lat = results[0].geometry.location.lat();
-            const lng = results[0].geometry.location.lng();
-
-            // 將經緯度設置到隱藏的輸入框中
-            document.getElementById("neLat").value = lat;
-            document.getElementById("neLng").value = lng;
-
-            // 在地圖上標記地址位置
-            map.setCenter(results[0].geometry.location);
-            new google.maps.Marker({
-                map: map,
-                position: results[0].geometry.location
-            });
-
-            console.log("地址的經緯度: " + lat + ", " + lng);
-        } else {
-            console.error('Geocode 失敗，原因: ' + status);
-        }
-    });
-}
 
 let roomCounter = 1;
 let roommateCounter = 1;

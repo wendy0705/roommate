@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Search</title>
+    <link rel="stylesheet" href="/css/map.css">
+</head>
+<body>
+
+<h1>房屋媒合平台</h1>
+
+<label for="status">你是否已找到房子？</label>
+<select id="status" onchange="toggleForms()">
+    <option value="" th:selected="${status == null}">請選擇</option>
+    <option value="not_rented" th:selected="${status == 'not_rented'}">尚未找到</option>
+    <option value="rented" th:selected="${status == 'rented'}">已找到</option>
+</select>
+
+<!--&lt;!&ndash; 根據選擇顯示不同的表單 &ndash;&gt;-->
+<!-- 對於未找到房子的表單 -->
+<div th:if="${status == 'not_rented'}">
+    <div th:replace="~{fragments/not-rented :: notRented(mapType=${mapType})}"></div>
+</div>
+
+<div th:if="${status == 'rented'}">
+    <div th:replace="~{fragments/rented :: rented(mapType=${mapType})}"></div>
+</div>
+
+
+<!-- 通用的 Google Maps API 加載腳本 -->
+<script th:inline="javascript">
+    var apiKey = /*[[${googleMapsApiKey}]]*/ 'defaultKey';
+    var script = document.createElement('script');
+    script.src = 'https://maps.googleapis.com/maps/api/js?key=' + apiKey + '&callback=initMap&libraries=drawing&v=beta';
+    script.defer = true;
+    document.head.appendChild(script);
+</script>
+
+<!-- 動態加載不同表單的專屬腳本 -->
+<script th:if="${status == 'not_rented'}" src="/js/not-rented.js"></script>
+<script th:if="${status == 'rented'}" src="/js/rented.js"></script>
+<script src="/js/map.js"></script>
+
+<script>
+    function toggleForms() {
+        var status = document.getElementById("status").value;
+        window.location.href = "/rental-form?status=" + status;
+    }
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,24 @@
+<div id="rentalForm" th:fragment="notRented(mapType)">
+
+    <input type="text" id="userIdInput" placeholder="請輸入使用者 ID">
+    <br><br><br>
+
+    <h2>框出欲居住的區域：</h2>
+    <input type="hidden" id="neLat" name="neLat">
+    <input type="hidden" id="neLng" name="neLng">
+    <input type="hidden" id="swLat" name="swLat">
+    <input type="hidden" id="swLng" name="swLng">
+    <div id="map" th:attr="data-map-type=${mapType}" style="height: 400px; width: 100%;"></div> <!-- 傳遞 'drawing' 類型 -->
+
+    <!-- 房型選擇 -->
+    <div id="roomTypeContainer">
+        <!-- 房型選項將動態加載 -->
+    </div>
+
+    <!-- 租期 -->
+    <label for="rentalPeriod">租期（月）：</label>
+    <input type="number" id="rentalPeriod" name="rentalPeriod">
+
+    <button type="button" onclick="submitForm()">送出</button>
+</div>
+

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roommate Matching Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fce7e7;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 24px;
+        }
+
+        .logo img {
+            width: 50px;
+            height: auto;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .content {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .text-content {
+            max-width: 60%;
+        }
+
+        h1 {
+            color: #2c2658;
+            font-size: 36px;
+            margin-bottom: 10px;
+            font-family: 'LXGW WenKai TC', sans-serif;
+            font-weight: 700;
+        }
+
+        p {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button-primary {
+            background-color: #e28560;
+            color: white;
+        }
+
+        .button-primary:hover {
+            background-color: #d17550;
+        }
+
+        .button-secondary {
+            background-color: #4a90e2;
+            color: white;
+        }
+
+        .button-secondary:hover {
+            background-color: #3a80d2;
+        }
+
+        .tag {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #ffd700;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="logo">
+            <img src="https://roommatebucket.s3.ap-southeast-2.amazonaws.com/roommate_logo.png" alt="Logo"/>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">HOME</a></li>
+                <li><a href="#">CATEGORIES</a></li>
+                <li><a href="#">BLOG</a></li>
+                <li><a href="#">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="content">
+        <div class="text-content">
+            <h1>室友媒合平台</h1>
+            <p>Find the perfect roommate, Share the perfect space!</p>
+
+
+            <div class="button-container">
+                <button class="button button-primary">Find Dorm Roommate</button>
+                <button class="button button-secondary">Find Rental Roommate</button>
+            </div>
+        </div>
+        <div class="icon-space">
+            <img src="https://roommatebucket.s3.ap-southeast-2.amazonaws.com/home-decor.png" alt="icon-space"/>
+        </div>
+    </div>
+    <div class="tag">Friendly roomies</div>
+</div>
+</body>
+</html>

@@ -3,6 +3,61 @@ window.onload = function () {
     loadRoomTypes();
 };
 
+function notRentedInit(map) {
+    // 框选区域的地图逻辑
+    const drawingManager = new google.maps.drawing.DrawingManager({
+        drawingMode: google.maps.drawing.OverlayType.RECTANGLE,
+        drawingControl: true,
+        drawingControlOptions: {
+            position: google.maps.ControlPosition.TOP_CENTER,
+            drawingModes: ['rectangle'],
+        },
+    });
+
+    drawingManager.setMap(map);
+
+    let rectangles = [];
+    google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
+        if (event.type === google.maps.drawing.OverlayType.RECTANGLE) {
+            const rectangle = event.overlay;
+            rectangles.push(rectangle);
+
+            const bounds = rectangle.getBounds();
+            const ne = bounds.getNorthEast();
+            const sw = bounds.getSouthWest();
+
+            console.log("北东角 (NE): " + ne.lat() + ", " + ne.lng());
+            console.log("南西角 (SW): " + sw.lat() + ", " + sw.lng());
+
+            if (rectangles.length > 1) {
+                var secondRectangleBounds = rectangles[rectangles.length - 1].getBounds();
+                var firstRectangleBounds = rectangles[rectangles.length - 2].getBounds();
+
+                if (haveIntersection(firstRectangleBounds, secondRectangleBounds)) {
+                    console.log("两个矩形有交集");
+                } else {
+                    console.log("两个矩形没有交集");
+                }
+            }
+        }
+    });
+
+    function haveIntersection(bounds1, bounds2) {
+        var ne1 = bounds1.getNorthEast();
+        var sw1 = bounds1.getSouthWest();
+
+        var ne2 = bounds2.getNorthEast();
+        var sw2 = bounds2.getSouthWest();
+
+        if (sw1.lat() > ne2.lat() || ne1.lat() < sw2.lat() ||
+            sw1.lng() > ne2.lng() || ne1.lng() < sw2.lng()) {
+            return false;
+        }
+        return true;
+    }
+}
+
+
 function submitForm() {
     const userId = document.getElementById('userIdInput').value;
     const neLat = document.getElementById("neLat").value;
@@ -67,7 +122,7 @@ function submitForm() {
 }
 
 function loadRoomTypes() {
-    fetch('/data/room-types')
+    fetch('api/1.0/data/room-types')
         .then(response => response.json())
         .then(data => {
             console.log(data);
