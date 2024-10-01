@@ -41,11 +41,18 @@ public class RentService {
 
     public void saveNotRentedData(NotRentedDto notRentedDto, Long userId) {
 
+        log.info(String.valueOf(userId));
+
         AreaDto area = notRentedDto.getArea();
 
         NonRentedData nonRentedData = new NonRentedData();
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = new User();
+        user.setId(userId);
+
+        userRepository.save(user);
+
         nonRentedData.setUser(user);
         nonRentedData.setRegionNeLat(area.getRegionNeLat());
         nonRentedData.setRegionNeLng(area.getRegionNeLng());
@@ -74,8 +81,13 @@ public class RentService {
         try {
             log.info(String.valueOf(userId));
             RentedHouseData rentedHouseData = new RentedHouseData();
-            User user = userRepository.findById(userId)
-                    .orElseThrow(() -> new RuntimeException("User not found"));
+//            User user = userRepository.findById(userId)
+//                    .orElseThrow(() -> new RuntimeException("User not found"));
+            User user = new User();
+            user.setId(userId);
+
+            userRepository.save(user);
+
             rentedHouseData.setUser(user);
             rentedHouseData.setAddressLat(rentedDto.getNeLat());
             rentedHouseData.setAddressLng(rentedDto.getNeLng());
@@ -135,7 +147,7 @@ public class RentService {
         for (Long matchingUserId : matchingNotRentedUsers) {
             userIdsWithSource.put(matchingUserId, 0);
         }
-        
+
         List<Long> matchingRentedUsers = rentedHouseDataRepository.findMatchingUsers(userId);
         for (Long matchingUserId : matchingRentedUsers) {
             userIdsWithSource.put(matchingUserId, 1);

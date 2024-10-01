@@ -35,7 +35,7 @@ public class PageController {
         } else if ("not_rented".equals(status)) {
             model.addAttribute("mapType", "drawing"); // 未找到房子，使用框選
         } else {
-            model.addAttribute("mapType", ""); // 無選擇
+            model.addAttribute("mapType", "drawing"); // 無選擇
         }
 
         model.addAttribute("googleMapsApiKey", googleMapsApiKey);

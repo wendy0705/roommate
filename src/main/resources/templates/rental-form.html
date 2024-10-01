@@ -7,24 +7,25 @@
     <link rel="stylesheet" href="/css/map.css">
 </head>
 <body>
-<input type="text" id="userIdInput" placeholder="請輸入使用者 ID">
-<h1>房屋媒合平台</h1>
+<div class="container">
+    <input type="hidden" id="userIdInput">
+    <h1>房屋媒合平台</h1>
 
-<label for="status">你是否已找到房子？</label>
-<select id="status" onchange="toggleForms()">
-    <option value="" th:selected="${status == null}">請選擇</option>
-    <option value="not_rented" th:selected="${status == 'not_rented'}">尚未找到</option>
-    <option value="rented" th:selected="${status == 'rented'}">已找到</option>
-</select>
+    <label for="status">你是否已找到房子？</label>
+    <select id="status" onchange="toggleForms()">
+        <option value="not_rented" th:selected="${status == null ||status == 'not_rented'}">尚未找到</option>
+        <option value="rented" th:selected="${status == 'rented'}">已找到</option>
+    </select>
 
-<!--&lt;!&ndash; 根據選擇顯示不同的表單 &ndash;&gt;-->
-<!-- 對於未找到房子的表單 -->
-<div th:if="${status == 'not_rented'}">
-    <div th:replace="~{fragments/not-rented :: notRented(mapType=${mapType})}"></div>
-</div>
+    <!--&lt;!&ndash; 根據選擇顯示不同的表單 &ndash;&gt;-->
+    <!-- 對於未找到房子的表單 -->
+    <div th:if="${status == null ||status == 'not_rented'}">
+        <div th:replace="~{fragments/not-rented :: notRented(mapType=${mapType})}"></div>
+    </div>
 
-<div th:if="${status == 'rented'}">
-    <div th:replace="~{fragments/rented :: rented(mapType=${mapType})}"></div>
+    <div th:if="${status == 'rented'}">
+        <div th:replace="~{fragments/rented :: rented(mapType=${mapType})}"></div>
+    </div>
 </div>
 
 
@@ -38,7 +39,7 @@
 </script>
 
 <!-- 動態加載不同表單的專屬腳本 -->
-<script th:if="${status == 'not_rented'}" src="/js/not-rented.js"></script>
+<script th:if="${status == null ||status == 'not_rented'}" src="/js/not-rented.js"></script>
 <script th:if="${status == 'rented'}" src="/js/rented.js"></script>
 <script src="/js/map.js"></script>
 
@@ -47,8 +48,19 @@
         var status = document.getElementById("status").value;
         window.location.href = "/rental-form?status=" + status;
     }
+
+    function generateRandomBigInt() {
+        // 生成一個範圍在 [1000000000, 9000000000] 之間的隨機數
+        return Math.floor(Math.random() * (9000000000 - 1000000000)) + 1000000000;
+    }
+
+    // 當頁面加載時生成一個隨機的 BigInt 並設置到 hidden input 中
+    document.addEventListener('DOMContentLoaded', function () {
+        var userIdInput = document.getElementById('userIdInput');
+        userIdInput.value = generateRandomBigInt();
+        console.log('Generated User ID:', userIdInput.value); // 用於調試
+    });
 </script>
 
 </body>
 </html>
-

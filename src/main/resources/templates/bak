@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>房屋媒合平台</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+
+        :root {
+            --alabaster: #f3f1e8;
+            --ecru: #c5b891;
+            --licorice: #120100;
+            --earth-yellow: #f5af60;
+            --redwood: #995746;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--alabaster);
+            color: var(--licorice);
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: var(--ecru);
+            padding: 40px;
+            color: var(--licorice);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            background-color: var(--alabaster);
+            border-radius: 20px 0 0 20px;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: var(--redwood);
+            margin-bottom: 30px;
+        }
+
+        .step {
+            margin-bottom: 20px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .step.active {
+            opacity: 1;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--earth-yellow);
+            color: var(--licorice);
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+        }
+
+        select, input, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid var(--ecru);
+            border-radius: 6px;
+            font-size: 16px;
+            background-color: var(--alabaster);
+            color: var(--licorice);
+        }
+
+        button {
+            background-color: var(--earth-yellow);
+            color: var(--licorice);
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--redwood);
+            color: var(--alabaster);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="sidebar">
+        <div class="step active">
+            <span class="step-number">1</span>
+            租屋資訊
+        </div>
+        <div class="step">
+            <span class="step-number">2</span>
+            生活習慣偏好
+        </div>
+    </div>
+    <div class="main-content">
+        <h1>房屋媒合平台</h1>
+        <input type="hidden" id="userIdInput">
+
+        <label for="status">你是否已找到房子？</label>
+        <select id="status" onchange="toggleForms()">
+            <option value="not_rented" th:selected="${status == null || status == 'not_rented'}">尚未找到</option>
+            <option value="rented" th:selected="${status == 'rented'}">已找到</option>
+        </select>
+        <div id="notRentedForm" style="display: none;">
+            <h2>尋找房屋</h2>
+            <input type="text" placeholder="希望租屋的區域">
+            <input type="number" placeholder="預算上限">
+            <button>開始搜尋</button>
+        </div>
+        <div id="rentedForm" style="display: none;">
+            <h2>已租房屋資訊</h2>
+            <input type="text" placeholder="房屋地址">
+            <input type="number" placeholder="月租金">
+            <button>更新資訊</button>
+        </div>
+    </div>
+</div>
+<script>
+    function toggleForms() {
+        var status = document.getElementById('status').value;
+        var notRentedForm = document.getElementById('notRentedForm');
+        var rentedForm = document.getElementById('rentedForm');
+
+        if (status === 'not_rented') {
+            notRentedForm.style.display = 'block';
+            rentedForm.style.display = 'none';
+        } else {
+            notRentedForm.style.display = 'none';
+            rentedForm.style.display = 'block';
+        }
+    }
+
+    // Initialize form display
+    toggleForms();
+</script>
+</body>
+</html>
+

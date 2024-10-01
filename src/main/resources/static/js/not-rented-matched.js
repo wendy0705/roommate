@@ -10,7 +10,6 @@ window.onload = function () {
 
     // 找到頁面上顯示數據的容器
     const dataContainer = document.getElementById('data-container');
-    console.log();
     // 生成 HTML 並插入到 dataContainer
     dataContainer.innerHTML = matchResults.map(item => {
         const match = item.match;
