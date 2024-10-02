@@ -1,0 +1,192 @@
+<!-- cssFragment.html -->
+<th:block th:fragment="cssForm">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+
+        :root {
+            --alabaster: #fff;
+            --ecru: #FFE6DF;
+            --licorice: #000;
+            --earth-yellow: #E1855E;
+            --redwood: #E1855E;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'LXGW WenKai TC', sans-serif;
+            background-color: var(--alabaster);
+            color: var(--licorice);
+        }
+
+        h1 {
+            color: #2c2658;
+            font-size: 36px;
+            margin-bottom: 10px;
+            font-family: 'LXGW WenKai TC', sans-serif;
+            font-weight: 700;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            background-color: var(--alabaster);
+            border-radius: 20px 0 0 20px;
+            box-shadow: -8px 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: var(--ecru);
+            padding: 200px 0 80px 80px;
+            color: var(--licorice);
+            position: relative; /* 為了定位垂直線 */
+        }
+
+        .step {
+            margin-bottom: 80px; /* 減少步驟之間的間距 */
+            opacity: 0.5;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a1a1a;
+            position: relative;
+        }
+
+        .step.active {
+            opacity: 1;
+            color: #2c2658;
+        }
+
+        .step-number {
+            background-color: #2c2658; /* 使用更亮的顏色來突出步驟號碼 */
+            color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            font-size: 16px;
+        }
+
+        .step::after {
+            content: "";
+            position: absolute;
+            left: 20px;
+            top: 40px; /* 調整線條起點 */
+            height: 80px; /* 縮短線條長度 */
+            width: 2px;
+            background-color: #1a1a1a;
+            z-index: 0;
+        }
+
+        .step:last-child::after {
+            display: none; /* 隱藏最後一個步驟後的線條 */
+        }
+
+        select, input, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid var(--ecru);
+            border-radius: 6px;
+            font-size: 16px;
+            background-color: var(--alabaster);
+            color: var(--licorice);
+        }
+
+        button {
+            background-color: var(--earth-yellow);
+            color: var(--alabaster);
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: var(--redwood);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /*#nonRentalForm {*/
+        /*    background-color: white;*/
+        /*    padding: 20px;*/
+        /*    border-radius: 8px;*/
+        /*    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
+        /*}*/
+
+        .rental-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        #map {
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        #roomTypeContainer {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .roomTypeOption {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+        }
+
+        .roomTypeOption input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .roomTypeOption label {
+            flex: 1;
+            white-space: nowrap;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        input[type="number"] {
+            width: 120px; /* 修改寬度 */
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</th:block>

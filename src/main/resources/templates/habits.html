@@ -131,21 +131,21 @@
     </div>
 
     <!-- 開伙地點 -->
-    <label>開伙地點：</label><br>
+    <label>在家開伙：</label><br>
     <input type="radio" name="cooking_location" value="1"> 會開伙
-    <input type="radio" name="cooking_location" value="0"> 不會開伙
+    <input type="radio" name="cooking_location" value="0" checked> 不會開伙
     <br><br>
 
     <!-- 用餐地點 -->
     <label>用餐地點：</label><br>
-    <input type="radio" name="dining_location" value="1"> 會在家用餐
+    <input type="radio" name="dining_location" value="1" checked> 會在家用餐
     <input type="radio" name="dining_location" value="0"> 不會在家用餐
     <br><br>
 
     <!-- 用餐習慣 -->
     <label>用餐習慣：</label><br>
-    <input type="checkbox" name="dining_habits[alone]" value="1"> 自己吃
-    <input type="checkbox" name="dining_habits[not_alone]" value="1"> 跟朋友吃
+    <input type="checkbox" name="dining_habits[alone]" value="1" checked> 自己吃
+    <input type="checkbox" name="dining_habits[not_alone]" value="1" checked> 跟朋友吃
     <br><br>
 
     <!-- 噪音 -->
@@ -157,12 +157,14 @@
     <!-- 鬧鐘使用習慣 -->
     <label>鬧鐘使用習慣：</label><br>
     <button type="button" value="0" data-group="alarm" onclick="toggleButtonGroup(this)">#不使用</button>
-    <button type="button" value="1" data-group="alarm" onclick="toggleButtonGroup(this)">#響一下關閉</button>
+    <button type="button" value="1" class="selected" data-group="alarm" onclick="toggleButtonGroup(this)">#響一下關閉
+    </button>
     <button type="button" value="2" data-group="alarm" onclick="toggleButtonGroup(this)">#需要他人協助關閉</button>
     <br><br>
 
     <label>燈光敏感度：</label><br>
-    <button type="button" value="0" data-group="light" onclick="toggleButtonGroup(this)">#開大燈</button>
+    <button type="button" value="0" class="selected" data-group="light" onclick="toggleButtonGroup(this)">#開大燈
+    </button>
     <button type="button" value="1" data-group="light" onclick="toggleButtonGroup(this)">#開小燈</button>
     <button type="button" value="2" data-group="light" onclick="toggleButtonGroup(this)">#全暗</button>
     <br><br>
@@ -170,14 +172,17 @@
     <label>交友習慣：</label><br>
     <button type="button" value="0" data-group="friendship" onclick="toggleButtonGroup(this)">#不會帶朋友回家</button>
     <button type="button" value="1" data-group="friendship" onclick="toggleButtonGroup(this)">#可能會帶朋友回家</button>
-    <button type="button" value="2" data-group="friendship" onclick="toggleButtonGroup(this)">#會帶朋友回家</button>
+    <button type="button" value="2" class="selected" data-group="friendship" onclick="toggleButtonGroup(this)">
+        #會帶朋友回家
+    </button>
     <br><br>
 
     <label>天氣熱時：</label><br>
     <button type="button" value="0" data-group="weather" onclick="toggleButtonGroup(this); toggleTemperatureInput()">
         #不開冷氣
     </button>
-    <button type="button" value="1" data-group="weather" onclick="toggleButtonGroup(this); toggleTemperatureInput()">
+    <button type="button" value="1" class="selected" data-group="weather"
+            onclick="toggleButtonGroup(this); toggleTemperatureInput()">
         #不常開冷氣
     </button>
     <button type="button" value="2" data-group="weather" onclick="toggleButtonGroup(this); toggleTemperatureInput()">
@@ -194,7 +199,7 @@
 
     <!-- 寵物 -->
     <label>寵物：</label><br>
-    <input type="radio" name="has_pet" value="0" onclick="togglePetType()"> 無
+    <input type="radio" name="has_pet" value="0" checked onclick="togglePetType()"> 無
     <input type="radio" name="has_pet" value="1" onclick="togglePetType()"> 有
     <div id="pet_type_input" class="hidden">
         <label>寵物種類：</label><input type="text" name="pet[pet_type]" placeholder="例如：狗">
@@ -202,14 +207,19 @@
     <br><br>
 
     <label>濕度高時：</label><br>
-    <button type="button" value="0" data-group="humidity" onclick="toggleButtonGroup(this)">#不開除濕</button>
+    <button type="button" value="0" class="selected" data-group="humidity" onclick="toggleButtonGroup(this)">#不開除濕
+    </button>
     <button type="button" value="1" data-group="humidity" onclick="toggleButtonGroup(this)">#不常開除溼</button>
     <button type="button" value="2" data-group="humidity" onclick="toggleButtonGroup(this)">#會開除濕</button>
     <br><br>
 
     <label>興趣：</label><br>
-    <button type="button" value="sports" data-group="interest" onclick="toggleButtonGroup(this)">#運動</button>
-    <button type="button" value="travel" data-group="interest" onclick="toggleButtonGroup(this)">#旅遊</button>
+    <button type="button" value="sports" data-group="interest" class="selected" onclick="toggleButtonGroup(this)">
+        #運動
+    </button>
+    <button type="button" value="travel" data-group="interest" class="selected" onclick="toggleButtonGroup(this)">
+        #旅遊
+    </button>
     <button type="button" value="reading" data-group="interest" onclick="toggleButtonGroup(this)">#閱讀</button>
     <button type="button" value="wine_tasting" data-group="interest" onclick="toggleButtonGroup(this)">#品酒</button>
     <button type="button" value="drama" data-group="interest" onclick="toggleButtonGroup(this)">#追劇</button>
@@ -222,13 +232,6 @@
     <button type="button" value="music" data-group="interest" onclick="toggleButtonGroup(this)">#音樂</button>
     <br><br>
 
-
-    <!-- 室友期望 -->
-    <!--    <label>我希望我的室友：</label><br>-->
-    <!--    <textarea name="roommate_expectation" maxlength="30" placeholder="請輸入最多30字..."></textarea>-->
-    <!--    <br><br>-->
-
-    <!-- 提交 -->
     <button type="submit">送出</button>
 </form>
 <script>
@@ -314,6 +317,12 @@
         selects.forEach(select => {
             select.innerHTML = options;
         });
+
+        document.querySelector('select[name="schedule[weekday_sleep_hour]"]').value = "23"; // 平日睡眠時間預設為23
+        document.querySelector('select[name="schedule[weekday_wake_hour]"]').value = "7";  // 平日起床時間預設為7
+        document.querySelector('select[name="schedule[weekend_sleep_hour]"]').value = "1";  // 假日睡眠時間預設為1
+        document.querySelector('select[name="schedule[weekend_wake_hour]"]').value = "9";  // 假日起床時間預設為9
+    
     }
 
     function checkTimeSelection() {
@@ -356,6 +365,7 @@
 
     window.onload = function () {
         insertHourOptions();
+
         const timeSelects = document.querySelectorAll('.hour-select');
         timeSelects.forEach(select => {
             select.addEventListener('change', checkTimeSelection);

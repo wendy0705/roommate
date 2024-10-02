@@ -3,29 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&display=swap" rel="stylesheet">
     <title>Rental Search</title>
-    <link rel="stylesheet" href="/css/map.css">
+    <th:block th:replace="~{fragments/cssForm :: cssForm}"></th:block>
 </head>
 <body>
-<div class="container">
-    <input type="hidden" id="userIdInput">
-    <h1>房屋媒合平台</h1>
+<div class=" container
+    ">
+    <div class="sidebar">
+        <div class="step active">
+            <span class="step-number">1</span>
+            租屋資訊
+        </div>
+        <div class="step">
+            <span class="step-number">2</span>
+            生活習慣偏好
+        </div>
+        <div class="step">
+            <span class="step-number">3</span>
+            媒合潛在室友
+        </div>
+    </div>
+    <div class="main-content">
+        <div id="header-placeholder"></div>
+        <h1>室友媒合平台</h1>
+        <input type="hidden" id="userIdInput">
+        <br>
+        <div class="rental-content">
+            <label for="status">你是否已找到房子？</label>
+            <select id="status" onchange="toggleForms()">
+                <option value="not_rented" th:selected="${status == null || status == 'not_rented'}">尚未找到</option>
+                <option value="rented" th:selected="${status == 'rented'}">已找到</option>
+            </select>
 
-    <label for="status">你是否已找到房子？</label>
-    <select id="status" onchange="toggleForms()">
-        <option value="not_rented" th:selected="${status == null ||status == 'not_rented'}">尚未找到</option>
-        <option value="rented" th:selected="${status == 'rented'}">已找到</option>
-    </select>
+            <div th:if="${status == null ||status == 'not_rented'}">
+                <div th:replace="~{fragments/not-rented :: notRented(mapType=${mapType})}"></div>
+            </div>
 
+            <div th:if="${status == 'rented'}">
+                <div th:replace="~{fragments/rented :: rented(mapType=${mapType})}"></div>
+            </div>
+        </div>
+    </div>
     <!--&lt;!&ndash; 根據選擇顯示不同的表單 &ndash;&gt;-->
     <!-- 對於未找到房子的表單 -->
-    <div th:if="${status == null ||status == 'not_rented'}">
-        <div th:replace="~{fragments/not-rented :: notRented(mapType=${mapType})}"></div>
-    </div>
-
-    <div th:if="${status == 'rented'}">
-        <div th:replace="~{fragments/rented :: rented(mapType=${mapType})}"></div>
-    </div>
 </div>
 
 
@@ -59,6 +80,14 @@
         var userIdInput = document.getElementById('userIdInput');
         userIdInput.value = generateRandomBigInt();
         console.log('Generated User ID:', userIdInput.value); // 用於調試
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('/header')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+            });
     });
 </script>
 
