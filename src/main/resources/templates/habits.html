@@ -157,13 +157,13 @@
     <!-- 鬧鐘使用習慣 -->
     <label>鬧鐘使用習慣：</label><br>
     <button type="button" value="0" data-group="alarm" onclick="toggleButtonGroup(this)">#不使用</button>
-    <button type="button" value="1" class="selected" data-group="alarm" onclick="toggleButtonGroup(this)">#響一下關閉
+    <button type="button" value="1" data-group="alarm" onclick="toggleButtonGroup(this)">#響一下關閉
     </button>
     <button type="button" value="2" data-group="alarm" onclick="toggleButtonGroup(this)">#需要他人協助關閉</button>
     <br><br>
 
     <label>燈光敏感度：</label><br>
-    <button type="button" value="0" class="selected" data-group="light" onclick="toggleButtonGroup(this)">#開大燈
+    <button type="button" value="0" data-group="light" onclick="toggleButtonGroup(this)">#開大燈
     </button>
     <button type="button" value="1" data-group="light" onclick="toggleButtonGroup(this)">#開小燈</button>
     <button type="button" value="2" data-group="light" onclick="toggleButtonGroup(this)">#全暗</button>
@@ -172,7 +172,7 @@
     <label>交友習慣：</label><br>
     <button type="button" value="0" data-group="friendship" onclick="toggleButtonGroup(this)">#不會帶朋友回家</button>
     <button type="button" value="1" data-group="friendship" onclick="toggleButtonGroup(this)">#可能會帶朋友回家</button>
-    <button type="button" value="2" class="selected" data-group="friendship" onclick="toggleButtonGroup(this)">
+    <button type="button" value="2" data-group="friendship" onclick="toggleButtonGroup(this)">
         #會帶朋友回家
     </button>
     <br><br>
@@ -181,7 +181,7 @@
     <button type="button" value="0" data-group="weather" onclick="toggleButtonGroup(this); toggleTemperatureInput()">
         #不開冷氣
     </button>
-    <button type="button" value="1" class="selected" data-group="weather"
+    <button type="button" value="1" data-group="weather"
             onclick="toggleButtonGroup(this); toggleTemperatureInput()">
         #不常開冷氣
     </button>
@@ -322,7 +322,7 @@
         document.querySelector('select[name="schedule[weekday_wake_hour]"]').value = "7";  // 平日起床時間預設為7
         document.querySelector('select[name="schedule[weekend_sleep_hour]"]').value = "1";  // 假日睡眠時間預設為1
         document.querySelector('select[name="schedule[weekend_wake_hour]"]').value = "9";  // 假日起床時間預設為9
-    
+
     }
 
     function checkTimeSelection() {
