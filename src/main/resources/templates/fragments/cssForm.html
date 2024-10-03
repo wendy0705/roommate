@@ -23,7 +23,6 @@
             color: #2c2658;
             font-size: 36px;
             margin-bottom: 10px;
-            font-family: 'LXGW WenKai TC', sans-serif;
             font-weight: 700;
         }
 
@@ -34,63 +33,11 @@
 
         .main-content {
             flex: 1;
+            z-index: 2;
             padding: 40px;
             background-color: var(--alabaster);
             border-radius: 20px 0 0 20px;
-            box-shadow: -8px 0 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .sidebar {
-            width: 300px;
-            background-color: var(--ecru);
-            padding: 200px 0 80px 80px;
-            color: var(--licorice);
-            position: relative; /* 為了定位垂直線 */
-        }
-
-        .step {
-            margin-bottom: 80px; /* 減少步驟之間的間距 */
-            opacity: 0.5;
-            transition: opacity 0.3s;
-            display: flex;
-            align-items: center;
-            font-size: 18px;
-            font-weight: bold;
-            color: #1a1a1a;
-            position: relative;
-        }
-
-        .step.active {
-            opacity: 1;
-            color: #2c2658;
-        }
-
-        .step-number {
-            background-color: #2c2658; /* 使用更亮的顏色來突出步驟號碼 */
-            color: white;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 15px;
-            font-size: 16px;
-        }
-
-        .step::after {
-            content: "";
-            position: absolute;
-            left: 20px;
-            top: 40px; /* 調整線條起點 */
-            height: 80px; /* 縮短線條長度 */
-            width: 2px;
-            background-color: #1a1a1a;
-            z-index: 0;
-        }
-
-        .step:last-child::after {
-            display: none; /* 隱藏最後一個步驟後的線條 */
+            box-shadow: -8px 0 20px rgba(0, 0, 0, 0.1);
         }
 
         select, input, button {
@@ -113,7 +60,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            font-weight: bold;
+            font-family: 'LXGW WenKai TC', sans-serif;
         }
 
         button:hover {
@@ -127,18 +74,24 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        /*#nonRentalForm {*/
-        /*    background-color: white;*/
-        /*    padding: 20px;*/
-        /*    border-radius: 8px;*/
-        /*    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
-        /*}*/
+        #pearl {
+            width: 120px;
+            height: 120px;
+        }
 
-        .rental-content {
+        .rental-content, #preferencesForm {
             background-color: white;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .cat {
+            position: absolute;
+            top: 175px; /* 調整這個值使貓的圖片剛好在 rental-content 的上方 */
+            right: 100px;
+            z-index: 1;
         }
 
         h2 {
@@ -154,39 +107,628 @@
 
         #roomTypeContainer {
             display: grid;
+            border: 1px solid #ddd;
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
             margin-bottom: 20px;
         }
 
+        .room-type-selection-section {
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .room-type-selection-section h3 {
+            color: #2c2658;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .room-type-options {
+            padding: 20px;
+            border-radius: 8px;
+        }
+
         .roomTypeOption {
-            border: 1px solid #ddd;
-            padding: 10px;
-            border-radius: 4px;
-            background-color: #fff;
             display: flex;
             align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .roomTypeOption:hover {
+            background-color: #f5f5f5;
         }
 
         .roomTypeOption input[type="checkbox"] {
-            width: auto;
             margin-right: 10px;
         }
 
         .roomTypeOption label {
             flex: 1;
-            white-space: nowrap;
-            display: flex;
-            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .roomTypeOption input[type="number"] {
+            width: 100px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .roomTypeOption input[type="number"]:focus {
+            border-color: #E1855E;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(225, 133, 94, 0.2);
+        }
+
+        .roomTypeOption input[type="number"]:disabled {
+            background-color: #f5f5f5;
+            color: #999;
+        }
+
+        #preferencesForm {
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        #preferencesForm > div,
+        #preferencesForm > label {
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input[type="radio"],
+        input[type="checkbox"] {
+            width: auto;
+            margin-right: 5px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #customSchedule {
+            background-color: #fff;
+            padding: 15px;
+            border: 1px solid var(--ecru);
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+
+        button[type="button"] {
+            width: auto;
+            display: inline-block;
+            margin-right: 10px;
+            background-color: #f0f0f0;
+            color: var(--licorice);
+        }
+
+        button[type="button"].selected {
+            background-color: var(--earth-yellow);
+            color: var(--alabaster);
+        }
+
+        #customScheduleButton,
+        button[type="submit"] {
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* 單選按鈕組樣式 */
+        .radio-group {
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .radio-group label {
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .radio-option {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .radio-option input[type="radio"] {
+            display: none;
+        }
+
+        .radio-option .radio-custom {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #E1855E;
+            border-radius: 50%;
+            margin-right: 5px;
+            display: inline-block;
+            position: relative;
+        }
+
+        .radio-option input[type="radio"]:checked + .radio-custom::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background-color: #E1855E;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .radio-option span {
+            font-size: 16px;
+        }
+
+        /* 複選框組樣式 */
+        .checkbox-group {
+            margin-bottom: 20px;
+        }
+
+        .checkbox-group label {
+            font-weight: bold;
+            margin-right: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .checkbox-option {
+            display: inline-flex;
             align-items: center;
         }
 
-        input[type="number"] {
-            width: 120px; /* 修改寬度 */
+        .checkbox-option input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkbox-option .checkbox-custom {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #E1855E;
+            border-radius: 4px;
+            margin-right: 5px;
+            display: inline-block;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .checkbox-option input[type="checkbox"]:checked + .checkbox-custom::after {
+            content: '\2714';
+            color: #E1855E;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+        }
+
+        .checkbox-option span {
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 600px) {
+            #preferencesForm {
+                padding: 10px;
+            }
+
+            button[type="button"] {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .schedule-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .schedule-item {
+            width: 48%;
+        }
+
+        .schedule-item h4 {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .time-selection {
+            display: flex;
+            align-items: center;
+        }
+
+        .time-selection label {
+            flex: 0 0 80px;
+            margin-right: 10px;
+        }
+
+        .hour-select {
+            flex: 1;
             padding: 8px;
-            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .custom-schedule-section {
+            margin-top: 20px;
+        }
+
+        #customScheduleButton {
+            background-color: #E1855E;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        #customScheduleButton:hover {
+            background-color: #D67348;
+        }
+
+        .custom-schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .day-schedule {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .day-schedule h4 {
+            margin-top: 0;
+            color: #333;
+        }
+
+
+        @media (max-width: 768px) {
+            .schedule-item {
+                width: 100%;
+            }
+
+            .custom-schedule-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .house-form {
+                padding: 15px;
+            }
+
+            .room {
+                padding: 15px;
+            }
+
+            .roommates-section, .rooms-section {
+                padding: 15px;
+            }
+
+            .roommate {
+                padding: 15px;
+            }
+
+            .description-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .description-group input[type="text"] {
+                max-width: 100%;
+            }
+
+            .input-button-wrapper {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .input-button-wrapper input[type="text"] {
+                max-width: 100%;
+            }
+
+            .house-details-section {
+                padding: 15px;
+            }
+
+            .form-container {
+                padding: 15px;
+            }
+
+            .room-type-selection-section {
+                padding: 15px;
+            }
+
+            .room-type-options {
+                padding: 15px;
+            }
+
+            .roomTypeOption {
+                flex-wrap: wrap;
+            }
+
+            .roomTypeOption label {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .roomTypeOption input[type="number"] {
+                width: calc(50% - 5px);
+                margin-top: 5px;
+            }
+        }
+
+        .house-form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
         }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            border-color: #E1855E;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(225, 133, 94, 0.2);
+        }
+
+        h2 {
+            color: #2c2658;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .room {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .add-room-btn {
+            background-color: #E1855E;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-room-btn:hover {
+            background-color: #D67348;
+        }
+
+        .roommates-section, .rooms-section {
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .roommates-section h2, .rooms-section h2 {
+            color: #2c2658;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .roommate {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group select,
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group select:focus,
+        .form-group input[type="text"]:focus {
+            border-color: #E1855E;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(225, 133, 94, 0.2);
+        }
+
+        .description-group {
+            gap: 10px;
+        }
+
+        .description-group input[type="text"] {
+            flex: 1;
+            max-width: 60%;
+        }
+
+        .add-roommate-btn, .add-room-btn {
+            background-color: #E1855E;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .add-roommate-btn:hover, .add-room-btn:hover {
+            background-color: #D67348;
+        }
+
+        .description-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-button-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-button-wrapper input[type="text"] {
+            flex: 1;
+            max-width: 60%;
+        }
+
+        .house-details-section {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .house-details-section h2 {
+            color: #2c2658;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input[type="text"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #E1855E;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(225, 133, 94, 0.2);
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background-color: #E1855E;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background-color: #D67348;
+        }
+
     </style>
+    <link rel="stylesheet" type="text/css" href="/css/sidebar.css">
 </th:block>

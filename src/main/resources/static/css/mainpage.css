@@ -91,17 +91,6 @@ p {
     margin-right: 60px;
 }
 
-/*.tag {*/
-/*    position: absolute;*/
-/*    top: 20px;*/
-/*    right: 20px;*/
-/*    background-color: #ffd700;*/
-/*    color: #333;*/
-/*    padding: 5px 10px;*/
-/*    border-radius: 15px;*/
-/*    font-size: 14px;*/
-/*}*/
-
 @media (max-width: 768px) {
     .container {
         padding: 20px;

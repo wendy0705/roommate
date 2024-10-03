@@ -8,29 +8,19 @@
     <th:block th:replace="~{fragments/cssForm :: cssForm}"></th:block>
 </head>
 <body>
-<div class=" container
-    ">
-    <div class="sidebar">
-        <div class="step active">
-            <span class="step-number">1</span>
-            租屋資訊
-        </div>
-        <div class="step">
-            <span class="step-number">2</span>
-            生活習慣偏好
-        </div>
-        <div class="step">
-            <span class="step-number">3</span>
-            媒合潛在室友
-        </div>
-    </div>
+<div class="container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
     <div class="main-content">
         <div id="header-placeholder"></div>
         <h1>室友媒合平台</h1>
         <input type="hidden" id="userIdInput">
         <br>
+        <div class="cat">
+            <img src="https://roommatebucket.s3.ap-southeast-2.amazonaws.com/cat.png" alt="cat" width="50"
+                 height="50"/>
+        </div>
         <div class="rental-content">
-            <label for="status">你是否已找到房子？</label>
+            <h3 for="status">你是否已找到房子？</h3>
             <select id="status" onchange="toggleForms()">
                 <option value="not_rented" th:selected="${status == null || status == 'not_rented'}">尚未找到</option>
                 <option value="rented" th:selected="${status == 'rented'}">已找到</option>
@@ -80,9 +70,7 @@
         var userIdInput = document.getElementById('userIdInput');
         userIdInput.value = generateRandomBigInt();
         console.log('Generated User ID:', userIdInput.value); // 用於調試
-    });
 
-    document.addEventListener('DOMContentLoaded', function () {
         fetch('/header')
             .then(response => response.text())
             .then(data => {
@@ -90,6 +78,7 @@
             });
     });
 </script>
+<script src="js/header.js"></script>
 
 </body>
 </html>

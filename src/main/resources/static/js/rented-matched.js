@@ -1,58 +1,112 @@
-window.onload = function () {
-    // 從 localStorage 中取出匹配結果
-    const matchResults = JSON.parse(localStorage.getItem('matchResults'));
+const dataContainer = document.getElementById('data-container');
+const prevPageBtn = document.getElementById('prevPage');
+const nextPageBtn = document.getElementById('nextPage');
+const pageInfo = document.getElementById('pageInfo');
 
-    if (!matchResults) {
+let currentPage = 1;
+const itemsPerPage = 6;
+let matchResults = [];
+
+function initializeMatchResults() {
+    const storedResults = localStorage.getItem('matchResults');
+    if (storedResults) {
+        matchResults = JSON.parse(storedResults);
+        renderMatchResults();
+    } else {
         console.error('No match results found');
-        return;
+        dataContainer.innerHTML = '<p>無匹配結果可顯示</p>';
+        prevPageBtn.style.display = 'none';
+        nextPageBtn.style.display = 'none';
+        pageInfo.style.display = 'none';
     }
+}
 
-    const dataContainer = document.getElementById('data-container');
+function renderMatchResults() {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const pageResults = matchResults.slice(startIndex, endIndex);
 
-    dataContainer.innerHTML = matchResults.map(item => {
+    dataContainer.innerHTML = pageResults.map(item => {
         const match = item.match;
         const nonRentedData = item.nonRentedData || [];
 
         const matchInfo = `
-                <div class="match-container">
-                    <h3>Matched User ID: ${match.userId2}</h3>
-                    <p><strong>寵物相同:</strong> ${match.petSameOrNot ? '是' : '否'}</p>
-                    <p><strong>噪音匹配度:</strong> ${(match.noisePercentage * 100).toFixed(2)}%</p>
-                    <p><strong>天氣偏好匹配度:</strong> ${(match.weatherPercentage * 100).toFixed(2)}%</p>
-                    <p><strong>興趣匹配度:</strong> ${(match.interestPercentage * 100).toFixed(2)}%</p>
-                    <p><strong>濕度匹配度:</strong> ${(match.humidPercentage * 100).toFixed(2)}%</p>
-                    <p><strong>作息匹配度:</strong> ${(match.schedulePercentage * 100).toFixed(2)}%</p>
-                    <p><strong>用餐地點相同:</strong> ${match.diningLocationSameOrNot ? '是' : '否'}</p>
-                    <p><strong>烹飪地點相同:</strong> ${match.cookLocationSameOrNot ? '是' : '否'}</p>
-                    <p><strong>用餐偏好匹配度:</strong> ${(match.diningPercentage * 100).toFixed(2)}%</p>
-                    <p><strong>共用房間相同:</strong> ${match.shareroomSameOrNot ? '是' : '否'}</p>
-                    <p><strong>條件匹配度:</strong> ${(match.conditionPercentage * 100).toFixed(2)}%</p>
-                    <p><strong>燈光偏好匹配度:</strong> ${(match.lightPercentage * 100).toFixed(2)}%</p>
-                    <p><strong>鬧鐘偏好匹配度:</strong> ${(match.alarmPercentage * 100).toFixed(2)}%</p>
-                    <p><strong>友誼偏好匹配度:</strong> ${(match.friendPercentage * 100).toFixed(2)}%</p>
+                <div class="match-info">
+                    <h2>匹配用戶 ID: ${match.userId2}</h2>
+                    <div class="match-details">
+                        ${renderMatchDetail('寵物偏好', match.petSameOrNot ? '相同' : '不同')}
+                        ${renderMatchDetail('噪音匹配度', (match.noisePercentage * 100).toFixed(2) + '%')}
+                        ${renderMatchDetail('天氣偏好', (match.weatherPercentage * 100).toFixed(2) + '%')}
+                        ${renderMatchDetail('興趣匹配度', (match.interestPercentage * 100).toFixed(2) + '%')}
+                        ${renderMatchDetail('濕度偏好', (match.humidPercentage * 100).toFixed(2) + '%')}
+                        ${renderMatchDetail('作息匹配度', (match.schedulePercentage * 100).toFixed(2) + '%')}
+                        ${renderMatchDetail('用餐地點', match.diningLocationSameOrNot ? '相同' : '不同')}
+                        ${renderMatchDetail('烹飪地點', match.cookLocationSameOrNot ? '相同' : '不同')}
+                        ${renderMatchDetail('用餐偏好', (match.diningPercentage * 100).toFixed(2) + '%')}
+                        ${renderMatchDetail('共用房間', match.shareroomSameOrNot ? '相同' : '不同')}
+                        ${renderMatchDetail('條件匹配度', (match.conditionPercentage * 100).toFixed(2) + '%')}
+                        ${renderMatchDetail('燈光偏好', (match.lightPercentage * 100).toFixed(2) + '%')}
+                        ${renderMatchDetail('鬧鐘偏好', (match.alarmPercentage * 100).toFixed(2) + '%')}
+                        ${renderMatchDetail('友誼偏好', (match.friendPercentage * 100).toFixed(2) + '%')}
+                    </div>
                 </div>
             `;
 
-        // 非出租房屋信息
         const nonRentedInfo = nonRentedData.length > 0 ? `
-            <div class="non-rented-info">
-                <h4>尚未找到房子，房間需求：</h4>
-                ${nonRentedData.map(nr => `
-                    <div class="non-rented-item">
-                        <p><strong>想找房的區域:</strong> (${nr.region_sw_lat}, ${nr.region_sw_lng}) - (${nr.region_ne_lat}, ${nr.region_ne_lng})</p>
-                        <p><strong>預計租期:</strong> ${nr.rental_period} 個月</p>
-                        <p><strong>預算範圍（月）:</strong> ${nr.low_price} - ${nr.high_price} 元</p>
-                        <p><strong>需求房型:</strong> ${nr.room_type}</p>
-                    </div>
-                `).join('')}
-            </div>
-        ` : '';
+                <div class="non-rented-info">
+                    <h3>尚未找到房子，房間需求：</h3>
+                    ${nonRentedData.map(nr => `
+                        <div class="non-rented-item">
+                            <p><strong>想找房的區域:</strong> (${nr.region_sw_lat}, ${nr.region_sw_lng}) - (${nr.region_ne_lat}, ${nr.region_ne_lng})</p>
+                            <p><strong>預計租期:</strong> ${nr.rental_period} 個月</p>
+                            <p><strong>預算範圍（月）:</strong> ${nr.low_price} - ${nr.high_price} 元</p>
+                            <p><strong>需求房型:</strong> ${nr.room_type}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            ` : '';
 
         return `
-            <div class="match-container">
-                ${matchInfo}
-                ${nonRentedInfo}
+                <article class="match-container">
+                    ${matchInfo}
+                    ${nonRentedInfo}
+                </article>
+            `;
+    }).join('');
+
+    updatePagination();
+}
+
+function renderMatchDetail(label, value) {
+    return `
+            <div class="match-detail">
+                <span class="detail-label">${label}:</span>
+                <span class="detail-value">${value}</span>
             </div>
         `;
-    }).join('');
-};
+}
+
+function updatePagination() {
+    const totalPages = Math.ceil(matchResults.length / itemsPerPage);
+    pageInfo.textContent = `第 ${currentPage} 頁，共 ${totalPages} 頁`;
+    prevPageBtn.disabled = currentPage === 1;
+    nextPageBtn.disabled = currentPage === totalPages;
+}
+
+prevPageBtn.addEventListener('click', () => {
+    if (currentPage > 1) {
+        currentPage--;
+        renderMatchResults();
+    }
+});
+
+nextPageBtn.addEventListener('click', () => {
+    const totalPages = Math.ceil(matchResults.length / itemsPerPage);
+    if (currentPage < totalPages) {
+        currentPage++;
+        renderMatchResults();
+    }
+});
+
+// 當文檔加載完成時調用
+document.addEventListener('DOMContentLoaded', initializeMatchResults);

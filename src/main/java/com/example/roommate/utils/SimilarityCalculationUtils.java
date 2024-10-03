@@ -76,7 +76,7 @@ public class SimilarityCalculationUtils {
 
         double distance = Math.abs(value1 - value2);
 
-        double percentage = distance / maxDistance;
+        double percentage = 1 - (distance / maxDistance);
         return percentage;
     }
 

@@ -3,22 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&display=swap" rel="stylesheet">
     <title>Header Component</title>
     <link rel="stylesheet" href="css/header.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-<header>
-    <div class="logo">
-        <img src="https://roommatebucket.s3.ap-southeast-2.amazonaws.com/roommate_logo.png" alt="Logo"/>
+<header class="site-header">
+    <div class="header-container">
+        <div class="logo-title-container">
+            <div class="logo">
+                <img src="https://roommatebucket.s3.ap-southeast-2.amazonaws.com/roommate_logo.png" alt="Logo"/>
+            </div>
+            <h1 class="site-title">室友媒合平台</h1>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#" class="nav-link">HOME</a></li>
+                <li><a href="#" class="nav-link">CATEGORIES</a></li>
+                <li><a href="#" class="nav-link">BLOG</a></li>
+                <li><a href="#" class="nav-link">CONTACT</a></li>
+            </ul>
+        </nav>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </div>
-    <nav>
-        <ul>
-            <li><a href="#">HOME</a></li>
-            <li><a href="#">CATEGORIES</a></li>
-            <li><a href="#">BLOG</a></li>
-            <li><a href="#">CONTACT</a></li>
-        </ul>
-    </nav>
 </header>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const hamburger = document.querySelector('.hamburger');
+        const mainNav = document.querySelector('.main-nav');
+
+        hamburger.addEventListener('click', function () {
+            mainNav.classList.toggle('active');
+        });
+    });
+</script>
 </html>

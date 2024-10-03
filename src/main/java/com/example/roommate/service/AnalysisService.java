@@ -1,6 +1,6 @@
 package com.example.roommate.service;
 
-import com.example.roommate.dto.habits.*;
+import com.example.roommate.dto.habits.PreferenceDto;
 import com.example.roommate.entity.UserMatch;
 import com.example.roommate.repository.UserMatchRepository;
 import lombok.RequiredArgsConstructor;
@@ -133,80 +133,4 @@ public class AnalysisService {
     public Optional<UserMatch> findByUserId1AndUserId2(Long myId, Long userId) {
         return userMatchRepository.findByUserId1AndUserId2(myId, userId);
     }
-
-
-    private PreferenceDto getFakeData() {
-
-        PreferenceDto otherPerson = new PreferenceDto();
-
-        otherPerson.setShareRoom(1);
-
-        ConditionDto specialConditions = new ConditionDto();
-        specialConditions.setHauntedHouse(0);
-        specialConditions.setRooftopExtension(0);
-        specialConditions.setIllegalBuilding(0);
-        specialConditions.setBasement(0);
-        specialConditions.setWindowless(0);
-        otherPerson.setSpecialConditions(specialConditions);
-
-        ScheduleArrayDto schedule = new ScheduleArrayDto();
-        schedule.setMonday(new Integer[]{22, 6});
-        schedule.setTuesday(new Integer[]{22, 6});
-        schedule.setWednesday(new Integer[]{22, 6});
-        schedule.setThursday(new Integer[]{22, 6});
-        schedule.setFriday(new Integer[]{22, 6});
-        schedule.setSaturday(new Integer[]{0, 8});
-        schedule.setSunday(new Integer[]{0, 8});
-
-        otherPerson.setSchedule(schedule);
-
-
-        otherPerson.setCookingLocation(0);
-        otherPerson.setDiningLocation(1);
-
-        DiningHabitsDto diningHabits = new DiningHabitsDto();
-        diningHabits.setAlone(1);
-        diningHabits.setNotAlone(1);
-        otherPerson.setDiningHabits(diningHabits);
-
-        NoiseSensitivityDto noiseSensitivity = new NoiseSensitivityDto();
-        noiseSensitivity.setSleep(5);
-        noiseSensitivity.setStudyOrWork(1);
-        otherPerson.setNoiseSensitivity(noiseSensitivity);
-
-        otherPerson.setAlarmHabit(0);
-        otherPerson.setLightSensitivity(2);
-        otherPerson.setFriendshipHabit(1);
-
-        WeatherDto hotWeatherPreference = new WeatherDto();
-        hotWeatherPreference.setPreference(2);
-        hotWeatherPreference.setTemperature(25);
-        otherPerson.setHotWeatherPreference(hotWeatherPreference);
-
-        otherPerson.setHumidityPreference(1);
-
-        PetDto pet = new PetDto();
-        pet.setHasPet(1);
-        pet.setPetType("兔子");
-        otherPerson.setPet(pet);
-
-        InterestDto interest = new InterestDto();
-        interest.setSports(0);
-        interest.setTravel(1);
-        interest.setReading(1);
-        interest.setWineTasting(1);
-        interest.setDrama(0);
-        interest.setAstrology(1);
-        interest.setProgramming(0);
-        interest.setHiking(1);
-        interest.setGaming(0);
-        interest.setPainting(1);
-        interest.setIdolChasing(1);
-        interest.setMusic(0);
-        otherPerson.setInterest(interest);
-
-        return otherPerson;
-
-    }
-
 }

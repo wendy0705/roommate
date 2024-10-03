@@ -44,7 +44,7 @@ function rentedInit(map) {
 
                     document.getElementById("neLat").value = lat;
                     document.getElementById("neLng").value = lng;
-                    
+
 
                     // 设置地图中心
                     map.setCenter(results[0].geometry.location);
@@ -79,29 +79,99 @@ let roommateCounter = 1;
 
 function addRoom() {
     // 選取房間容器
-    const availableRooms = document.getElementById('availableRooms');
+    const roomContainer = document.getElementById('roomContainer');
 
-    // 複製現有的房間表單
-    const roomTemplate = document.querySelector('.room').cloneNode(true);
+    const newRoom = document.createElement('div');
+    newRoom.className = 'room';
+    newRoom.innerHTML = `
+        <div class="form-group">
+            <label for="roomType">選擇房型：</label>
+            <select class="roomType" name="roomType">
+                <!-- 房型選項將動態加載 -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="roomPrice">價格:</label>
+            <input type="number" class="price" placeholder="12000">
+        </div>
+        <div class="form-group">
+            <label for="roomPeriod">最短租期（月）:</label>
+            <input type="number" class="period" placeholder="6">
+        </div>
+        <div class="button-group">
+            <button type="button" class="add-room-btn">新增房間</button>
+<!--            <button type="button" class="retract-room-btn">收回</button>-->
+        </div>
+    `;
 
-    // 清空新的房間表單中的輸入欄位（如價格等）
-    roomTemplate.querySelector('input[type="number"]').value = '';
+    // 為新的按鈕添加事件監聽器
+    const addButton = newRoom.querySelector('.add-room-btn');
+    // const retractButton = newRoom.querySelector('.retract-room-btn');
 
-    // 將新的房間表單添加到房間容器中
-    availableRooms.appendChild(roomTemplate);
+    addButton.addEventListener('click', addRoom);
+    // retractButton.addEventListener('click', function() {
+    //     retractRoom(this);
+    // });
 
-    // 重新加載房型選項
-    loadRoomTypesForNewRoom(roomTemplate.querySelector('.roomType'));
+    // 移除其他房間中的"新增房間"按鈕
+    const existingRooms = roomContainer.querySelectorAll('.room');
+    existingRooms.forEach(room => {
+        const oldAddButton = room.querySelector('.add-room-btn');
+        if (oldAddButton) {
+            oldAddButton.remove();
+        }
+    });
+
+    // 添加新的房間
+    roomContainer.appendChild(newRoom);
+
+    // 重新加載房型選項到新增的房型選擇框
+    loadRoomTypesForNewRoom(newRoom.querySelector('.roomType'));
 }
 
 function addRoommate() {
     const currentRoommates = document.getElementById('currentRoommates');
-    const roommateTemplate = document.querySelector('.roommate').cloneNode(true);
-    roommateTemplate.querySelector('input[type="text"]').value = ''; // 清空描述欄位
-    currentRoommates.appendChild(roommateTemplate);
+    const newRoommate = document.createElement('div');
+    newRoommate.className = 'roommate';
+    newRoommate.innerHTML = `
+        <div class="form-group">
+            <label for="roommateRoomType">選擇房型：</label>
+            <select class="roomType" name="roomType">
+                <!-- 房型選項將動態加載 -->
+            </select>
+        </div>
+        <div class="form-group description-group">
+            <label for="roommateDescription">描述:</label>
+            <div class="input-button-wrapper">
+                <input type="text" class="description" placeholder="男，學生，安靜">
+                <button type="button" class="add-roommate-btn">新增室友</button>
+            </div>
+        </div>
+    `;
+
+    const addButton = newRoommate.querySelector('.add-roommate-btn');
+    // const retractButton = newRoommate.querySelector('.retract-roommate-btn');
+
+    addButton.addEventListener('click', addRoommate);
+    // retractButton.addEventListener('click', function () {
+    //     retractRoommate(this);
+    // });
+
+
+    // 移除其他室友資訊中的"新增室友"按鈕
+    const existingRoommates = currentRoommates.querySelectorAll('.roommate');
+    existingRoommates.forEach(roommate => {
+        const oldAddButton = roommate.querySelector('.add-roommate-btn');
+        if (oldAddButton) {
+            oldAddButton.remove();
+        }
+    });
+
+    // 添加新的室友資訊
+    currentRoommates.appendChild(newRoommate);
 
     // 重新加載房型選項到新增的房型選擇框
-    loadRoomTypesForNewRoom(roommateTemplate.querySelector('.roomType'));
+    loadRoomTypesForNewRoom(newRoommate.querySelector('.roomType'));
 }
 
 
@@ -109,12 +179,13 @@ function loadRoomTypesForNewRoom(roomTypeSelect) {
     fetch('/api/1.0/data/room-types')
         .then(response => response.json())
         .then(data => {
-            roomTypeSelect.innerHTML = '';
-            data.forEach(roomType => {
-                const option = document.createElement('option');
-                option.value = roomType.id;
-                option.textContent = roomType.room_type;
-                roomTypeSelect.appendChild(option);
+            const roomTypeSelects = document.querySelectorAll('.roomType');
+            const options = data.map(roomType =>
+                `<option value="${roomType.id}">${roomType.room_type}</option>`
+            ).join('');
+
+            roomTypeSelects.forEach(select => {
+                select.innerHTML = options;
             });
         })
         .catch(error => console.error('Error loading room types:', error));

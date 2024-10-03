@@ -12,60 +12,99 @@
     <input type="text" id="houseName" placeholder="輸入房屋名稱">
 
     <!-- 可提供房間 -->
-    <div id="availableRooms">
+    <div id="availableRooms" class="rooms-section">
         <h2>可提供房間</h2>
-        <div class="room">
-            <a>選擇房型：</a>
-            <select class="roomType" name="roomType">
-                <!-- 房型選項將動態加載 -->
-            </select>
-            <a>價格:</a>
-            <input type="number" class="price" placeholder="12000">
-            <a>最短租期（月）:</a>
-            <input type="number" class="period" placeholder="6">
+        <div id="roomContainer">
+            <div class="room">
+                <div class="form-group">
+                    <label for="roommateRoomType">選擇房型：</label>
+                    <select class="roomType" name="roomType">
+                        <!-- 房型選項將動態加載 -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="roomPrice">價格:</label>
+                    <input type="number" id="roomPrice" class="price" placeholder="12000">
+                </div>
+                <div class="form-group">
+                    <label for="roomPeriod">最短租期（月）:</label>
+                    <input type="number" id="roomPeriod" class="period" placeholder="6">
+                </div>
+                <div class="button-group">
+                    <button type="button" class="add-room-btn" onclick="addRoom()">新增房間</button>
+                    <!--                    <button type="button" class="retract-room-btn" onclick="retractRoom(this)">收回</button>-->
+                </div>
+            </div>
         </div>
-        <button type="button" onclick="addRoom()">新增房間</button>
     </div>
 
     <!-- 目前的室友 -->
-    <div id="currentRoommates">
+    <div id="currentRoommates" class="roommates-section">
         <h2>目前的室友</h2>
-        <div class="roommate">
-            <a>選擇房型：</a>
-            <select class="roomType" name="roomType">
-                <!-- 房型選項將動態加載 -->
-            </select>
-            <a>描述:</a>
-            <input type="text" class="description" placeholder="男，學生，安靜">
+        <div id="roommateContainer">
+            <div class="roommate">
+                <div class="form-group">
+                    <label for="roommateRoomType">選擇房型：</label>
+                    <select id="roommateRoomType" class="roomType" name="roomType">
+                        <!-- 房型選項將動態加載 -->
+                    </select>
+                </div>
+                <div class="form-group description-group">
+                    <label for="roommateDescription">描述:</label>
+                    <div class="input-button-wrapper">
+                        <input type="text" id="roommateDescription" class="description" placeholder="男，學生，安靜">
+                        <button type="button" class="add-roommate-btn" onclick="addRoommate()">新增室友</button>
+                        <!--                        <button type="button" class="retract-roommate-btn" onclick="retractRoommate(this)">收回</button>-->
+                    </div>
+                </div>
+            </div>
         </div>
-        <button type="button" onclick="addRoommate()">新增室友</button>
     </div>
 
     <!-- 房屋詳細資料 -->
-    <h2>房屋詳細資料</h2>
-    <label for="petAllowed">允許寵物:</label>
-    <select id="petAllowed">
-        <option value="true">是</option>
-        <option value="false">否</option>
-    </select>
+    <div class="house-details-section">
+        <h2>房屋詳細資料</h2>
+        <div class="form-container">
+            <div class="form-group">
+                <label for="petAllowed">允許寵物:</label>
+                <select id="petAllowed">
+                    <option value="true">是</option>
+                    <option value="false">否</option>
+                </select>
+            </div>
 
-    <label for="rentalPeriod">租期:</label>
-    <input type="text" id="rentalPeriod" placeholder="12個月">
+            <div class="form-group">
+                <label for="rentalPeriod">租期:</label>
+                <input type="text" id="rentalPeriod" placeholder="12個月">
+            </div>
 
-    <label for="sharedSpaces">共用空間:</label>
-    <input type="text" id="sharedSpaces" placeholder="客廳, 廚房, 衛浴">
+            <div class="form-group">
+                <label for="sharedSpaces">共用空間:</label>
+                <input type="text" id="sharedSpaces" placeholder="客廳, 廚房, 衛浴">
+            </div>
 
-    <label for="amenities">設施:</label>
-    <input type="text" id="amenities" placeholder="冷氣, 冰箱, 洗衣機">
+            <div class="form-group">
+                <label for="amenities">設施:</label>
+                <input type="text" id="amenities" placeholder="冷氣, 冰箱, 洗衣機">
+            </div>
 
-    <label for="additionalFees">額外費用:</label>
-    <input type="text" id="additionalFees" placeholder="水電費, 網路費">
+            <div class="form-group">
+                <label for="additionalFees">額外費用:</label>
+                <input type="text" id="additionalFees" placeholder="水電費, 網路費">
+            </div>
 
-    <label for="nearbyFacilities">附近設施:</label>
-    <input type="text" id="nearbyFacilities" placeholder="便利商店, 超市, 公園">
+            <div class="form-group">
+                <label for="nearbyFacilities">附近設施:</label>
+                <input type="text" id="nearbyFacilities" placeholder="便利商店, 超市, 公園">
+            </div>
 
-    <label for="other">其他資訊:</label>
-    <textarea id="other" placeholder="維修政策: 每月檢查; 訪客限制: 訪客必須登記"></textarea>
+            <div class="form-group">
+                <label for="other">其他資訊:</label>
+                <textarea id="other" placeholder="維修政策: 每月檢查; 訪客限制: 訪客必須登記"></textarea>
+            </div>
 
-    <button type="button" onclick="submitForm()">提交</button>
-</div>
+            <div class="form-group">
+                <button type="button" class="submit-btn" onclick="submitForm()">提交</button>
+            </div>
+        </div>
+    </div>

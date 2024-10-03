@@ -3,34 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/rented-matched.css">
     <title>Matched Users</title>
-    <style>
-        .match-container {
-            border: 1px solid #ccc;
-            padding: 16px;
-            margin-bottom: 24px;
-            border-radius: 8px;
-        }
-
-        .match-info, .non-rented-info, .rented-house-info {
-            margin-bottom: 16px;
-        }
-
-        .non-rented-item, .rented-house-item {
-            background-color: #f9f9f9;
-            padding: 8px;
-            margin-bottom: 8px;
-            border-radius: 4px;
-        }
-    </style>
-
 </head>
 <body>
-<h1>Matched Users</h1>
-<div id="data-container">
-    <!-- 這裡會顯示從 GET 請求獲取的數據 -->
+<div class="container">
+    <div id="header-placeholder"></div>
+    <main class="content">
+        <div class="result-container">
+            <h1>匹配結果</h1>
+            <img src="https://roommatebucket.s3.ap-southeast-2.amazonaws.com/competitor-analysis.png"
+                 alt="Competitor Analysis" class="result-image">
+        </div>
+        <div id="data-container">
+            <!-- 匹配結果將在這裡動態生成 -->
+        </div>
+        <div class="pagination">
+            <button id="prevPage">上一頁</button>
+            <span id="pageInfo"></span>
+            <button id="nextPage">下一頁</button>
+        </div>
+    </main>
 </div>
-
+<script src="js/header.js"></script>
 <script src="/js/rented-matched.js"></script>
 </body>
 </html>
