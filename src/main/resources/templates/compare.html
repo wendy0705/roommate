@@ -1,10 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/compare.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-$END$
+<div class="container">
+    <h1>用戶偏好比較</h1>
+    <button id="toggleButton" class="toggle-button">顯示不同偏好</button>
+    <div id="samePreferences"></div>
+    <div id="differentPreferences"></div>
+
+    <canvas id="humidityChart" width="600" height="150"></canvas>
+    <table>
+        <tbody id="resultTable">
+
+        </tbody>
+    </table>
+</div>
 </body>
+<script src="js/compare.js"></script>
 </html>

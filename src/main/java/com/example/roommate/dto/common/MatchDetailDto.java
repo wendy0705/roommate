@@ -1,5 +1,7 @@
 package com.example.roommate.dto.common;
 
+import com.example.roommate.dto.habits.InterestDto;
+import com.example.roommate.dto.habits.PreferenceDto;
 import com.example.roommate.dto.notrented.NonRentedMatchDto;
 import com.example.roommate.dto.rented.RentedHouseMatchDto;
 import com.example.roommate.entity.UserMatch;
@@ -16,6 +18,9 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MatchDetailDto {
     private Long userId;
+    private PreferenceDto myPreference;
+    private PreferenceDto othersPreference;
+    private InterestDto commonInterests;
     private UserMatch match;
     private List<NonRentedMatchDto> nonRentedData;
     private List<RentedHouseMatchDto> rentedHouseData;

@@ -1,5 +1,6 @@
 package com.example.roommate.service;
 
+import com.example.roommate.dto.habits.InterestDto;
 import com.example.roommate.dto.habits.PreferenceDto;
 import com.example.roommate.entity.UserMatch;
 import com.example.roommate.repository.UserMatchRepository;
@@ -132,5 +133,23 @@ public class AnalysisService {
 
     public Optional<UserMatch> findByUserId1AndUserId2(Long myId, Long userId) {
         return userMatchRepository.findByUserId1AndUserId2(myId, userId);
+    }
+
+    public InterestDto compareInterests(InterestDto user1, InterestDto user2) {
+        InterestDto result = new InterestDto();
+        result.setSports(user1.getSports() == 1 && user2.getSports() == 1 ? 1 : 0);
+        result.setTravel(user1.getTravel() == 1 && user2.getTravel() == 1 ? 1 : 0);
+        result.setReading(user1.getReading() == 1 && user2.getReading() == 1 ? 1 : 0);
+        result.setWineTasting(user1.getWineTasting() == 1 && user2.getWineTasting() == 1 ? 1 : 0);
+        result.setDrama(user1.getDrama() == 1 && user2.getDrama() == 1 ? 1 : 0);
+        result.setAstrology(user1.getAstrology() == 1 && user2.getAstrology() == 1 ? 1 : 0);
+        result.setProgramming(user1.getProgramming() == 1 && user2.getProgramming() == 1 ? 1 : 0);
+        result.setHiking(user1.getHiking() == 1 && user2.getHiking() == 1 ? 1 : 0);
+        result.setGaming(user1.getGaming() == 1 && user2.getGaming() == 1 ? 1 : 0);
+        result.setPainting(user1.getPainting() == 1 && user2.getPainting() == 1 ? 1 : 0);
+        result.setIdolChasing(user1.getIdolChasing() == 1 && user2.getIdolChasing() == 1 ? 1 : 0);
+        result.setMusic(user1.getMusic() == 1 && user2.getMusic() == 1 ? 1 : 0);
+
+        return result;
     }
 }

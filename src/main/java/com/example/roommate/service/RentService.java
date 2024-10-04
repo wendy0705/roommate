@@ -132,11 +132,6 @@ public class RentService {
         List<Long> matchingUserIds = nonRentedDataRepository.findNotRentedMatches(
                 userId
         );
-//        List<NonRentedMatchDto> nonRentedMatches = nonRentedDataRepository.getNonRentedInfo(matchingUserIds);
-//
-//        List<RentedHouseMatchDto> rentedHouseMatches = rentedHouseDataRepository.getRentedHouseInfo(matchingUserIds);
-
-//        return new RentedMatchesResponseDto(matchingUserIds, nonRentedMatches, rentedHouseMatches);
         return matchingUserIds;
     }
 

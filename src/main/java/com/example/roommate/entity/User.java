@@ -75,5 +75,6 @@ public class User {
     private Integer interestPainting;
     private Integer interestIdolChasing;
     private Integer interestMusic;
+    private String hope;
 
 }

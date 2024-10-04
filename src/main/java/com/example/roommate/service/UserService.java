@@ -80,6 +80,8 @@ public class UserService {
             user.setInterestPainting(preferenceDto.getInterest().getPainting());
             user.setInterestIdolChasing(preferenceDto.getInterest().getIdolChasing());
             user.setInterestMusic(preferenceDto.getInterest().getMusic());
+            
+            user.setHope(preferenceDto.getHope());
 
             return userRepository.save(user);
         } else {

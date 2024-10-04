@@ -53,12 +53,19 @@ public class PageController {
     }
 
     @GetMapping("/rented-matched")
-    public String showRentedMatchedUsers() {
+    public String showRentedMatchedUsers(Model model) {
+        model.addAttribute("googleMapsApiKey", googleMapsApiKey);
         return "rented-matched";
     }
 
     @GetMapping("/not-rented-matched")
-    public String showNotRentedMatchedUsers() {
+    public String showNotRentedMatchedUsers(Model model) {
+        model.addAttribute("googleMapsApiKey", googleMapsApiKey);
         return "not-rented-matched";
+    }
+
+    @GetMapping("/compare")
+    public String showCompare() {
+        return "compare";
     }
 }

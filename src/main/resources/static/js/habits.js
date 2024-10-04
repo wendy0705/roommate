@@ -209,6 +209,7 @@ document.getElementById('preferencesForm').addEventListener('submit', function (
             idol_chasing: document.querySelector('button[value="idol_chasing"].selected') ? 1 : 0,
             music: document.querySelector('button[value="music"].selected') ? 1 : 0
         },
+        hope: document.getElementById('roommate-preference').value,
         matching_user_ids: matchingUserIds
     };
 

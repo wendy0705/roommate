@@ -1,6 +1,7 @@
 package com.example.roommate.controller;
 
 import com.example.roommate.dto.common.MatchDetailDto;
+import com.example.roommate.dto.habits.InterestDto;
 import com.example.roommate.dto.habits.PreferenceDto;
 import com.example.roommate.dto.notrented.NonRentedMatchDto;
 import com.example.roommate.dto.notrented.NotRentedMatchRequestDto;
@@ -46,7 +47,8 @@ public class AnalysisController {
         for (Long matchingUserId : matchingUserIds) {
             PreferenceDto othersPreference = userService.getByUserId(matchingUserId);
             Map<String, Object> response = analysisService.analysis(myPreference, othersPreference);
-            log.info("response:" + response.toString());
+            InterestDto commonInterests = analysisService.compareInterests(myPreference.getInterest(), othersPreference.getInterest());
+            log.info("Common interests: " + commonInterests);
 
             // 儲存分析結果
             analysisService.save(myId, matchingUserId, response);
@@ -55,7 +57,7 @@ public class AnalysisController {
                     .orElseThrow(() -> new RuntimeException("UserMatch not found for userId: " + matchingUserId));
 
             List<NonRentedMatchDto> nonRentedData = nonRentedDataRepository.getNonRentedInfo(matchingUserId);
-            MatchDetailDto matchDetail = new MatchDetailDto(matchingUserId, match, nonRentedData, null);
+            MatchDetailDto matchDetail = new MatchDetailDto(matchingUserId, myPreference, othersPreference, commonInterests, match, nonRentedData, null);
             matchDetails.add(matchDetail);
         }
         return ResponseEntity.ok(matchDetails);
@@ -76,6 +78,7 @@ public class AnalysisController {
 
             PreferenceDto othersPreference = userService.getByUserId(matchingUserId);
             Map<String, Object> response = analysisService.analysis(myPreference, othersPreference);
+            InterestDto commonInterests = analysisService.compareInterests(myPreference.getInterest(), othersPreference.getInterest());
             analysisService.save(myId, matchingUserId, response);
 
             UserMatch match = analysisService.findByUserId1AndUserId2(myId, matchingUserId)
@@ -90,11 +93,11 @@ public class AnalysisController {
                 rentedHouseData = rentedHouseDataRepository.getRentedHouseInfo(matchingUserId);
             }
 
-            MatchDetailDto matchDetail = new MatchDetailDto(matchingUserId, match, nonRentedData, rentedHouseData);
+            MatchDetailDto matchDetail = new MatchDetailDto(matchingUserId, myPreference, othersPreference, commonInterests, match, nonRentedData, rentedHouseData);
             matchDetails.add(matchDetail);
         }
 
-        
+
         return ResponseEntity.ok(matchDetails);
     }
 }

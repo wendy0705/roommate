@@ -50,4 +50,7 @@ public class PreferenceDto {
     @JsonProperty("interest")
     private InterestDto interest;
 
+    @JsonProperty("hope")
+    private String hope;
+
 }
