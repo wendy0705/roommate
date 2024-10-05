@@ -1,7 +1,3 @@
-// document.addEventListener('DOMContentLoaded', function () {
-//     initializeMatchResults();
-// });
-
 const dataContainer = document.getElementById('data-container');
 const prevPageBtn = document.getElementById('prevPage');
 const nextPageBtn = document.getElementById('nextPage');
@@ -18,7 +14,6 @@ function initializeMatchResults() {
     if (storedResults) {
         matchResults = JSON.parse(storedResults);
         renderMatchResults();
-        initMap();
     } else {
         console.error('No match results found');
         dataContainer.innerHTML = '<p>無匹配結果可顯示</p>';
@@ -33,7 +28,9 @@ function renderMatchResults() {
     const endIndex = startIndex + itemsPerPage;
     const pageResults = matchResults.slice(startIndex, endIndex);
 
-    dataContainer.innerHTML = pageResults.map(item => {
+    dataContainer.innerHTML = `
+        <div class="matched-container">
+            ${pageResults.map(item => {
         // const match = item.match;
         const nonRentedData = item.nonRentedData || [];
         // match info
@@ -41,7 +38,8 @@ function renderMatchResults() {
         // 假設您已經從後端接收到 matchDetailData 並且它包含 othersPreference
         const othersPreference = item.othersPreference;
         const commonInterests = item.commonInterests;
-        console.log(commonInterests);
+        userId = item.userId;
+        userNonRented = item.nonRentedData;
 
 // 將興趣項目轉換為一個字符串，顯示用戶的興趣
         let interestHtmlArray = [];
@@ -98,97 +96,145 @@ function renderMatchResults() {
             return interestMap[key] || key;
         }
 
-
-        const nonRentedInfo = nonRentedData.length > 0 ? `
-            <div class="non-rented-info">
-                <h3>尚未找到房子，房間需求：</h3>
-                
-                <!-- 显示相同的信息一次 -->
-                <div class="non-rented-common">
-                    <p><strong>想找房的區域:</strong> (${nonRentedData[0].region_sw_lat}, ${nonRentedData[0].region_sw_lng}) - (${nonRentedData[0].region_ne_lat}, ${nonRentedData[0].region_ne_lng})</p>
-                    <p><strong>預計租期:</strong> ${nonRentedData[0].rental_period} 個月</p>
-                </div>
-                
-                <!-- 循环显示不同的房型、价格 -->
-                ${nonRentedData.map(nr => `
-                    <div class="non-rented-item">
-                        <p><strong>預算範圍（月）:</strong> ${nr.low_price} - ${nr.high_price} 元</p>
-                        <p><strong>需求房型:</strong> ${nr.room_type}</p>
-                    </div>
-                `).join('')}
-            </div>
-        ` : '';
+        const viewMoreButton = `<button class="view-more-button" data-user-id="${item.userId}">查看更多</button>`;
 
         return `
-                <article class="matched-container">
-                    ${preferenceInfo}
-<!---->             <div id="map" style="height: 400px; width: 100%;"></div>
-                    ${nonRentedInfo}
-                </article>
-            `;
-    }).join('');
-
-    if (map) {
-        pageResults.forEach(item => {
-            if (item.nonRentedData && item.nonRentedData.length > 0) {
-                showNonRentedRegionOnMap(map, item.nonRentedData);
-            }
-        });
-    }
+            <article class="match-result">
+                <div class="flex-container">
+                    <div class="map-container">
+                        <div id="map-${item.userId}" style="height: 400px; width: 100%;"></div>
+                    </div>
+                    <div class="info-container">
+                        ${preferenceInfo}
+                        <div class="non-rented-common">
+                            <p><strong>預計租期:</strong> ${nonRentedData[0].rental_period} 個月</p>
+                        </div>
+                        <div class="button-container" style="text-align: right;">
+                            ${viewMoreButton}
+                            <button class="invite-button">聊聊邀請</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="room-budget-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>需求房型</th>
+                                <th>預算範圍（月）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${nonRentedData.map(nr => `
+                                <tr>
+                                    <td>${nr.room_type}</td>
+                                    <td>${nr.low_price} - ${nr.high_price} 元</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+            </article>
+                `;
+    }).join('')}
+        </div>
+    `;
 
     updatePagination();
+    addViewMoreEventListeners();
+    pageResults.forEach(item => {
+        const userId = item.userId;
+        const nonRentedData = item.nonRentedData || [];
+
+        initMap(userId, nonRentedData);
+    });
 }
 
-function initMap() {
-    console.log("initMap");
 
-    const mapElement = document.getElementById("map");
+function addViewMoreEventListeners() {
+    const viewMoreButtons = document.querySelectorAll('.view-more-button');
+    viewMoreButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            const userId = parseInt(event.target.getAttribute('data-user-id'), 10);
+            // 將 userId 暫存到 localStorage 中
+            localStorage.setItem('selectedUserId', userId);
+
+            // 使用 fetch 請求 /compare 來載入 compare.html
+            fetch('/compare')
+                .then(response => response.text())
+                .then(html => {
+                    // 將 compare.html 的內容插入模態窗口
+                    const modalContent = document.getElementById('modalDataContainer');
+                    modalContent.innerHTML = html;
+
+                    // 顯示模態窗口
+                    const modal = document.getElementById('matchModal');
+                    modal.style.display = "block";
+
+                    // 增加關閉按鈕邏輯
+                    const closeModal = document.querySelector('.close');
+                    closeModal.addEventListener('click', () => {
+                        modal.style.display = "none";
+                        // 清空 localStorage 中的 selectedUserId
+                        localStorage.removeItem('selectedUserId');
+                    });
+
+                    runCompareJS();
+                })
+                .catch(error => console.error('Error loading compare.html:', error));
+        });
+    });
+}
+
+function runCompareJS() {
+    console.log("hi");
+    // 此函數將執行 compare.js 的邏輯
+
+    const storedUserId = localStorage.getItem('selectedUserId');
+    console.log(storedUserId);
+    if (storedUserId) {
+        const userId = parseInt(storedUserId, 10);
+        const storedResults = localStorage.getItem('matchResults');
+        console.log(storedResults);
+        const matchResults = storedResults ? JSON.parse(storedResults) : [];
+
+        // 根據 userId 查找對應的匹配項
+        const selectedItem = matchResults.find(item => item.userId === userId);
+        console.log(selectedItem);
+        if (selectedItem) {
+            const userPreference = selectedItem.myPreference;
+            const othersPreference = selectedItem.othersPreference;
+
+            // 顯示比較數據
+            showUser2Preferences(userPreference, othersPreference);
+            generateScheduleTable(userPreference, othersPreference);
+
+            document.getElementById('toggleButton').addEventListener('click', () => {
+                comparePreferences(userPreference, othersPreference);
+                toggleDisplay();
+            });
+        }
+    }
+
+}
+
+function initMap(userId, nonRentedData) {
+    const mapElement = document.getElementById(`map-${userId}`);
 
     if (!mapElement) {
-        console.error("Map container not found");
+        console.error(`Map container for user ${userId} not found`);
         return;
     }
 
-    map = new google.maps.Map(mapElement, {
-        center: {lat: 25.0330, lng: 121.5654}, // 可以根據需求調整
-        zoom: 12,
+    const map = new google.maps.Map(mapElement, {
+        center: {lat: nonRentedData[0].region_sw_lat, lng: nonRentedData[0].region_sw_lng}, // 根據區域範圍來調整初始中心點
+        zoom: 13
     });
-
-    console.log(map);
-
-    // const nonRentedData = [
-    //     {
-    //         region_sw_lat: 25.0208,
-    //         region_sw_lng: 121.5408,
-    //         region_ne_lat: 25.0580,
-    //         region_ne_lng: 121.6050,
-    //         rental_period: 12
-    //     }
-    // ];
-
-    google.maps.event.addListenerOnce(map, 'idle', function () {
-        showNonRentedRegionOnMap(map);
-        renderMatchResults();
-    });
-}
-
-function showNonRentedRegionOnMap(map) {
-    if (!map || !nonRentedData || nonRentedData.length === 0) {
-        console.error("Invalid map or nonRentedData");
-        return;
-    }
-
-    const swLat = nonRentedData[0].region_sw_lat;
-    const swLng = nonRentedData[0].region_sw_lng;
-    const neLat = nonRentedData[0].region_ne_lat;
-    const neLng = nonRentedData[0].region_ne_lng;
 
     const bounds = new google.maps.LatLngBounds(
-        new google.maps.LatLng(swLat, swLng),
-        new google.maps.LatLng(neLat, neLng)
+        new google.maps.LatLng(nonRentedData[0].region_sw_lat, nonRentedData[0].region_sw_lng),
+        new google.maps.LatLng(nonRentedData[0].region_ne_lat, nonRentedData[0].region_ne_lng)
     );
 
-    const rectangle = new google.maps.Rectangle({
+    new google.maps.Rectangle({
         bounds: bounds,
         editable: false,
         draggable: false,
@@ -197,22 +243,23 @@ function showNonRentedRegionOnMap(map) {
         strokeWeight: 2,
         fillColor: '#FF0000',
         fillOpacity: 0.35,
-    });
+    }).setMap(map);
 
-    rectangle.setMap(map);
-
-    /* const infoDiv = document.querySelector('.non-rented-common');
-     if (infoDiv) {
-         infoDiv.innerHTML = `
-             <p><strong>想找房的區域:</strong> (${swLat}, ${swLng}) - (${neLat}, ${neLng})</p>
-             <p><strong>預計租期:</strong> ${nonRentedData[0].rental_period} 個月</p>
-         `;
-     }*/
 }
+
 
 function updatePagination() {
     const totalPages = Math.ceil(matchResults.length / itemsPerPage);
-    pageInfo.textContent = `第 ${currentPage} 頁，共 ${totalPages} 頁`;
+    pageInfo.textContent =
+
+
+        `
+    第 ${currentPage}
+    頁，共 ${totalPages}
+    頁`
+
+
+    ;
     prevPageBtn.disabled = currentPage === 1;
     nextPageBtn.disabled = currentPage === totalPages;
 }
@@ -231,39 +278,3 @@ nextPageBtn.addEventListener('click', () => {
         renderMatchResults();
     }
 });
-
-<!-- 在頁面的結尾處載入 API -->
-
-// // 當文檔加載完成時調用
-// document.addEventListener('DOMContentLoaded', function () {
-//     // The initMap function will be called by the Google Maps API script
-//     // Make sure the script is loaded after the DOM is ready
-//     var script = document.createElement('script');
-//     script.src = 'https://maps.googleapis.com/maps/api/js?key=' + apiKey + '&callback=initMap';
-//     script.defer = true;
-//     document.head.appendChild(script);
-// });
-
-<!--                    ${matchInfo}-->
-
-// const matchInfo = `
-//         <div class="match-info">
-//             <h2>匹配用戶 ID: ${match.userId2}</h2>
-//             <div class="match-details">
-//                 ${renderMatchDetail('寵物偏好', match.petSameOrNot ? '相同' : '不同')}
-//                 ${renderMatchDetail('噪音匹配度', (match.noisePercentage * 100).toFixed(2) + '%')}
-//                 ${renderMatchDetail('天氣偏好', (match.weatherPercentage * 100).toFixed(2) + '%')}
-//                 ${renderMatchDetail('興趣匹配度', (match.interestPercentage * 100).toFixed(2) + '%')}
-//                 ${renderMatchDetail('濕度偏好', (match.humidPercentage * 100).toFixed(2) + '%')}
-//                 ${renderMatchDetail('作息匹配度', (match.schedulePercentage * 100).toFixed(2) + '%')}
-//                 ${renderMatchDetail('用餐地點', match.diningLocationSameOrNot ? '相同' : '不同')}
-//                 ${renderMatchDetail('烹飪地點', match.cookLocationSameOrNot ? '相同' : '不同')}
-//                 ${renderMatchDetail('用餐偏好', (match.diningPercentage * 100).toFixed(2) + '%')}
-//                 ${renderMatchDetail('共用房間', match.shareroomSameOrNot ? '相同' : '不同')}
-//                 ${renderMatchDetail('條件匹配度', (match.conditionPercentage * 100).toFixed(2) + '%')}
-//                 ${renderMatchDetail('燈光偏好', (match.lightPercentage * 100).toFixed(2) + '%')}
-//                 ${renderMatchDetail('鬧鐘偏好', (match.alarmPercentage * 100).toFixed(2) + '%')}
-//                 ${renderMatchDetail('友誼偏好', (match.friendPercentage * 100).toFixed(2) + '%')}
-//             </div>
-//         </div>
-//     `;

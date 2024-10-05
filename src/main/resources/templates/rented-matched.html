@@ -16,9 +16,6 @@
                  alt="Competitor Analysis" class="result-image">
         </div>
         <div id="data-container">
-            <!-- 匹配結果將在這裡動態生成 -->
-            <div id="map" style="height: 400px; width: 100%;"></div>
-
             <!-- 動態顯示經緯度和租期資訊 -->
             <div class="non-rented-common">
                 <!-- 這裡會被 JavaScript 動態填入資訊 -->
@@ -31,14 +28,21 @@
         </div>
     </main>
 </div>
-<script src="/js/rented-matched.js"></script>
+
+<div id="matchModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div id="modalDataContainer">
+            <!-- compare.html 的內容將會載入到這裡 -->
+        </div>
+    </div>
+</div>
 <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>-->
 <script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function () {
         initializeMatchResults();
     });
 
-    // 动态加载 Google Maps API 脚本
     var apiKey = /*[[${googleMapsApiKey}]]*/ 'defaultKey';
     var script = document.createElement('script');
     script.src = 'https://maps.googleapis.com/maps/api/js?key=' + apiKey + '&callback=initMap';
@@ -46,7 +50,8 @@
     script.async = true;
     document.head.appendChild(script);
 </script>
-
+<script src="js/compare.js"></script>
+<script src="/js/rented-matched.js"></script>
 <script src="js/header.js"></script>
 </body>
 </html>

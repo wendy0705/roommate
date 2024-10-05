@@ -1,11 +1,3 @@
-let matchResults = [];
-
-const storedResults = localStorage.getItem('matchResults');
-if (storedResults) {
-    matchResults = JSON.parse(storedResults);
-    console.log(matchResults);
-}
-
 // 基本偏好翻譯函數
 function translateBasicPreference(key, value) {
     const translations = {
@@ -412,25 +404,10 @@ function toggleDisplay() {
     if (user2Preferences.classList.contains('hidden')) {
         button.textContent = '顯示全部資料';
     } else {
-        button.textContent = '顯示不同偏好';
+        button.textContent = '顯示不同';
     }
 }
 
-if (matchResults.length > 0) {
-    const item = matchResults[0]; // 假設我們使用第一個匹配結果
-    const userPreference = item.myPreference; // 假設當前用戶的偏好
-    const othersPreference = item.othersPreference;
-
-    showUser2Preferences(userPreference, othersPreference);
-    generateScheduleTable(userPreference, othersPreference);
-
-    document.getElementById('toggleButton').addEventListener('click', () => {
-        comparePreferences(userPreference, othersPreference); // 準備比較結果
-        toggleDisplay(); // 切換顯示
-    });
-} else {
-    console.log('No match results found');
-}
 
 function generateScheduleTable(user1, user2) {
 

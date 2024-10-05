@@ -1,6 +1,6 @@
 package com.example.roommate.controller;
 
-import com.example.roommate.dto.common.MatchDetailDto;
+import com.example.roommate.dto.common.MatchResultDto;
 import com.example.roommate.dto.habits.InterestDto;
 import com.example.roommate.dto.habits.PreferenceDto;
 import com.example.roommate.dto.notrented.NonRentedMatchDto;
@@ -37,7 +37,7 @@ public class AnalysisController {
 
         System.out.println("Received MatchRequestDto: " + matchRequestDto);
 
-        List<MatchDetailDto> matchDetails = new ArrayList<>();
+        List<MatchResultDto> matchResults = new ArrayList<>();
         PreferenceDto myPreference = matchRequestDto.getMyPreference();
         List<Long> matchingUserIds = matchRequestDto.getMatchingUserIds();
 
@@ -57,17 +57,17 @@ public class AnalysisController {
                     .orElseThrow(() -> new RuntimeException("UserMatch not found for userId: " + matchingUserId));
 
             List<NonRentedMatchDto> nonRentedData = nonRentedDataRepository.getNonRentedInfo(matchingUserId);
-            MatchDetailDto matchDetail = new MatchDetailDto(matchingUserId, myPreference, othersPreference, commonInterests, match, nonRentedData, null);
-            matchDetails.add(matchDetail);
+            MatchResultDto matchResult = new MatchResultDto(matchingUserId, commonInterests, myPreference, othersPreference, match, nonRentedData, null);
+            matchResults.add(matchResult);
         }
-        return ResponseEntity.ok(matchDetails);
+        return ResponseEntity.ok(matchResults);
     }
 
     @PostMapping("/not-rented/match")
     public ResponseEntity<?> processNotRentedMatch(@RequestParam Long myId, @RequestBody NotRentedMatchRequestDto matchRequestDto) {
 
         log.info("Received NotRentedMatchRequestDto: " + matchRequestDto);
-        List<MatchDetailDto> matchDetails = new ArrayList<>();
+        List<MatchResultDto> matchResults = new ArrayList<>();
         PreferenceDto myPreference = matchRequestDto.getMyPreference();
 
         userService.savePreferenceById(myId, myPreference);
@@ -93,12 +93,12 @@ public class AnalysisController {
                 rentedHouseData = rentedHouseDataRepository.getRentedHouseInfo(matchingUserId);
             }
 
-            MatchDetailDto matchDetail = new MatchDetailDto(matchingUserId, myPreference, othersPreference, commonInterests, match, nonRentedData, rentedHouseData);
-            matchDetails.add(matchDetail);
+            MatchResultDto matchResult = new MatchResultDto(matchingUserId, commonInterests, myPreference, othersPreference, match, nonRentedData, rentedHouseData);
+            matchResults.add(matchResult);
         }
 
 
-        return ResponseEntity.ok(matchDetails);
+        return ResponseEntity.ok(matchResults);
     }
 }
 
