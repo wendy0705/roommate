@@ -9,16 +9,27 @@
 <body>
 <div class="container">
     <h1>用戶偏好比較</h1>
-    <button id="toggleButton" class="toggle-button">顯示不同偏好</button>
-    <div id="samePreferences"></div>
-    <div id="differentPreferences"></div>
-
-    <canvas id="humidityChart" width="600" height="150"></canvas>
-    <table>
-        <tbody id="resultTable">
-
-        </tbody>
+    <div class="schedule-table-container">
+        <table class="schedule-table">
+            <thead>
+            <tr>
+                <th>日期</th>
+                <th>
+                    <span class="blue-text">你</span> 與
+                    <span class="pink-text">該名用戶</span> 的睡眠時間
+                </th>
+            </tr>
+            </thead>
+            <tbody id="scheduleTableBody">
+            <!-- 動態生成的作息表格內容 -->
+            </tbody>
+        </table>
+    </div>
+    </tbody>
     </table>
+    <button id="toggleButton" class="toggle-button">顯示不同偏好</button>
+    <div id="user2Preferences"></div>
+    <div id="differentPreferences" class="hidden"></div>
 </div>
 </body>
 <script src="js/compare.js"></script>

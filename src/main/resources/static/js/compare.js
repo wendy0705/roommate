@@ -114,38 +114,28 @@ function translatePet(has_pet, pet_type) {
 
 // 比較偏好函數
 function comparePreferences(user1, user2) {
-    let sameResult = '';       // 用於儲存相同的偏好
+
+    // 呼叫生成表格
+
     let differentResult = '';  // 用於儲存不同的偏好
 
-    // 表格的開頭
-    const tableHeaderSingle = `
-        <table class="comparison-table centered">
-            <thead>
-                <tr>
-                    <th>興趣/偏好</th>
-                    <th class="center-column">結果</th>  <!-- 只顯示結果，無需顯示“你” -->
-                </tr>
-            </thead>
-            <tbody>
-    `;
-
     const tableHeaderComparison = `
-        <table class="comparison-table">
+            <table>
             <thead>
                 <tr>
-                    <th>興趣/偏好</th>
-                    <th class="user-column">你</th>
-                    <th class="user-column">這位用戶</th>  <!-- 顯示兩位用戶的比較 -->
+                    <th>偏好</th>
+                    <th>你</th>
+                    <th>這位用戶</th>
                 </tr>
             </thead>
             <tbody>
-    `;
+        `;
 
     // 表格的結尾
     const tableFooter = `
-            </tbody>
-        </table>
-    `;
+                </tbody>
+            </table>
+        `;
 
     // 偏好項目
     const preferences = {
@@ -156,23 +146,15 @@ function comparePreferences(user1, user2) {
 
     // 比較基本偏好
     for (let key in preferences) {
-        if (user1[key] === user2[key]) {
-            // 相同偏好，只顯示 user1 的資料並置中
-            sameResult += `
-                <tr>
-                    <td>${preferences[key]}</td>
-                    <td class="centered">${translateBasicPreference(key, user1[key])}</td>
-                </tr>
-            `;
-        } else {
+        if (user1[key] !== user2[key]) {
             // 不同偏好，顯示兩位用戶的比較
             differentResult += `
-                <tr>
-                    <td>${preferences[key]}</td>
-                    <td>${translateBasicPreference(key, user1[key])}</td>
-                    <td>${translateBasicPreference(key, user2[key])}</td>
-                </tr>
-            `;
+                    <tr>
+                        <td>${preferences[key]}</td>
+                        <td>${translateBasicPreference(key, user1[key])}</td>
+                        <td>${translateBasicPreference(key, user2[key])}</td>
+                    </tr>
+                `;
         }
     }
 
@@ -186,27 +168,272 @@ function comparePreferences(user1, user2) {
     };
 
     for (let key in specialConditionsLabels) {
-        if (user1.special_conditions[key] === user2.special_conditions[key]) {
-            // 相同偏好，只顯示 user1 的資料並置中
-            sameResult += `
-                <tr>
-                    <td>接受${specialConditionsLabels[key]}</td>
-                    <td class="centered">${translateCategoryPreference('special_conditions', key, user1.special_conditions[key])}</td>
-                </tr>
-            `;
-        } else {
+        if (user1.special_conditions[key] !== user2.special_conditions[key]) {
             // 不同偏好，顯示兩位用戶的比較
             differentResult += `
-                <tr>
-                    <td>接受${specialConditionsLabels[key]}</td>
-                    <td>${translateCategoryPreference('special_conditions', key, user1.special_conditions[key])}</td>
-                    <td>${translateCategoryPreference('special_conditions', key, user2.special_conditions[key])}</td>
-                </tr>
-            `;
+                    <tr>
+                        <td>接受${specialConditionsLabels[key]}</td>
+                        <td>${translateCategoryPreference('special_conditions', key, user1.special_conditions[key])}</td>
+                        <td>${translateCategoryPreference('special_conditions', key, user2.special_conditions[key])}</td>
+                    </tr>
+                `;
         }
     }
 
-    // 比較作息時間
+    // 比較用餐習慣
+    const diningHabitsLabels = {
+        alone: "自己吃",
+        not_alone: "跟朋友吃"
+    };
+
+    for (let key in diningHabitsLabels) {
+        if (user1.dining_habits[key] !== user2.dining_habits[key]) {
+            // 不同偏好，顯示兩位用戶的比較
+            differentResult += `
+                    <tr>
+                        <td>用餐習慣：${diningHabitsLabels[key]}</td>
+                        <td>${user1.dining_habits[key] === 1 ? "是" : "否"}</td>
+                        <td>${user2.dining_habits[key] === 1 ? "是" : "否"}</td>
+                    </tr>
+                `;
+        }
+    }
+
+    // 比較噪音敏感度
+    const noiseLabels = {
+        sleep: "入睡時噪音敏感度",
+        study_or_work: "學習或工作時噪音敏感度"
+    };
+
+    for (let key in noiseLabels) {
+        if (user1.noise_sensitivity[key] !== user2.noise_sensitivity[key]) {
+            // 不同偏好，顯示兩位用戶的比較
+            differentResult += `
+                    <tr>
+                        <td>${noiseLabels[key]}</td>
+                        <td>${translateNoiseSensitivity(key, user1.noise_sensitivity[key])}</td>
+                        <td>${translateNoiseSensitivity(key, user2.noise_sensitivity[key])}</td>
+                    </tr>
+                `;
+        }
+    }
+
+    // 比較鬧鐘使用習慣
+    if (user1.alarm_habit !== user2.alarm_habit) {
+        differentResult += `
+                <tr>
+                    <td>鬧鐘使用習慣</td>
+                    <td>${translateAlarmHabit(user1.alarm_habit)}</td>
+                    <td>${translateAlarmHabit(user2.alarm_habit)}</td>
+                </tr>
+            `;
+    }
+
+    // 比較燈光敏感度
+    if (user1.light_sensitivity !== user2.light_sensitivity) {
+        differentResult += `
+                <tr>
+                    <td>燈光敏感度</td>
+                    <td>${translateLightSensitivity(user1.light_sensitivity)}</td>
+                    <td>${translateLightSensitivity(user2.light_sensitivity)}</td>
+                </tr>
+            `;
+    }
+
+    // 比較交友習慣
+    if (user1.friendship_habit !== user2.friendship_habit) {
+        differentResult += `
+                <tr>
+                    <td>交友習慣</td>
+                    <td>${translateFriendshipHabit(user1.friendship_habit)}</td>
+                    <td>${translateFriendshipHabit(user2.friendship_habit)}</td>
+                </tr>
+            `;
+    }
+
+    // 比較天氣熱時偏好
+    if (user1.hot_weather_preference.preference !== user2.hot_weather_preference.preference) {
+        differentResult += `
+                <tr>
+                    <td>天氣熱時偏好</td>
+                    <td>${translateHotWeatherPreference(user1.hot_weather_preference.preference, user1.hot_weather_preference.temperature)}</td>
+                    <td>${translateHotWeatherPreference(user2.hot_weather_preference.preference, user2.hot_weather_preference.temperature)}</td>
+                </tr>
+            `;
+    }
+
+    // 比較濕度高時偏好
+    if (user1.humidity_preference !== user2.humidity_preference) {
+        differentResult += `
+                <tr>
+                    <td>濕度高時偏好</td>
+                    <td>${translateHumidityPreference(user1.humidity_preference)}</td>
+                    <td>${translateHumidityPreference(user2.humidity_preference)}</td>
+                </tr>
+            `;
+    }
+
+    if (user1.pet.has_pet !== user2.pet.has_pet) {
+        differentResult += `
+            <tr>
+                <td>寵物</td>
+                <td>${translatePet(user1.pet.has_pet, user1.pet.pet_type)}</td>
+                <td>${translatePet(user2.pet.has_pet, user2.pet.pet_type)}</td>
+            </tr>
+        `;
+    }
+
+    // 組裝最終結果
+    if (differentResult) {
+        differentResult = tableHeaderComparison + differentResult + tableFooter;
+    } else {
+        differentResult = '<p>沒有不同的偏好</p>';
+    }
+
+    document.getElementById('differentPreferences').innerHTML = differentResult;
+}
+
+function showUser2Preferences(user1, user2) {
+    let user2Result = `
+        <table>
+            <thead>
+                <tr>
+                    <th>偏好</th>
+                    <th>你</th>
+                    <th>這位用戶</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>是否要與人同住一間房間</td>
+                    <td>${translateBasicPreference('share_room', user1.share_room)}</td>
+                    <td>${translateBasicPreference('share_room', user2.share_room)}</td>
+                </tr>
+                <tr>
+                    <td>在家開伙</td>
+                    <td>${translateBasicPreference('cooking_location', user1.cooking_location)}</td>
+                    <td>${translateBasicPreference('cooking_location', user2.cooking_location)}</td>
+                </tr>
+                <tr>
+                    <td>在家用餐</td>
+                    <td>${translateBasicPreference('dining_location', user1.dining_location)}</td>
+                    <td>${translateBasicPreference('dining_location', user2.dining_location)}</td>
+                </tr>
+                <tr>
+                    <td>接受凶宅</td>
+                    <td>${translateCategoryPreference('special_conditions', 'haunted_house', user1.special_conditions.haunted_house)}</td>
+                    <td>${translateCategoryPreference('special_conditions', 'haunted_house', user2.special_conditions.haunted_house)}</td>
+                </tr>
+                <tr>
+                    <td>接受頂加</td>
+                    <td>${translateCategoryPreference('special_conditions', 'rooftop_extension', user1.special_conditions.rooftop_extension)}</td>
+                    <td>${translateCategoryPreference('special_conditions', 'rooftop_extension', user2.special_conditions.rooftop_extension)}</td>
+                </tr>
+                <tr>
+                    <td>接受違建</td>
+                    <td>${translateCategoryPreference('special_conditions', 'illegal_building', user1.special_conditions.illegal_building)}</td>
+                    <td>${translateCategoryPreference('special_conditions', 'illegal_building', user2.special_conditions.illegal_building)}</td>
+                </tr>
+                <tr>
+                    <td>接受地下室</td>
+                    <td>${translateCategoryPreference('special_conditions', 'basement', user1.special_conditions.basement)}</td>
+                    <td>${translateCategoryPreference('special_conditions', 'basement', user2.special_conditions.basement)}</td>
+                </tr>
+                <tr>
+                    <td>接受無窗</td>
+                    <td>${translateCategoryPreference('special_conditions', 'windowless', user1.special_conditions.windowless)}</td>
+                    <td>${translateCategoryPreference('special_conditions', 'windowless', user2.special_conditions.windowless)}</td>
+                </tr>
+                <tr>
+                    <td>用餐習慣：自己吃</td>
+                    <td>${user1.dining_habits.alone === 1 ? "是" : "否"}</td>
+                    <td>${user2.dining_habits.alone === 1 ? "是" : "否"}</td>
+                </tr>
+                <tr>
+                    <td>用餐習慣：跟朋友吃</td>
+                    <td>${user1.dining_habits.not_alone === 1 ? "是" : "否"}</td>
+                    <td>${user2.dining_habits.not_alone === 1 ? "是" : "否"}</td>
+                </tr>
+                <tr>
+                    <td>入睡時噪音敏感度</td>
+                    <td>${translateNoiseSensitivity('sleep', user1.noise_sensitivity.sleep)}</td>
+                    <td>${translateNoiseSensitivity('sleep', user2.noise_sensitivity.sleep)}</td>
+                </tr>
+                <tr>
+                    <td>學習或工作時噪音敏感度</td>
+                    <td>${translateNoiseSensitivity('study_or_work', user1.noise_sensitivity.study_or_work)}</td>
+                    <td>${translateNoiseSensitivity('study_or_work', user2.noise_sensitivity.study_or_work)}</td>
+                </tr>
+                <tr>
+                    <td>鬧鐘使用習慣</td>
+                    <td>${translateAlarmHabit(user1.alarm_habit)}</td>
+                    <td>${translateAlarmHabit(user2.alarm_habit)}</td>
+                </tr>
+                <tr>
+                    <td>燈光敏感度</td>
+                    <td>${translateLightSensitivity(user1.light_sensitivity)}</td>
+                    <td>${translateLightSensitivity(user2.light_sensitivity)}</td>
+                </tr>
+                <tr>
+                    <td>交友習慣</td>
+                    <td>${translateFriendshipHabit(user1.friendship_habit)}</td>
+                    <td>${translateFriendshipHabit(user2.friendship_habit)}</td>
+                </tr>
+                <tr>
+                    <td>天氣熱時偏好</td>
+                    <td>${translateHotWeatherPreference(user1.hot_weather_preference.preference, user1.hot_weather_preference.temperature)}</td>
+                    <td>${translateHotWeatherPreference(user2.hot_weather_preference.preference, user2.hot_weather_preference.temperature)}</td>
+                </tr>
+                <tr>
+                    <td>濕度高時偏好</td>
+                    <td>${translateHumidityPreference(user1.humidity_preference)}</td>
+                    <td>${translateHumidityPreference(user2.humidity_preference)}</td>
+                </tr>
+                 <tr>
+                    <td>寵物</td>
+                    <td>${translatePet(user1.pet.has_pet, user1.pet.pet_type)}</td>
+                    <td>${translatePet(user2.pet.has_pet, user2.pet.pet_type)}</td>
+                </tr>
+            </tbody>
+        </table>
+    `;
+    document.getElementById('user2Preferences').innerHTML = user2Result;
+}
+
+
+function toggleDisplay() {
+    const user2Preferences = document.getElementById('user2Preferences');
+    const differentPreferences = document.getElementById('differentPreferences');
+
+    user2Preferences.classList.toggle('hidden');
+    differentPreferences.classList.toggle('hidden');
+
+    const button = document.getElementById('toggleButton');
+    if (user2Preferences.classList.contains('hidden')) {
+        button.textContent = '顯示全部資料';
+    } else {
+        button.textContent = '顯示不同偏好';
+    }
+}
+
+if (matchResults.length > 0) {
+    const item = matchResults[0]; // 假設我們使用第一個匹配結果
+    const userPreference = item.myPreference; // 假設當前用戶的偏好
+    const othersPreference = item.othersPreference;
+
+    showUser2Preferences(userPreference, othersPreference);
+    generateScheduleTable(userPreference, othersPreference);
+
+    document.getElementById('toggleButton').addEventListener('click', () => {
+        comparePreferences(userPreference, othersPreference); // 準備比較結果
+        toggleDisplay(); // 切換顯示
+    });
+} else {
+    console.log('No match results found');
+}
+
+function generateScheduleTable(user1, user2) {
+
     const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
     const daysLabels = {
         monday: "週一",
@@ -218,333 +445,136 @@ function comparePreferences(user1, user2) {
         sunday: "週日"
     };
 
-    for (let day of days) {
+    function convertTime(hour) {
+        if (hour >= 18) {
+            return hour - 18;
+        } else {
+            return hour + 6;
+        }
+    }
+
+    function formatTime(hour) {
+        return (hour < 10 ? '0' : '') + hour + ':00';
+    }
+
+    const tableBody = document.getElementById('scheduleTableBody');
+    tableBody.innerHTML = ''; // 清空現有內容
+
+    days.forEach(day => {
         const user1Schedule = user1.schedule[day];
         const user2Schedule = user2.schedule[day];
 
-        if (user1Schedule[0] === user2Schedule[0] && user1Schedule[1] === user2Schedule[1]) {
-            // 相同作息，只顯示一人的資料並置中
-            sameResult += `
-                <tr>
-                    <td>${daysLabels[day]} 作息</td>
-                    <td class="centered">${user1Schedule[0]}:00 - ${user1Schedule[1]}:00</td>
-                </tr>
-            `;
+        // 處理跨午夜
+        let user1Start = convertTime(user1Schedule[0]);
+        let user1End = convertTime(user1Schedule[1]);
+        if (user1End <= user1Start) {
+            user1End += 24;
+        }
+
+        let user2Start = convertTime(user2Schedule[0]);
+        let user2End = convertTime(user2Schedule[1]);
+        if (user2End <= user2Start) {
+            user2End += 24;
+        }
+
+        // 創建表格行
+        const row = document.createElement('tr');
+
+        // 日期
+        const dateCell = document.createElement('td');
+        dateCell.textContent = daysLabels[day];
+        row.appendChild(dateCell);
+
+        // 用戶1和用戶2
+        const scheduleCell = document.createElement('td');
+        const scheduleContainer = document.createElement('div');
+        scheduleContainer.classList.add('schedule-container');
+
+        // 用戶1的作息條
+        const user1Bar = document.createElement('div');
+        user1Bar.classList.add('schedule-bar', 'user1');
+        const user1StartPercent = (user1Start / 24) * 100;
+        let user1EndPercent = (user1End / 24) * 100;
+        if (user1EndPercent > 100) user1EndPercent = 100; // 限制最大為100%
+        const user1Width = user1EndPercent - user1StartPercent;
+        user1Bar.style.left = `${user1StartPercent}%`;
+        user1Bar.style.width = `${user1Width}%`;
+        scheduleContainer.appendChild(user1Bar);
+
+        const user1WakeTimeLabel = document.createElement('div');
+
+        if (user1Schedule[0] < 18 && (user1Schedule[1] > 18 || user1Schedule[1] < user1Schedule[0])) {
+            const user1AdditionalBar = document.createElement('div');
+            user1AdditionalBar.classList.add('schedule-bar', 'user1');
+            const user1AdditionalEndPercent = (convertTime(user1Schedule[1]) / 24) * 100;
+            user1AdditionalBar.style.left = '0%';
+            user1AdditionalBar.style.width = `${user1AdditionalEndPercent}%`;
+            scheduleContainer.appendChild(user1AdditionalBar);
+
+            user1WakeTimeLabel.style.left = `${user1AdditionalEndPercent}%`;
         } else {
-            // 不同作息，顯示兩位用戶的比較
-            differentResult += `
-                <tr>
-                    <td>${daysLabels[day]} 作息</td>
-                    <td>${user1Schedule[0]}:00 - ${user1Schedule[1]}:00</td>
-                    <td>${user2Schedule[0]}:00 - ${user2Schedule[1]}:00</td>
-                </tr>
-            `;
+            user1WakeTimeLabel.style.left = `${user1EndPercent}%`;
         }
-    }
 
-    // 比較用餐習慣
-    const diningHabitsLabels = {
-        alone: "自己吃",
-        not_alone: "跟朋友吃"
-    };
+        // 用戶1的睡眠和起床時間標籤
+        const user1SleepTimeLabel = document.createElement('div');
+        user1SleepTimeLabel.classList.add('time-label-text', 'user1-label');
+        user1SleepTimeLabel.textContent = formatTime(user1Schedule[0]);
+        user1SleepTimeLabel.style.left = `${user1StartPercent}%`;
+        scheduleContainer.appendChild(user1SleepTimeLabel);
 
-    for (let key in diningHabitsLabels) {
-        if (user1.dining_habits[key] === user2.dining_habits[key]) {
-            // 相同偏好，只顯示一人的資料並置中
-            sameResult += `
-                <tr>
-                    <td>用餐習慣：${diningHabitsLabels[key]}</td>
-                    <td class="centered">${user1.dining_habits[key] === 1 ? "是" : "否"}</td>
-                </tr>
-            `;
+        user1WakeTimeLabel.classList.add('time-label-text', 'user1-label');
+        user1WakeTimeLabel.textContent = formatTime(user1Schedule[1]);
+        scheduleContainer.appendChild(user1WakeTimeLabel);
+
+        // 用戶2的作息條
+        const user2Bar = document.createElement('div');
+        user2Bar.classList.add('schedule-bar', 'user2');
+        const user2StartPercent = (user2Start / 24) * 100;
+        let user2EndPercent = (user2End / 24) * 100;
+        if (user2EndPercent > 100) user2EndPercent = 100; // 限制最大為100%
+        const user2Width = user2EndPercent - user2StartPercent;
+        user2Bar.style.left = `${user2StartPercent}%`;
+        user2Bar.style.width = `${user2Width}%`;
+        scheduleContainer.appendChild(user2Bar);
+
+        const user2WakeTimeLabel = document.createElement('div');
+
+        if (user2Schedule[0] < 18 && (user2Schedule[1] > 18 || user2Schedule[1] < user2Schedule[0])) {  // 起床時間在當天18:00之前，需在圖表開始處顯示
+            const user2AdditionalBar = document.createElement('div');
+            user2AdditionalBar.classList.add('schedule-bar', 'user2');
+            const user2AdditionalEndPercent = (convertTime(user2Schedule[1]) / 24) * 100;
+            user2AdditionalBar.style.left = '0%';
+            user2AdditionalBar.style.width = `${user2AdditionalEndPercent}%`;
+            scheduleContainer.appendChild(user2AdditionalBar);
+
+            user2WakeTimeLabel.style.left = `${user2AdditionalEndPercent}%`;
         } else {
-            // 不同偏好，顯示兩位用戶的比較
-            differentResult += `
-                <tr>
-                    <td>用餐習慣：${diningHabitsLabels[key]}</td>
-                    <td>${user1.dining_habits[key] === 1 ? "是" : "否"}</td>
-                    <td>${user2.dining_habits[key] === 1 ? "是" : "否"}</td>
-                </tr>
-            `;
+            user2WakeTimeLabel.style.left = `${user2EndPercent}%`;
         }
-    }
 
-    // 比較噪音敏感度
-    const noiseLabels = {
-        sleep: "入睡時噪音敏感度",
-        study_or_work: "學習或工作時噪音敏感度"
-    };
+        // 用戶2的睡眠和起床時間標籤
+        const user2SleepTimeLabel = document.createElement('div');
+        user2SleepTimeLabel.classList.add('time-label-text', 'user2-label');
+        user2SleepTimeLabel.textContent = formatTime(user2Schedule[0]);
+        user2SleepTimeLabel.style.left = `${user2StartPercent}%`;
+        scheduleContainer.appendChild(user2SleepTimeLabel);
 
-    for (let key in noiseLabels) {
-        if (user1.noise_sensitivity[key] === user2.noise_sensitivity[key]) {
-            // 相同偏好，只顯示一人的資料並置中
-            sameResult += `
-                <tr>
-                    <td>${noiseLabels[key]}</td>
-                    <td class="centered">${translateNoiseSensitivity(key, user1.noise_sensitivity[key])}</td>
-                </tr>
-            `;
-        } else {
-            // 不同偏好，顯示兩位用戶的比較
-            differentResult += `
-                <tr>
-                    <td>${noiseLabels[key]}</td>
-                    <td>${translateNoiseSensitivity(key, user1.noise_sensitivity[key])}</td>
-                    <td>${translateNoiseSensitivity(key, user2.noise_sensitivity[key])}</td>
-                </tr>
-            `;
-        }
-    }
+        user2WakeTimeLabel.classList.add('time-label-text', 'user2-label');
+        user2WakeTimeLabel.textContent = formatTime(user2Schedule[1]);
+        scheduleContainer.appendChild(user2WakeTimeLabel);
 
-    // 比較鬧鐘使用習慣
-    if (user1.alarm_habit === user2.alarm_habit) {
-        sameResult += `
-            <tr>
-                <td>鬧鐘使用習慣</td>
-                <td class="centered">${translateAlarmHabit(user1.alarm_habit)}</td>
-            </tr>
-        `;
-    } else {
-        differentResult += `
-            <tr>
-                <td>鬧鐘使用習慣</td>
-                <td>${translateAlarmHabit(user1.alarm_habit)}</td>
-                <td>${translateAlarmHabit(user2.alarm_habit)}</td>
-            </tr>
-        `;
-    }
+        scheduleCell.appendChild(scheduleContainer);
+        row.appendChild(scheduleCell);
 
-    // 比較燈光敏感度
-    if (user1.light_sensitivity === user2.light_sensitivity) {
-        sameResult += `
-            <tr>
-                <td>燈光敏感度</td>
-                <td class="centered">${translateLightSensitivity(user1.light_sensitivity)}</td>
-            </tr>
-        `;
-    } else {
-        differentResult += `
-            <tr>
-                <td>燈光敏感度</td>
-                <td>${translateLightSensitivity(user1.light_sensitivity)}</td>
-                <td>${translateLightSensitivity(user2.light_sensitivity)}</td>
-            </tr>
-        `;
-    }
-
-    // 比較交友習慣
-    if (user1.friendship_habit === user2.friendship_habit) {
-        sameResult += `
-            <tr>
-                <td>交友習慣</td>
-                <td class="centered">${translateFriendshipHabit(user1.friendship_habit)}</td>
-            </tr>
-        `;
-    } else {
-        differentResult += `
-            <tr>
-                <td>交友習慣</td>
-                <td>${translateFriendshipHabit(user1.friendship_habit)}</td>
-                <td>${translateFriendshipHabit(user2.friendship_habit)}</td>
-            </tr>
-        `;
-    }
-
-    // 比較天氣熱時偏好
-    if (user1.hot_weather_preference.preference === user2.hot_weather_preference.preference &&
-        user1.hot_weather_preference.temperature === user2.hot_weather_preference.temperature) {
-        // 相同偏好，只顯示一人的資料並置中
-        sameResult += `
-            <tr>
-                <td>天氣熱時偏好</td>
-                <td class="centered">${translateHotWeatherPreference(user1.hot_weather_preference.preference, user1.hot_weather_preference.temperature)}</td>
-            </tr>
-        `;
-    } else {
-        // 不同偏好，顯示兩位用戶的比較
-        differentResult += `
-            <tr>
-                <td>天氣熱時偏好</td>
-                <td>${translateHotWeatherPreference(user1.hot_weather_preference.preference, user1.hot_weather_preference.temperature)}</td>
-                <td>${translateHotWeatherPreference(user2.hot_weather_preference.preference, user2.hot_weather_preference.temperature)}</td>
-            </tr>
-        `;
-    }
-
-    // 比較濕度高時偏好
-    if (user1.humidity_preference === user2.humidity_preference) {
-        sameResult += `
-            <tr>
-                <td>濕度高時偏好</td>
-                <td class="centered">${translateHumidityPreference(user1.humidity_preference)}</td>
-            </tr>
-        `;
-    } else {
-        differentResult += `
-            <tr>
-                <td>濕度高時偏好</td>
-                <td>${translateHumidityPreference(user1.humidity_preference)}</td>
-                <td>${translateHumidityPreference(user2.humidity_preference)}</td>
-            </tr>
-        `;
-    }
-
-    // 定義用戶標籤
-    let userLabels = [];
-    // 定義數據
-    let data = [];
-    // 定義顏色
-    let backgroundColors = [];
-
-    if (user1.humidity_preference === user2.humidity_preference) {
-        // 如果相同，只顯示一個用戶
-        userLabels.push('你');
-        data.push(user1.humidity_preference);
-        backgroundColors.push('rgba(54, 162, 235, 0.6)'); // 你用一種顏色
-    } else {
-        // 如果不同，顯示兩個用戶
-        userLabels.push('你');
-        userLabels.push('這位用戶');
-        data.push(user1.humidity_preference);
-        data.push(user2.humidity_preference);
-        backgroundColors.push('rgba(54, 162, 235, 0.6)'); // 你用一種顏色
-        backgroundColors.push('rgba(255, 99, 132, 0.6)'); // 這位用戶用另一種顏色
-    }
-
-    // 獲取 canvas 元素
-    const ctx = document.getElementById('humidityChart').getContext('2d');
-
-    // 創建橫向長條圖
-    const humidityChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: userLabels,
-            datasets: [{
-                label: '濕度高時偏好',
-                data: data,
-                backgroundColor: backgroundColors,
-                borderColor: backgroundColors.map(color => color.replace('0.6', '1')),
-                borderWidth: 1,
-                minBarLength: 5
-            }]
-        },
-        options: {
-            indexAxis: 'y', // 橫向長條圖
-            scales: {
-                x: {
-                    beginAtZero: true,
-                    min: 0,
-                    max: 2,
-                    ticks: {
-                        stepSize: 1,
-                        precision: 0,
-                        callback: function (value) {
-                            const translations = ["不開除濕", "不常開除濕", "會開除濕"];
-                            return translations[value] || value;
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: '濕度高時偏好'
-                    }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: '用戶'
-                    }
-                }
-            },
-            plugins: {
-                title: {
-                    display: true,
-                    text: '用戶濕度高時的偏好比較'
-                },
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function (context) {
-                            const label = context.dataset.label || '';
-                            const value = context.parsed.x;
-                            const translated = translateHumidityPreference(value);
-                            return label + ': ' + translated;
-                        }
-                    }
-                }
-            }
-        }
+        // 將行添加到表格中
+        tableBody.appendChild(row);
     });
-
-    // 比較寵物
-    if (user1.pet.has_pet === user2.pet.has_pet &&
-        (user1.pet.has_pet === 0 || user1.pet.pet_type === user2.pet.pet_type)) {
-        // 相同偏好，只顯示一人的資料並置中
-        sameResult += `
-            <tr>
-                <td>寵物</td>
-                <td class="centered">${translatePet(user1.pet.has_pet, user1.pet.pet_type)}</td>
-            </tr>
-        `;
-    } else {
-        // 不同偏好，顯示兩位用戶的比較
-        differentResult += `
-            <tr>
-                <td>寵物</td>
-                <td>${translatePet(user1.pet.has_pet, user1.pet.pet_type)}</td>
-                <td>${translatePet(user2.pet.has_pet, user2.pet.pet_type)}</td>
-            </tr>
-        `;
-    }
-
-    // 如果有相同的偏好結果，將其包裝成表格
-    if (sameResult) {
-        sameResult = tableHeaderSingle + sameResult + tableFooter;
-    } else {
-        sameResult = '<p>無相同的偏好</p>';  // 如果沒有相同的偏好
-    }
-
-    // 如果有不同的偏好結果，將其包裝成表格
-    if (differentResult) {
-        differentResult = tableHeaderComparison + differentResult + tableFooter;
-    } else {
-        differentResult = '<p>無不同的偏好</p>';  // 如果沒有不同的偏好
-    }
-
-    // 將結果顯示在不同的區域
-    document.getElementById('samePreferences').innerHTML = sameResult;
-    document.getElementById('differentPreferences').innerHTML = differentResult;
 }
 
 
-function toggleDisplay() {
-    const samePreferences = document.getElementById('samePreferences');
-    const differentPreferences = document.getElementById('differentPreferences');
-
-    samePreferences.classList.toggle('hidden');
-    differentPreferences.classList.toggle('hidden');
-
-    const button = document.getElementById('toggleButton');
-    if (samePreferences.classList.contains('hidden')) {
-        button.textContent = '顯示相同偏好';
-    } else {
-        button.textContent = '顯示不同偏好';
-    }
-}
-
-if (matchResults.length > 0) {
-    const item = matchResults[0]; // 假設我們使用第一個匹配結果
-    const userPreference = item.myPreference; // 假設當前用戶的偏好
-    const othersPreference = item.othersPreference;
-
-    comparePreferences(userPreference, othersPreference);
-} else {
-    console.log('No match results found');
-}
-
-// 初始化顯示
-document.getElementById('differentPreferences').classList.add('hidden');
-
-// 添加按鈕事件監聽器
-document.getElementById('toggleButton').addEventListener('click', toggleDisplay);
+// // 初始化顯示
+// document.getElementById('differentPreferences').classList.add('hidden');
+//
+// // 添加按鈕事件監聽器
+// document.getElementById('toggleButton').addEventListener('click', toggleDisplay);
