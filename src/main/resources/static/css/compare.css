@@ -169,8 +169,8 @@ th {
 }
 
 .user2 {
-    background-color: rgba(225, 133, 94, 0.7); /* 用戶2的粉色 */
-    border: 1px solid rgba(225, 133, 94, 0.7);
+    background-color: rgba(255, 99, 132, 0.7); /* 用戶2的粉色 */
+    border: 1px solid rgba(255, 99, 132, 0.7);
 }
 
 /* 標籤文字 */
@@ -187,7 +187,7 @@ th {
 }
 
 .user2-label {
-    color: rgba(225, 133, 94, 0.7);
+    color: rgb(255, 99, 132, 0.7);
 }
 
 .blue-text {
@@ -195,5 +195,5 @@ th {
 }
 
 .pink-text {
-    color: rgba(225, 133, 94, 0.7);
+    color: rgb(255, 99, 132, 1);
 }

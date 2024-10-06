@@ -9,7 +9,6 @@ import com.example.roommate.dto.rented.AvailableRoomDto;
 import com.example.roommate.dto.rented.OccupiedRoomDto;
 import com.example.roommate.dto.rented.RentedHouseMatchDto;
 import com.example.roommate.dto.rented.RentedMatchRequestDto;
-import com.example.roommate.entity.UserMatch;
 import com.example.roommate.repository.AvailableRoomRepository;
 import com.example.roommate.repository.NonRentedDataRepository;
 import com.example.roommate.repository.OccupiedRoomRepository;
@@ -22,8 +21,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequestMapping("/api/1.0/analysis")
@@ -41,32 +42,68 @@ public class AnalysisController {
     @PostMapping("rented/match")
     public ResponseEntity<?> matchPreferences(@RequestParam Long myId, @RequestBody RentedMatchRequestDto matchRequestDto) {
 
-        System.out.println("Received MatchRequestDto: " + matchRequestDto);
-
+        log.info("Received NotRentedMatchRequestDto: " + matchRequestDto);
         List<MatchResultDto> matchResults = new ArrayList<>();
         PreferenceDto myPreference = matchRequestDto.getMyPreference();
-        List<Long> matchingUserIds = matchRequestDto.getMatchingUserIds();
 
         userService.savePreferenceById(myId, myPreference);
 
-        // 遍歷 matchingUserIds 並進行分析
-        for (Long matchingUserId : matchingUserIds) {
+        Map<Long, PreferenceDto> userPreferences = new HashMap<>();
+
+        Map<Long, Map<String, Object>> userAnalysisResults = new HashMap<>();
+
+        for (Long matchingUserId : matchRequestDto.getMatchingUserIds()) {
+
             PreferenceDto othersPreference = userService.getByUserId(matchingUserId);
-            Map<String, Object> response = analysisService.analysis(myPreference, othersPreference);
-            InterestDto commonInterests = analysisService.compareInterests(myPreference.getInterest(), othersPreference.getInterest());
-            log.info("Common interests: " + commonInterests);
+            userPreferences.put(matchingUserId, othersPreference);
 
-            // 儲存分析結果
-            analysisService.save(myId, matchingUserId, response);
+            Map<String, Object> analysisResult = analysisService.analysis(myPreference, othersPreference);
+            log.info("Analysis result for userId " + matchingUserId + ": " + analysisResult);
+            userAnalysisResults.put(matchingUserId, analysisResult);
+        }
 
-            UserMatch match = analysisService.findByUserId1AndUserId2(myId, matchingUserId)
-                    .orElseThrow(() -> new RuntimeException("UserMatch not found for userId: " + matchingUserId));
+        Map<Long, Double> matchScores = new HashMap<>();
+        for (Map.Entry<Long, Map<String, Object>> entry : userAnalysisResults.entrySet()) {
+            Long matchingUserId = entry.getKey();
+            Map<String, Object> analysisResult = entry.getValue();
+
+            double matchScore = analysisService.calculateWeightedMatchScore(analysisResult);
+            matchScores.put(matchingUserId, matchScore);
+        }
+
+        List<Map.Entry<Long, Double>> sortedMatches = matchScores.entrySet().stream()
+                .sorted(Map.Entry.<Long, Double>comparingByValue().reversed())
+                .collect(Collectors.toList());
+
+        for (Map.Entry<Long, Double> entry : sortedMatches) {
+            Long matchingUserId = entry.getKey();
+            Double matchScore = entry.getValue();
+
+            PreferenceDto othersPreference = userPreferences.get(matchingUserId);
 
             List<NonRentedMatchDto> nonRentedData = nonRentedDataRepository.getNonRentedInfo(matchingUserId);
-            MatchResultDto matchResult = new MatchResultDto(matchingUserId, commonInterests, null, null, myPreference, othersPreference, match, nonRentedData, null);
+
+            analysisService.save(myId, matchingUserId, userAnalysisResults.get(matchingUserId));
+
+            InterestDto commonInterests = analysisService.compareInterests(myPreference.getInterest(), othersPreference.getInterest());
+
+            MatchResultDto matchResult = new MatchResultDto(
+                    matchingUserId,
+                    commonInterests,
+                    null,
+                    null,
+                    myPreference,
+                    othersPreference,
+                    matchScore, // 使用計算後的匹配分數
+                    nonRentedData,
+                    null
+            );
+
             matchResults.add(matchResult);
         }
+
         return ResponseEntity.ok(matchResults);
+
     }
 
     @PostMapping("/not-rented/match")
@@ -78,17 +115,40 @@ public class AnalysisController {
 
         userService.savePreferenceById(myId, myPreference);
 
+        Map<Long, PreferenceDto> userPreferences = new HashMap<>();
+
+        Map<Long, Map<String, Object>> userAnalysisResults = new HashMap<>();
+
         for (Map.Entry<Long, Integer> entry : matchRequestDto.getMatchingUserIds().entrySet()) {
             Long matchingUserId = entry.getKey();
-            Integer source = entry.getValue();
 
             PreferenceDto othersPreference = userService.getByUserId(matchingUserId);
-            Map<String, Object> response = analysisService.analysis(myPreference, othersPreference);
-            InterestDto commonInterests = analysisService.compareInterests(myPreference.getInterest(), othersPreference.getInterest());
-            analysisService.save(myId, matchingUserId, response);
+            userPreferences.put(matchingUserId, othersPreference);
 
-            UserMatch match = analysisService.findByUserId1AndUserId2(myId, matchingUserId)
-                    .orElseThrow(() -> new RuntimeException("UserMatch not found for userId: " + matchingUserId));
+            Map<String, Object> analysisResult = analysisService.analysis(myPreference, othersPreference);
+            log.info("Analysis result for userId " + matchingUserId + ": " + analysisResult);
+            userAnalysisResults.put(matchingUserId, analysisResult);
+        }
+
+        Map<Long, Double> matchScores = new HashMap<>();
+        for (Map.Entry<Long, Map<String, Object>> entry : userAnalysisResults.entrySet()) {
+            Long matchingUserId = entry.getKey();
+            Map<String, Object> analysisResult = entry.getValue();
+
+            double matchScore = analysisService.calculateWeightedMatchScore(analysisResult);
+            matchScores.put(matchingUserId, matchScore);
+        }
+
+        List<Map.Entry<Long, Double>> sortedMatches = matchScores.entrySet().stream()
+                .sorted(Map.Entry.<Long, Double>comparingByValue().reversed())
+                .collect(Collectors.toList());
+
+        for (Map.Entry<Long, Double> entry : sortedMatches) {
+            Long matchingUserId = entry.getKey();
+            Double matchScore = entry.getValue();
+            Integer source = matchRequestDto.getMatchingUserIds().get(matchingUserId);
+
+            PreferenceDto othersPreference = userPreferences.get(matchingUserId);
 
             List<NonRentedMatchDto> nonRentedData = null;
             List<RentedHouseMatchDto> rentedHouseData = null;
@@ -103,13 +163,28 @@ public class AnalysisController {
                 occupiedRooms = occupiedRoomRepository.getOccupiedRooms(matchingUserId);
             }
 
-            MatchResultDto matchResult = new MatchResultDto(matchingUserId, commonInterests, availableRooms, occupiedRooms, myPreference, othersPreference, match, nonRentedData, rentedHouseData);
+            analysisService.save(myId, matchingUserId, userAnalysisResults.get(matchingUserId));
+
+            InterestDto commonInterests = analysisService.compareInterests(myPreference.getInterest(), othersPreference.getInterest());
+
+            MatchResultDto matchResult = new MatchResultDto(
+                    matchingUserId,
+                    commonInterests,
+                    availableRooms,
+                    occupiedRooms,
+                    myPreference,
+                    othersPreference,
+                    matchScore, // 使用計算後的匹配分數
+                    nonRentedData,
+                    rentedHouseData
+            );
+
             matchResults.add(matchResult);
         }
 
-
         return ResponseEntity.ok(matchResults);
     }
+
 }
 
 

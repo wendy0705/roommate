@@ -152,4 +152,46 @@ public class AnalysisService {
 
         return result;
     }
+
+    public double calculateWeightedMatchScore(Map<String, Object> analysisResult) {
+
+        double initialWeight = 1.0;
+        double score = 0.0;
+        int numberOfCriteria = analysisResult.size();
+
+        double normalizedWeight = initialWeight / numberOfCriteria;
+
+        double shareroomWeight = normalizedWeight;
+        double conditionWeight = normalizedWeight;
+        double scheduleWeight = normalizedWeight;
+        double cookLocationWeight = normalizedWeight;
+        double diningLocationWeight = normalizedWeight;
+        double diningPercentageWeight = normalizedWeight;
+        double noisePercentageWeight = normalizedWeight;
+        double alarmPercentageWeight = normalizedWeight;
+        double lightPercentageWeight = normalizedWeight;
+        double friendPercentageWeight = normalizedWeight;
+        double weatherPercentageWeight = normalizedWeight;
+        double humidPercentageWeight = normalizedWeight;
+        double petSameOrNotWeight = normalizedWeight;
+        double interestPercentageWeight = normalizedWeight;
+
+        // 確保每個指標存在並轉換為適當的類型
+        score += ((Integer) analysisResult.getOrDefault("shareroom_same_or_not", 0)) * shareroomWeight;
+        score += ((Double) analysisResult.getOrDefault("condition_percentage", 0.0)) * conditionWeight;
+        score += ((Double) analysisResult.getOrDefault("schedule_percentage", 0.0)) * scheduleWeight;
+        score += ((Integer) analysisResult.getOrDefault("cook_location_same_or_not", 0)) * cookLocationWeight;
+        score += ((Integer) analysisResult.getOrDefault("dining_location_same_or_not", 0)) * diningLocationWeight;
+        score += ((Double) analysisResult.getOrDefault("dining_percentage", 0.0)) * diningPercentageWeight;
+        score += ((Double) analysisResult.getOrDefault("noise_percentage", 0.0)) * noisePercentageWeight;
+        score += ((Double) analysisResult.getOrDefault("alarm_percentage", 0.0)) * alarmPercentageWeight;
+        score += ((Double) analysisResult.getOrDefault("light_percentage", 0.0)) * lightPercentageWeight;
+        score += ((Double) analysisResult.getOrDefault("friend_percentage", 0.0)) * friendPercentageWeight;
+        score += ((Double) analysisResult.getOrDefault("weather_percentage", 0.0)) * weatherPercentageWeight;
+        score += ((Double) analysisResult.getOrDefault("humid_percentage", 0.0)) * humidPercentageWeight;
+        score += ((Integer) analysisResult.getOrDefault("pet_same_or_not", 0)) * petSameOrNotWeight;
+        score += ((Double) analysisResult.getOrDefault("interest_percentage", 0.0)) * interestPercentageWeight;
+
+        return score;
+    }
 }

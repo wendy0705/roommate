@@ -6,7 +6,6 @@ import com.example.roommate.dto.notrented.NonRentedMatchDto;
 import com.example.roommate.dto.rented.AvailableRoomDto;
 import com.example.roommate.dto.rented.OccupiedRoomDto;
 import com.example.roommate.dto.rented.RentedHouseMatchDto;
-import com.example.roommate.entity.UserMatch;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +25,7 @@ public class MatchResultDto {
     private List<OccupiedRoomDto> occupiedRooms;
     private PreferenceDto myPreference;
     private PreferenceDto othersPreference;
-    private UserMatch match;
+    private double matchScore;
     private List<NonRentedMatchDto> nonRentedData;
     private List<RentedHouseMatchDto> rentedHouseData;
 
