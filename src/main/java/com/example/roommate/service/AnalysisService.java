@@ -9,10 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static com.example.roommate.utils.DtoConversionUtils.*;
 import static com.example.roommate.utils.SimilarityCalculationUtils.*;
@@ -23,6 +20,51 @@ import static com.example.roommate.utils.SimilarityCalculationUtils.*;
 public class AnalysisService {
 
     private final UserMatchRepository userMatchRepository;
+    private static final List<Integer> ALL_INDICATORS = Arrays.asList(
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
+    );
+
+    public enum Indicator {
+        SHARE_ROOM(1, "shareroom_same_or_not"),
+        CONDITION(2, "condition_percentage"),
+        SCHEDULE(3, "schedule_percentage"),
+        COOK_LOCATION(4, "cook_location_same_or_not"),
+        DINING_LOCATION(5, "dining_location_same_or_not"),
+        DINING_PERCENTAGE(6, "dining_percentage"),
+        NOISE_PERCENTAGE(7, "noise_percentage"),
+        ALARM_PERCENTAGE(8, "alarm_percentage"),
+        LIGHT_PERCENTAGE(9, "light_percentage"),
+        FRIEND_PERCENTAGE(10, "friend_percentage"),
+        WEATHER_PERCENTAGE(11, "weather_percentage"),
+        HUMID_PERCENTAGE(12, "humid_percentage"),
+        PET_SAME_OR_NOT(13, "pet_same_or_not"),
+        INTEREST_PERCENTAGE(14, "interest_percentage");
+
+        private final int code;
+        private final String field;
+
+        Indicator(int code, String field) {
+            this.code = code;
+            this.field = field;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public String getField() {
+            return field;
+        }
+
+        public static String getFieldByCode(int code) {
+            for (Indicator indicator : values()) {
+                if (indicator.getCode() == code) {
+                    return indicator.getField();
+                }
+            }
+            throw new IllegalArgumentException("Invalid indicator code: " + code);
+        }
+    }
 
     public Map<String, Object> analysis(PreferenceDto myPreference, PreferenceDto othersPreference) {
 
@@ -194,4 +236,83 @@ public class AnalysisService {
 
         return score;
     }
+
+    public double calculateWeightedMatchScore(UserMatch match, List<Integer> priorityIndicatorCodes) {
+        double score = 0.0;
+
+        double[] topWeights = {0.5, 0.3, 0.1};
+
+        Map<String, Double> weights = new HashMap<>();
+
+        if (priorityIndicatorCodes != null && priorityIndicatorCodes.size() == 3) {
+            for (int i = 0; i < 3; i++) {
+                int code = priorityIndicatorCodes.get(i);
+                String field = Indicator.getFieldByCode(code);
+                weights.put(field, topWeights[i]);
+            }
+        } else {
+            throw new IllegalArgumentException("Exactly three priority indicators must be provided.");
+        }
+
+        // 計算剩餘權重
+        double totalTopWeight = 0.0;
+        for (double w : topWeights) {
+            totalTopWeight += w;
+        }
+        double remainingWeight = 1.0 - totalTopWeight;
+
+        // 計算其他指標的均等權重
+        int remainingCount = ALL_INDICATORS.size() - 3;
+        double equalWeight = remainingCount > 0 ? remainingWeight / remainingCount : 0.0;
+
+        // 遍歷所有指標並計算加權分數
+        for (int code : ALL_INDICATORS) {
+            String field = Indicator.getFieldByCode(code);
+            double weight = weights.getOrDefault(field, equalWeight);
+
+            // 獲取 UserMatch 中該指標的分數
+            double value = getCriterionScore(match, field);
+
+            score += value * weight;
+        }
+
+        return score;
+    }
+
+    private double getCriterionScore(UserMatch match, String criterion) {
+        switch (criterion) {
+            case "shareroom_same_or_not":
+                return match.getShareroomSameOrNot() != null ? match.getShareroomSameOrNot() : 0;
+            case "condition_percentage":
+                return match.getConditionPercentage() != null ? match.getConditionPercentage().doubleValue() : 0.0;
+            case "schedule_percentage":
+                return match.getSchedulePercentage() != null ? match.getSchedulePercentage().doubleValue() : 0.0;
+            case "cook_location_same_or_not":
+                return match.getCookLocationSameOrNot() != null ? match.getCookLocationSameOrNot() : 0;
+            case "dining_location_same_or_not":
+                return match.getDiningLocationSameOrNot() != null ? match.getDiningLocationSameOrNot() : 0;
+            case "dining_percentage":
+                return match.getDiningPercentage() != null ? match.getDiningPercentage().doubleValue() : 0.0;
+            case "noise_percentage":
+                return match.getNoisePercentage() != null ? match.getNoisePercentage().doubleValue() : 0.0;
+            case "alarm_percentage":
+                return match.getAlarmPercentage() != null ? match.getAlarmPercentage().doubleValue() : 0.0;
+            case "light_percentage":
+                return match.getLightPercentage() != null ? match.getLightPercentage().doubleValue() : 0.0;
+            case "friend_percentage":
+                return match.getFriendPercentage() != null ? match.getFriendPercentage().doubleValue() : 0.0;
+            case "weather_percentage":
+                return match.getWeatherPercentage() != null ? match.getWeatherPercentage().doubleValue() : 0.0;
+            case "humid_percentage":
+                return match.getHumidPercentage() != null ? match.getHumidPercentage().doubleValue() : 0.0;
+            case "pet_same_or_not":
+                return match.getPetSameOrNot() != null ? match.getPetSameOrNot() : 0;
+            case "interest_percentage":
+                return match.getInterestPercentage() != null ? match.getInterestPercentage().doubleValue() : 0.0;
+            default:
+                return 0.0;
+        }
+    }
+
+
 }

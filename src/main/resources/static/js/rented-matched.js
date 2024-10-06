@@ -8,6 +8,7 @@ let map;
 let currentPage = 1;
 const itemsPerPage = 6;
 let matchResults = [];
+let myId;
 
 function initializeMatchResults() {
     const storedResults = sessionStorage.getItem('matchResults');
@@ -37,6 +38,7 @@ function renderMatchResults() {
         const commonInterests = item.commonInterests;
         userId = item.userId;
         userNonRented = item.nonRentedData;
+        myId = item.myId;
 
 // 將興趣項目轉換為一個字符串，顯示用戶的興趣
         let interestHtmlArray = [];
@@ -166,13 +168,6 @@ function addViewMoreEventListeners() {
                     const modal = document.getElementById('matchModal');
                     modal.style.display = "block";
 
-                    // 增加關閉按鈕邏輯
-                    const closeModal = document.querySelector('.close');
-                    closeModal.addEventListener('click', () => {
-                        modal.style.display = "none";
-                        // 清空 localStorage 中的 selectedUserId
-                        sessionStorage.removeItem('selectedUserId');
-                    });
 
                     runCompareJS();
                 })
@@ -275,3 +270,155 @@ nextPageBtn.addEventListener('click', () => {
         renderMatchResults();
     }
 });
+
+document.getElementById('openAdjustModal').addEventListener('click', function () {
+    const modal = document.getElementById('adjustModal');
+    modal.style.display = "block";
+});
+
+function closeModal(modal) {
+    modal.style.display = "none";
+}
+
+document.getElementById('openAdjustModal').addEventListener('click', () => {// 確保另一個窗口被關閉
+    const modal = document.getElementById('adjustModal');
+    modal.style.display = "block";
+});
+
+const adjustModal = document.getElementById('adjustModal');
+const closeAdjustModal = document.querySelector('.adjust-close');
+closeAdjustModal.onclick = function () {
+    closeModal(adjustModal);
+}
+
+// 關閉匹配結果模態窗口
+const matchModal = document.getElementById('matchModal');
+const closeMatchModal = document.querySelector('.match-close');
+closeMatchModal.onclick = function () {
+    closeModal(matchModal);
+}
+
+closeAdjustModal.onclick = function () {
+    adjustModal.style.display = "none";
+}
+
+let selectedOrder = []; // 保存選擇順序
+
+const checkboxes = document.querySelectorAll('input[name="priority"]');
+const selectedPriorityList = document.getElementById('selectedPriorityList');
+
+// 更新選擇順序的函數
+function updateSelectedPriorityList() {
+    selectedPriorityList.innerHTML = '';
+
+    // 依據選擇順序來顯示選項
+    selectedOrder.forEach((selected, index) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${index + 1}. ${selected.label}`; // 顯示 1. 2. 3. 的順序
+        selectedPriorityList.appendChild(listItem);
+    });
+
+    // 檢查當前選擇數量
+    if (selectedOrder.length < 3) {
+        selectionError.style.display = 'block';
+        selectionError.textContent = "請選擇三個指標";
+    } else {
+        selectionError.style.display = 'none';
+    }
+}
+
+// 當選中或取消選擇 checkbox 時更新順序
+checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', (event) => {
+        const label = event.target.nextElementSibling.textContent; // 獲取該 checkbox 的標籤文本
+
+        if (event.target.checked) {
+            if (selectedOrder.length >= 3) {
+                // 已經選了三個，不能再選
+                event.target.checked = false;
+                alert("最多只能選擇三個指標");
+                return;
+            }
+            // 如果勾選，將它加入到順序中
+            selectedOrder.push({
+                value: parseInt(event.target.value),
+                label: label
+            });
+        } else {
+            // 如果取消選擇，則從順序中刪除
+            selectedOrder = selectedOrder.filter(selected => selected.value !== parseInt(event.target.value));
+        }
+
+        updateSelectedPriorityList(); // 更新顯示
+    });
+});
+
+document.getElementById('adjustForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    // 獲取所有選中的 checkbox 選項
+    const selectedOptions = selectedOrder.map(selected => selected.value);
+
+    const selectionError = document.getElementById('selectionError');
+
+    if (selectedOptions.length !== 3) {
+        alert("請選擇三個指標")
+        return;
+    } else {
+        selectionError.style.display = 'none';
+    }
+
+    console.log(selectedOptions);
+
+    const storedResults = sessionStorage.getItem('matchResults');
+    if (!storedResults) {
+        alert('無匹配結果可調整');
+        return;
+    }
+    const parsedResults = JSON.parse(storedResults);
+    const userIds = parsedResults.map(item => item.userId);
+
+    const payload = {
+        my_id: myId,
+        user_ids: userIds,
+        priority_indicators: selectedOptions
+    };
+
+    fetch(`api/1.0/analysis/adjust`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(text)
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('重新排序後的匹配結果:', data);
+
+            const sortedUserIds = data.map(item => item.userId);
+            sortedMatchResults = sortedUserIds.map(id => parsedResults.find(item => item.userId === id));
+
+            // 更新 matchResults 並重新存儲到 sessionStorage
+            matchResults = sortedMatchResults;
+            sessionStorage.setItem('matchResults', JSON.stringify(matchResults));
+
+            // 關閉模態窗口
+            adjustModal.style.display = "none";
+
+            // 重置到第一頁
+            currentPage = 1;
+            renderMatchResults();
+        })
+        .catch(error => {
+            console.error('錯誤:', error);
+            alert('調整匹配權重時發生錯誤：' + error.message);
+        });
+});
+

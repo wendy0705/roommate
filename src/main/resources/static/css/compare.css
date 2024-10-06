@@ -110,9 +110,9 @@
     }
 }
 
-h2 {
-    text-align: center;
-}
+/*h2 {*/
+/*    text-align: center;*/
+/*}*/
 
 table {
     border-collapse: collapse;
@@ -164,12 +164,12 @@ th {
 }
 
 .user1 {
-    background-color: rgba(54, 162, 235, 0.5); /* 用戶1的藍色 */
-    border: 1px solid rgba(54, 162, 235, 1);
+    background-color: rgba(54, 162, 235, 0.3); /* 用戶1的藍色 */
+    border: 1px solid rgba(54, 162, 235, 0.7);
 }
 
 .user2 {
-    background-color: rgba(255, 99, 132, 0.7); /* 用戶2的粉色 */
+    background-color: rgba(255, 99, 132, 0.3); /* 用戶2的粉色 */
     border: 1px solid rgba(255, 99, 132, 0.7);
 }
 

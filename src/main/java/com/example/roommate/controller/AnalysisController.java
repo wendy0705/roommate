@@ -1,6 +1,8 @@
 package com.example.roommate.controller;
 
+import com.example.roommate.dto.common.AdjustMatchRequestDto;
 import com.example.roommate.dto.common.MatchResultDto;
+import com.example.roommate.dto.common.SortedMatchResultDto;
 import com.example.roommate.dto.habits.InterestDto;
 import com.example.roommate.dto.habits.PreferenceDto;
 import com.example.roommate.dto.notrented.NonRentedMatchDto;
@@ -9,10 +11,8 @@ import com.example.roommate.dto.rented.AvailableRoomDto;
 import com.example.roommate.dto.rented.OccupiedRoomDto;
 import com.example.roommate.dto.rented.RentedHouseMatchDto;
 import com.example.roommate.dto.rented.RentedMatchRequestDto;
-import com.example.roommate.repository.AvailableRoomRepository;
-import com.example.roommate.repository.NonRentedDataRepository;
-import com.example.roommate.repository.OccupiedRoomRepository;
-import com.example.roommate.repository.RentedHouseDataRepository;
+import com.example.roommate.entity.UserMatch;
+import com.example.roommate.repository.*;
 import com.example.roommate.service.AnalysisService;
 import com.example.roommate.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +38,7 @@ public class AnalysisController {
     private final RentedHouseDataRepository rentedHouseDataRepository;
     private final AvailableRoomRepository availableRoomRepository;
     private final OccupiedRoomRepository occupiedRoomRepository;
+    private final UserMatchRepository userMatchRepository;
 
     @PostMapping("rented/match")
     public ResponseEntity<?> matchPreferences(@RequestParam Long myId, @RequestBody RentedMatchRequestDto matchRequestDto) {
@@ -88,6 +89,7 @@ public class AnalysisController {
             InterestDto commonInterests = analysisService.compareInterests(myPreference.getInterest(), othersPreference.getInterest());
 
             MatchResultDto matchResult = new MatchResultDto(
+                    myId,
                     matchingUserId,
                     commonInterests,
                     null,
@@ -168,6 +170,7 @@ public class AnalysisController {
             InterestDto commonInterests = analysisService.compareInterests(myPreference.getInterest(), othersPreference.getInterest());
 
             MatchResultDto matchResult = new MatchResultDto(
+                    myId,
                     matchingUserId,
                     commonInterests,
                     availableRooms,
@@ -185,30 +188,55 @@ public class AnalysisController {
         return ResponseEntity.ok(matchResults);
     }
 
+
+    @PostMapping("/adjust")
+    public ResponseEntity<?> adjustMatchScores(
+            @RequestBody AdjustMatchRequestDto adjustRequestDto) {
+
+        Long myId = adjustRequestDto.getMyId();
+        List<Long> userIds = adjustRequestDto.getUserIds();
+
+        log.info("Received AdjustMatchRequestDto: " + adjustRequestDto);
+        List<SortedMatchResultDto> sortedMatchResults = new ArrayList<>();
+
+        List<Integer> priorities = adjustRequestDto.getPriorityIndicators();
+        if (priorities == null || priorities.size() != 3) {
+            return ResponseEntity.badRequest().body("You must select exactly three priority indicators.");
+        }
+
+        // 獲取所有匹配用戶的 UserMatch 資料
+        Map<Long, Double> matchScores = new HashMap<>();
+        for (Long matchingUserId : userIds) {
+
+            UserMatch match = userMatchRepository.findByUserId1AndUserId2(myId, matchingUserId)
+                    .orElseThrow(() -> new RuntimeException("UserMatch not found for userId: " + matchingUserId));
+
+            double matchScore = analysisService.calculateWeightedMatchScore(match, priorities);
+
+            matchScores.put(matchingUserId, matchScore);
+        }
+
+        log.info(matchScores.toString());
+
+        // 根據匹配分數排序（從高到低）
+        List<Map.Entry<Long, Double>> sortedMatches = matchScores.entrySet().stream()
+                .sorted(Map.Entry.<Long, Double>comparingByValue().reversed())
+                .collect(Collectors.toList());
+
+        for (Map.Entry<Long, Double> entry : sortedMatches) {
+            Long matchingUserId = entry.getKey();
+            Double matchScore = entry.getValue();
+
+            SortedMatchResultDto sortedResult = new SortedMatchResultDto(matchingUserId, matchScore);
+            sortedMatchResults.add(sortedResult);
+        }
+
+        log.info(sortedMatches.toString());
+
+        return ResponseEntity.ok(sortedMatchResults);
+    }
 }
 
-
-//    @PostMapping
-//    public ResponseEntity<?> analysisAndSaveSimilarity(@RequestBody PreferenceDto preferenceDto) {
-//        userService.createUser(preferenceDto);
-//        Map<String, Object> response = analysisService.analysis(preferenceDto);
-//        analysisService.save(30L, 49L, response);
-//        Map<String, Object> result = new HashMap<>();
-//        result.put("data", response);
-//        return ResponseEntity.ok(response);
-//    }
-
-//    @GetMapping
-//    public ResponseEntity<?> getSimilarity(@RequestParam Long userId) {
-//        Long myId = 30L;
-//        Optional<UserMatch> userMatch = analysisService.findByUserId1AndUserId2(myId, userId);
-//
-//        if (userMatch.isPresent()) {
-//            return ResponseEntity.ok(userMatch.get());
-//        } else {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No match found for the given users.");
-//        }
-//    }
 
 
 

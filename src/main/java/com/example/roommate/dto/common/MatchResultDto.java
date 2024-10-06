@@ -19,6 +19,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MatchResultDto {
 
+    private Long myId;
     private Long userId;
     private InterestDto commonInterests;
     private List<AvailableRoomDto> availableRooms;
