@@ -287,7 +287,7 @@ function submitForm() {
             const matchingUserIds = data; // 假設 API 返回的結果包含 matchingUserIds
             console.log('Success:', matchingUserIds);
 
-            localStorage.setItem('matchingUserIds', JSON.stringify(matchingUserIds));
+            sessionStorage.setItem('matchingUserIds', JSON.stringify(matchingUserIds));
 
             window.location.href = '/habits';
         })

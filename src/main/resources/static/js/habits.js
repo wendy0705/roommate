@@ -8,7 +8,7 @@ let matchingUserIds;
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    matchingUserIds = JSON.parse(localStorage.getItem('matchingUserIds')) || [];
+    matchingUserIds = JSON.parse(sessionStorage.getItem('matchingUserIds')) || [];
 
     console.log('Matching User IDs:', matchingUserIds);
 
@@ -231,8 +231,7 @@ document.getElementById('preferencesForm').addEventListener('submit', function (
             .then(response => response.json())
             .then(data => {
                 console.log('Fetched data:', data);
-
-                localStorage.setItem('matchResults', JSON.stringify(data));
+                sessionStorage.setItem('matchResults', JSON.stringify(data));
 
                 window.location.href = '/rented-matched';
             })
@@ -255,7 +254,7 @@ document.getElementById('preferencesForm').addEventListener('submit', function (
             .then(data => {
                 console.log('Fetched data:', data);
 
-                localStorage.setItem('matchResults', JSON.stringify(data));
+                sessionStorage.setItem('matchResults', JSON.stringify(data));
 
                 window.location.href = '/not-rented-matched';
             })

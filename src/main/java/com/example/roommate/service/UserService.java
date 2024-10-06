@@ -80,7 +80,7 @@ public class UserService {
             user.setInterestPainting(preferenceDto.getInterest().getPainting());
             user.setInterestIdolChasing(preferenceDto.getInterest().getIdolChasing());
             user.setInterestMusic(preferenceDto.getInterest().getMusic());
-            
+
             user.setHope(preferenceDto.getHope());
 
             return userRepository.save(user);
@@ -133,6 +133,7 @@ public class UserService {
             preferenceDto.setAlarmHabit(user.getAlarmHabit());
             preferenceDto.setLightSensitivity(user.getLightSensitivity());
             preferenceDto.setFriendshipHabit(user.getFriendshipHabit());
+            preferenceDto.setHope(user.getHope());
 
             WeatherDto hotWeatherPreference = new WeatherDto();
             hotWeatherPreference.setPreference(user.getHotWeatherPreference());

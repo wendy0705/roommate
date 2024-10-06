@@ -15,6 +15,10 @@
             <img src="https://roommatebucket.s3.ap-southeast-2.amazonaws.com/competitor-analysis.png"
                  alt="Competitor Analysis" class="result-image">
         </div>
+        <div class="filter-buttons">
+            <button id="showNonRented" class="filter-button active">顯示尚未租房的人</button>
+            <button id="showRented" class="filter-button">顯示已租房的人</button>
+        </div>
         <div id="data-container">
             <!-- 匹配結果將在這裡動態生成 -->
         </div>
@@ -25,7 +29,43 @@
         </div>
     </main>
 </div>
+<div id="matchModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div id="modalDataContainer">
+            <!-- compare.html 的內容將會載入到這裡 -->
+        </div>
+    </div>
+</div>
+<!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>-->
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        initializeMatchResults();
+
+        document.getElementById('showNonRented').addEventListener('click', function () {
+            currentResults = nonRentedResults;
+            setActiveButton(this);
+            currentPage = 1; // 重置為第一頁
+            renderMatchResults();
+        });
+
+        document.getElementById('showRented').addEventListener('click', function () {
+            currentResults = rentedResults;
+            setActiveButton(this);
+            currentPage = 1; // 重置為第一頁
+            renderMatchResults();
+        });
+    });
+
+    var apiKey = /*[[${googleMapsApiKey}]]*/ 'defaultKey';
+    var script = document.createElement('script');
+    script.src = 'https://maps.googleapis.com/maps/api/js?key=' + apiKey + '&callback=initMap';
+    script.defer = true;
+    script.async = true;
+    document.head.appendChild(script);
+</script>
+<script src="js/compare.js"></script>
+<script src="/js/not-rented-matched.js"></script>
 <script src="js/header.js"></script>
-<script src="/js/rented-matched.js"></script>
 </body>
 </html>

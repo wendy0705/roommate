@@ -136,7 +136,7 @@ function submitForm() {
             const matchingUserIds = data;
             console.log('Success:', matchingUserIds);
 
-            localStorage.setItem('matchingUserIds', JSON.stringify(matchingUserIds));
+            sessionStorage.setItem('matchingUserIds', JSON.stringify(matchingUserIds));
 
             window.location.href = '/habits';
         })

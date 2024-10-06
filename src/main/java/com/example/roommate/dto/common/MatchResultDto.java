@@ -3,6 +3,8 @@ package com.example.roommate.dto.common;
 import com.example.roommate.dto.habits.InterestDto;
 import com.example.roommate.dto.habits.PreferenceDto;
 import com.example.roommate.dto.notrented.NonRentedMatchDto;
+import com.example.roommate.dto.rented.AvailableRoomDto;
+import com.example.roommate.dto.rented.OccupiedRoomDto;
 import com.example.roommate.dto.rented.RentedHouseMatchDto;
 import com.example.roommate.entity.UserMatch;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -20,6 +22,8 @@ public class MatchResultDto {
 
     private Long userId;
     private InterestDto commonInterests;
+    private List<AvailableRoomDto> availableRooms;
+    private List<OccupiedRoomDto> occupiedRooms;
     private PreferenceDto myPreference;
     private PreferenceDto othersPreference;
     private UserMatch match;

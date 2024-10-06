@@ -10,7 +10,7 @@ const itemsPerPage = 6;
 let matchResults = [];
 
 function initializeMatchResults() {
-    const storedResults = localStorage.getItem('matchResults');
+    const storedResults = sessionStorage.getItem('matchResults');
     if (storedResults) {
         matchResults = JSON.parse(storedResults);
         renderMatchResults();
@@ -33,9 +33,6 @@ function renderMatchResults() {
             ${pageResults.map(item => {
         // const match = item.match;
         const nonRentedData = item.nonRentedData || [];
-        // match info
-
-        // 假設您已經從後端接收到 matchDetailData 並且它包含 othersPreference
         const othersPreference = item.othersPreference;
         const commonInterests = item.commonInterests;
         userId = item.userId;
@@ -61,7 +58,7 @@ function renderMatchResults() {
         const hopeString = othersPreference.hope;
 
         const hopeSection = hopeString ? `
-            <h2>我希望我的室友: </h2>
+            <h2>對室友的期待 </h2>
             <div class="preference-details">
                 ${hopeString}
             </div>
@@ -70,7 +67,7 @@ function renderMatchResults() {
 // 動態填充 HTML 的興趣和希望部分
         const preferenceInfo = `
             <div class="preference-info">
-                <h2>興趣: </h2>
+                <h2>興趣 </h2>
                 <div class="preference-details">
                     ${interestHtmlString}
                 </div>
@@ -155,7 +152,7 @@ function addViewMoreEventListeners() {
         button.addEventListener('click', (event) => {
             const userId = parseInt(event.target.getAttribute('data-user-id'), 10);
             // 將 userId 暫存到 localStorage 中
-            localStorage.setItem('selectedUserId', userId);
+            sessionStorage.setItem('selectedUserId', userId);
 
             // 使用 fetch 請求 /compare 來載入 compare.html
             fetch('/compare')
@@ -174,7 +171,7 @@ function addViewMoreEventListeners() {
                     closeModal.addEventListener('click', () => {
                         modal.style.display = "none";
                         // 清空 localStorage 中的 selectedUserId
-                        localStorage.removeItem('selectedUserId');
+                        sessionStorage.removeItem('selectedUserId');
                     });
 
                     runCompareJS();
@@ -188,11 +185,11 @@ function runCompareJS() {
     console.log("hi");
     // 此函數將執行 compare.js 的邏輯
 
-    const storedUserId = localStorage.getItem('selectedUserId');
+    const storedUserId = sessionStorage.getItem('selectedUserId');
     console.log(storedUserId);
     if (storedUserId) {
         const userId = parseInt(storedUserId, 10);
-        const storedResults = localStorage.getItem('matchResults');
+        const storedResults = sessionStorage.getItem('matchResults');
         console.log(storedResults);
         const matchResults = storedResults ? JSON.parse(storedResults) : [];
 

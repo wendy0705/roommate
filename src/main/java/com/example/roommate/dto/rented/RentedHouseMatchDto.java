@@ -18,9 +18,6 @@ public class RentedHouseMatchDto {
     @JsonProperty("house_name")
     private String houseName;
 
-    @JsonProperty("price")
-    private Integer price;
-
-    @JsonProperty("room_type")
-    private String roomType;
+    @JsonProperty("details")
+    private String details;
 }

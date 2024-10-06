@@ -5,10 +5,14 @@ import com.example.roommate.dto.habits.InterestDto;
 import com.example.roommate.dto.habits.PreferenceDto;
 import com.example.roommate.dto.notrented.NonRentedMatchDto;
 import com.example.roommate.dto.notrented.NotRentedMatchRequestDto;
+import com.example.roommate.dto.rented.AvailableRoomDto;
+import com.example.roommate.dto.rented.OccupiedRoomDto;
 import com.example.roommate.dto.rented.RentedHouseMatchDto;
 import com.example.roommate.dto.rented.RentedMatchRequestDto;
 import com.example.roommate.entity.UserMatch;
+import com.example.roommate.repository.AvailableRoomRepository;
 import com.example.roommate.repository.NonRentedDataRepository;
+import com.example.roommate.repository.OccupiedRoomRepository;
 import com.example.roommate.repository.RentedHouseDataRepository;
 import com.example.roommate.service.AnalysisService;
 import com.example.roommate.service.UserService;
@@ -31,6 +35,8 @@ public class AnalysisController {
     private final AnalysisService analysisService;
     private final NonRentedDataRepository nonRentedDataRepository;
     private final RentedHouseDataRepository rentedHouseDataRepository;
+    private final AvailableRoomRepository availableRoomRepository;
+    private final OccupiedRoomRepository occupiedRoomRepository;
 
     @PostMapping("rented/match")
     public ResponseEntity<?> matchPreferences(@RequestParam Long myId, @RequestBody RentedMatchRequestDto matchRequestDto) {
@@ -57,7 +63,7 @@ public class AnalysisController {
                     .orElseThrow(() -> new RuntimeException("UserMatch not found for userId: " + matchingUserId));
 
             List<NonRentedMatchDto> nonRentedData = nonRentedDataRepository.getNonRentedInfo(matchingUserId);
-            MatchResultDto matchResult = new MatchResultDto(matchingUserId, commonInterests, myPreference, othersPreference, match, nonRentedData, null);
+            MatchResultDto matchResult = new MatchResultDto(matchingUserId, commonInterests, null, null, myPreference, othersPreference, match, nonRentedData, null);
             matchResults.add(matchResult);
         }
         return ResponseEntity.ok(matchResults);
@@ -86,14 +92,18 @@ public class AnalysisController {
 
             List<NonRentedMatchDto> nonRentedData = null;
             List<RentedHouseMatchDto> rentedHouseData = null;
+            List<AvailableRoomDto> availableRooms = null;
+            List<OccupiedRoomDto> occupiedRooms = null;
 
             if (source == 0) {
                 nonRentedData = nonRentedDataRepository.getNonRentedInfo(matchingUserId);
             } else if (source == 1) {
                 rentedHouseData = rentedHouseDataRepository.getRentedHouseInfo(matchingUserId);
+                availableRooms = availableRoomRepository.getAvailableRooms(matchingUserId);
+                occupiedRooms = occupiedRoomRepository.getOccupiedRooms(matchingUserId);
             }
 
-            MatchResultDto matchResult = new MatchResultDto(matchingUserId, commonInterests, myPreference, othersPreference, match, nonRentedData, rentedHouseData);
+            MatchResultDto matchResult = new MatchResultDto(matchingUserId, commonInterests, availableRooms, occupiedRooms, myPreference, othersPreference, match, nonRentedData, rentedHouseData);
             matchResults.add(matchResult);
         }
 
