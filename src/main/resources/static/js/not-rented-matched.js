@@ -11,8 +11,11 @@ let rentedResults = [];
 let nonRentedResults = [];
 let currentResults = [];
 
+let myId;
+
 function initializeMatchResults() {
     const storedResults = sessionStorage.getItem('matchResults');
+    myId = sessionStorage.getItem('myId');
     if (storedResults) {
         matchResults = JSON.parse(storedResults);
         // 將 matchResults 分類為 rented 和 non-rented
@@ -136,15 +139,14 @@ function renderMatchResults() {
 
             matchInfo = `
                 <div class="rented-house-info">
-                    <p><strong>租房名稱:</strong> ${rentedHouseData[0]?.house_name || '無資料'}</p>
-                    <h3>詳細信息：</h3>
-                    <p><strong>其他信息:</strong> ${details.other || '無資料'}</p>
+                    <h3>詳細房屋資訊：</h3>
                     <p><strong>設施:</strong> ${details.amenities || '無資料'}</p>
                     <p><strong>是否允許養寵物:</strong> ${details.pet_allowed ? '是' : '否'}</p>
                     <p><strong>租期:</strong> ${details.rental_period} 個月</p>
                     <p><strong>共享空間:</strong> ${details.shared_spaces || '無資料'}</p>
                     <p><strong>額外費用:</strong> ${details.additional_fees || '無資料'}</p>
                     <p><strong>附近設施:</strong> ${details.nearby_facilities || '無資料'}</p>
+                    <p><strong>其他資訊:</strong> ${details.other || '無資料'}</p>
                     ${rentedHouseTable}
                 </div>
             `;
@@ -160,12 +162,17 @@ function renderMatchResults() {
                     </div>
                     <div class="info-container">
                         ${preferenceInfo}
-                        ${matchInfo} <!-- 租房或未租房信息顯示 -->
+                        ${rentedHouseData.length > 0 ? `
+                            <p><strong>租房名稱:</strong> ${rentedHouseData[0]?.house_name || '無資料'}</p>` : ""}
+                        
                         <div class="button-container" style="text-align: right;">
                             ${viewMoreButton}
                             <button class="invite-button">聊聊邀請</button>
                         </div>
                     </div>
+                </div>
+                <div class="rented-house-info">
+                       ${matchInfo} <!-- 租房或未租房信息顯示 -->
                 </div>
                 ${nonRentedData.length > 0 ? `
                 <div class="room-budget-table">
@@ -230,14 +237,6 @@ function addViewMoreEventListeners() {
                     // 顯示模態窗口
                     const modal = document.getElementById('matchModal');
                     modal.style.display = "block";
-
-                    // 增加關閉按鈕邏輯
-                    const closeModal = document.querySelector('.close');
-                    closeModal.addEventListener('click', () => {
-                        modal.style.display = "none";
-                        // 清空 localStorage 中的 selectedUserId
-                        sessionStorage.removeItem('selectedUserId');
-                    });
 
                     runCompareJS();
                 })
@@ -309,7 +308,7 @@ function initMap(userId, data) {
         // 尚未租房的數據，畫矩形
         const map = new google.maps.Map(mapElement, {
             center: {lat: data[0].region_sw_lat, lng: data[0].region_sw_lng},
-            zoom: 13
+            zoom: 12
         });
 
         const bounds = new google.maps.LatLngBounds(
@@ -362,6 +361,157 @@ nextPageBtn.addEventListener('click', () => {
         currentPage++;
         renderMatchResults();
     }
+});
+
+document.getElementById('openAdjustModal').addEventListener('click', function () {
+    const modal = document.getElementById('adjustModal');
+    modal.style.display = "block";
+});
+
+function closeModal(modal) {
+    modal.style.display = "none";
+}
+
+document.getElementById('openAdjustModal').addEventListener('click', () => {// 確保另一個窗口被關閉
+    const modal = document.getElementById('adjustModal');
+    modal.style.display = "block";
+});
+
+const adjustModal = document.getElementById('adjustModal');
+const closeAdjustModal = document.querySelector('.adjust-close');
+closeAdjustModal.onclick = function () {
+    closeModal(adjustModal);
+}
+
+// 關閉匹配結果模態窗口
+const matchModal = document.getElementById('matchModal');
+const closeMatchModal = document.querySelector('.match-close');
+closeMatchModal.onclick = function () {
+    closeModal(matchModal);
+}
+
+closeAdjustModal.onclick = function () {
+    adjustModal.style.display = "none";
+}
+
+let selectedOrder = []; // 保存選擇順序
+
+const checkboxes = document.querySelectorAll('input[name="priority"]');
+const selectedPriorityList = document.getElementById('selectedPriorityList');
+
+// 更新選擇順序的函數
+function updateSelectedPriorityList() {
+    selectedPriorityList.innerHTML = '';
+
+    // 依據選擇順序來顯示選項
+    selectedOrder.forEach((selected, index) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${index + 1}. ${selected.label}`; // 顯示 1. 2. 3. 的順序
+        selectedPriorityList.appendChild(listItem);
+    });
+
+    // 檢查當前選擇數量
+    if (selectedOrder.length < 3) {
+        selectionError.style.display = 'block';
+        selectionError.textContent = "請選擇三個指標";
+    } else {
+        selectionError.style.display = 'none';
+    }
+}
+
+// 當選中或取消選擇 checkbox 時更新順序
+checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', (event) => {
+        const label = event.target.nextElementSibling.textContent; // 獲取該 checkbox 的標籤文本
+
+        if (event.target.checked) {
+            if (selectedOrder.length >= 3) {
+                // 已經選了三個，不能再選
+                event.target.checked = false;
+                alert("最多只能選擇三個指標");
+                return;
+            }
+            // 如果勾選，將它加入到順序中
+            selectedOrder.push({
+                value: parseInt(event.target.value),
+                label: label
+            });
+        } else {
+            // 如果取消選擇，則從順序中刪除
+            selectedOrder = selectedOrder.filter(selected => selected.value !== parseInt(event.target.value));
+        }
+
+        updateSelectedPriorityList(); // 更新顯示
+    });
+});
+
+document.getElementById('adjustForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    // 獲取所有選中的 checkbox 選項
+    const selectedOptions = selectedOrder.map(selected => selected.value);
+
+    const selectionError = document.getElementById('selectionError');
+
+    if (selectedOptions.length !== 3) {
+        alert("請選擇三個指標")
+        return;
+    } else {
+        selectionError.style.display = 'none';
+    }
+
+    console.log(selectedOptions);
+
+    const storedResults = sessionStorage.getItem('matchResults');
+    if (!storedResults) {
+        alert('無匹配結果可調整');
+        return;
+    }
+    const parsedResults = JSON.parse(storedResults);
+    const userIds = parsedResults.map(item => item.userId);
+
+    const payload = {
+        my_id: myId,
+        user_ids: userIds,
+        priority_indicators: selectedOptions
+    };
+
+    fetch(`api/1.0/analysis/adjust`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(text)
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('重新排序後的匹配結果:', data);
+
+            const sortedUserIds = data.map(item => item.userId);
+            sortedMatchResults = sortedUserIds.map(id => parsedResults.find(item => item.userId === id));
+
+            // 更新 matchResults 並重新存儲到 sessionStorage
+            matchResults = sortedMatchResults;
+            sessionStorage.setItem('matchResults', JSON.stringify(matchResults));
+
+            // 關閉模態窗口
+            adjustModal.style.display = "none";
+
+            // 重置到第一頁
+            currentPage = 1;
+            renderMatchResults();
+        })
+        .catch(error => {
+            console.error('錯誤:', error);
+            alert('調整匹配權重時發生錯誤：' + error.message);
+        });
 });
 
 

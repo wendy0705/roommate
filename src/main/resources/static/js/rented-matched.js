@@ -12,6 +12,7 @@ let myId;
 
 function initializeMatchResults() {
     const storedResults = sessionStorage.getItem('matchResults');
+    myId = sessionStorage.getItem('myId');
     if (storedResults) {
         matchResults = JSON.parse(storedResults);
         renderMatchResults();
@@ -38,7 +39,6 @@ function renderMatchResults() {
         const commonInterests = item.commonInterests;
         userId = item.userId;
         userNonRented = item.nonRentedData;
-        myId = item.myId;
 
 // 將興趣項目轉換為一個字符串，顯示用戶的興趣
         let interestHtmlArray = [];
@@ -110,7 +110,7 @@ function renderMatchResults() {
                         </div>
                         <div class="button-container" style="text-align: right;">
                             ${viewMoreButton}
-                            <button class="invite-button">聊聊邀請</button>
+                            <button class="invite-button" data-invitee-id="${userId}">聊聊邀請</button>
                         </div>
                     </div>
                 </div>
@@ -168,7 +168,6 @@ function addViewMoreEventListeners() {
                     const modal = document.getElementById('matchModal');
                     modal.style.display = "block";
 
-
                     runCompareJS();
                 })
                 .catch(error => console.error('Error loading compare.html:', error));
@@ -218,7 +217,7 @@ function initMap(userId, nonRentedData) {
 
     const map = new google.maps.Map(mapElement, {
         center: {lat: nonRentedData[0].region_sw_lat, lng: nonRentedData[0].region_sw_lng}, // 根據區域範圍來調整初始中心點
-        zoom: 13
+        zoom: 12
     });
 
     const bounds = new google.maps.LatLngBounds(
@@ -421,4 +420,37 @@ document.getElementById('adjustForm').addEventListener('submit', function (event
             alert('調整匹配權重時發生錯誤：' + error.message);
         });
 });
+
+// function addInviteEventListeners() {
+//     const inviteButtons = document.querySelectorAll('.invite-button');
+//     inviteButtons.forEach(button => {
+//         button.addEventListener('click', (event) => {
+//             const inviteeId = parseInt(event.target.getAttribute('data-invitee-id'), 10);  // 假設 inviteeId 從按鈕中獲取
+//
+//             console.log(myId);
+//             const invitationData = {
+//                 inviter_id: myId,
+//                 invitee_id: inviteeId
+//             };
+//
+//             // 發送 POST 請求到 /invite API
+//             fetch('http://localhost:8081/chat/invite', {
+//                 method: 'POST',
+//                 headers: {
+//                     'Content-Type': 'application/json'
+//                 },
+//                 body: JSON.stringify(invitationData)
+//             })
+//                 .then(response => response.json())
+//                 .then(data => {
+//                     console.log('邀請成功:', data);
+//                     alert('邀請已發送');
+//                 })
+//                 .catch(error => {
+//                     console.error('邀請失敗:', error);
+//                     alert('發送邀請時出現錯誤');
+//                 });
+//         });
+//     });
+// }
 

@@ -63,6 +63,16 @@
     transition: 0.4s;
 }
 
+.notification-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    margin-left: 5px;
+}
+
+
 @media (max-width: 768px) {
     .main-nav {
         display: none;

@@ -89,7 +89,6 @@ public class AnalysisController {
             InterestDto commonInterests = analysisService.compareInterests(myPreference.getInterest(), othersPreference.getInterest());
 
             MatchResultDto matchResult = new MatchResultDto(
-                    myId,
                     matchingUserId,
                     commonInterests,
                     null,
@@ -170,7 +169,6 @@ public class AnalysisController {
             InterestDto commonInterests = analysisService.compareInterests(myPreference.getInterest(), othersPreference.getInterest());
 
             MatchResultDto matchResult = new MatchResultDto(
-                    myId,
                     matchingUserId,
                     commonInterests,
                     availableRooms,
@@ -208,8 +206,11 @@ public class AnalysisController {
         Map<Long, Double> matchScores = new HashMap<>();
         for (Long matchingUserId : userIds) {
 
+            log.info(myId + ": " + matchingUserId);
+
             UserMatch match = userMatchRepository.findByUserId1AndUserId2(myId, matchingUserId)
                     .orElseThrow(() -> new RuntimeException("UserMatch not found for userId: " + matchingUserId));
+
 
             double matchScore = analysisService.calculateWeightedMatchScore(match, priorities);
 

@@ -68,8 +68,12 @@
     // 當頁面加載時生成一個隨機的 BigInt 並設置到 hidden input 中
     document.addEventListener('DOMContentLoaded', function () {
         var userIdInput = document.getElementById('userIdInput');
-        userIdInput.value = generateRandomBigInt();
+        var generatedUserId = generateRandomBigInt();
+
+        // 設置到隱藏的 input 中
+        userIdInput.value = generatedUserId;
         console.log('Generated User ID:', userIdInput.value); // 用於調試
+        sessionStorage.setItem('myId', generatedUserId);
 
         fetch('/header')
             .then(response => response.text())

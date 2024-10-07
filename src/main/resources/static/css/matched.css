@@ -151,19 +151,64 @@ h1 {
     font-size: 0.9em;
 }
 
-.invite-button {
+.house-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+    margin: 20px 0;
+}
+
+.rented-house-info {
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.rented-house-info h3 {
+    color: #E1855E;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.rented-house-info p {
+    margin-bottom: 10px;
+}
+
+.rented-house-table {
+    margin-top: 20px;
+}
+
+.rented-house-table h3 {
+    color: #E1855E;
+    margin-bottom: 10px;
+}
+
+.rented-house-table ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.rented-house-table li {
+    background-color: #ffffff;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.invite-button, #openAdjustModal {
     background-color: #4A90E2;
 }
 
-.pagination button:hover, .view-more-button:hover, .invite-button:hover, #openAdjustModal:hover {
+.pagination button:hover, .view-more-button:hover {
     background-color: #D67348;
 }
 
-.invite-button:hover {
+.invite-button:hover, #openAdjustModal:hover {
     background-color: #357ABD;
 }
 
-.pagination button:disabled, .view-more-button:disabled, invite-button:disabled, #openAdjustModal:disabled {
+.pagination button:disabled, .view-more-button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
 }
@@ -171,6 +216,23 @@ h1 {
 
 .button-container {
     text-align: right;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 10px; /* 調整按鈕間距 */
+}
+
+.adjust-button-container {
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 1;
 }
 
 #pageInfo {
@@ -198,8 +260,10 @@ h1 {
 }
 
 .preference-info {
-    padding: 20px;
     background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
 }
 
 .preference-info h2 {
@@ -231,13 +295,6 @@ h1 {
 .non-rented-info h3 {
     color: #2c2658;
     font-size: 1.3em;
-    margin-bottom: 15px;
-}
-
-.non-rented-common {
-    background-color: #f0f0f0;
-    padding: 15px;
-    border-radius: 8px;
     margin-bottom: 15px;
 }
 
@@ -361,18 +418,26 @@ strong {
 }
 
 .filter-button {
-    background-color: #E1855E;
+    background-color: #E1855E; /* 默認橘色 */
     color: white;
     border: none;
     padding: 10px 15px;
     margin: 5px;
     cursor: pointer;
     border-radius: 5px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, color 0.3s;
     font-family: 'LXGW WenKai TC', sans-serif;
     font-size: 0.9em;
 }
 
+.filter-button:hover {
+    background-color: #D67348; /* 鼠標懸停時稍微深一點的橘色 */
+}
+
 .filter-button.active {
-    background-color: #D67348;
+    background-color: #808080; /* 激活時變為灰色 */
+}
+
+.filter-button.active:hover {
+    background-color: #707070; /* 激活並懸停時稍微深一點的灰色 */
 }

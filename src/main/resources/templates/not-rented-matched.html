@@ -4,20 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/matched.css">
+    <!--    <link rel="stylesheet" href="css/chat.css">-->
     <title>Matched Users</title>
 </head>
 <body>
 <div class="container">
     <div id="header-placeholder"></div>
     <main class="content">
-        <div class="result-container">
-            <h1>匹配結果</h1>
-            <img src="https://roommatebucket.s3.ap-southeast-2.amazonaws.com/competitor-analysis.png"
-                 alt="Competitor Analysis" class="result-image">
-        </div>
-        <div class="filter-buttons">
-            <button id="showNonRented" class="filter-button active">顯示尚未租房的人</button>
-            <button id="showRented" class="filter-button">顯示已租房的人</button>
+        <div class="result-header">
+            <div class="result-container">
+                <h1>匹配結果</h1>
+                <img src="https://roommatebucket.s3.ap-southeast-2.amazonaws.com/competitor-analysis.png"
+                     alt="Competitor Analysis" class="result-image">
+            </div>
+            <div class="button-group">
+                <div class="filter-buttons">
+                    <button id="showNonRented" class="filter-button active">顯示尚未租房的人</button>
+                    <button id="showRented" class="filter-button">顯示已租房的人</button>
+                </div>
+                <div class="adjust-button-container">
+                    <button id="openAdjustModal">調整匹配權重</button>
+                </div>
+            </div>
         </div>
         <div id="data-container">
             <!-- 匹配結果將在這裡動態生成 -->
@@ -29,9 +37,85 @@
         </div>
     </main>
 </div>
+
+
+<div id="adjustModal" class="modal">
+    <div class="modal-content">
+        <span class="close adjust-close">&times;</span>
+        <h2>調整匹配權重</h2>
+        <form id="adjustForm">
+            <label>選擇最在乎的三個指標:</label>
+            <div>
+                <input type="checkbox" id="share_room" name="priority" value="1">
+                <label for="share_room">共住房間</label>
+            </div>
+            <div>
+                <input type="checkbox" id="condition" name="priority" value="2">
+                <label for="condition">租屋條件</label>
+            </div>
+            <div>
+                <input type="checkbox" id="schedule" name="priority" value="3">
+                <label for="schedule">作息</label>
+            </div>
+            <div>
+                <input type="checkbox" id="cook_location" name="priority" value="4">
+                <label for="cook_location">煮飯地點</label>
+            </div>
+            <div>
+                <input type="checkbox" id="dining_location" name="priority" value="5">
+                <label for="dining_location">用餐地點</label>
+            </div>
+            <div>
+                <input type="checkbox" id="dining_habits" name="priority" value="6">
+                <label for="dining_habits">用餐習慣</label>
+            </div>
+            <div>
+                <input type="checkbox" id="noise_sensitivity" name="priority" value="7">
+                <label for="noise_sensitivity">噪音敏感度</label>
+            </div>
+            <div>
+                <input type="checkbox" id="alarm_habit" name="priority" value="8">
+                <label for="alarm_habit">鬧鐘習慣</label>
+            </div>
+            <div>
+                <input type="checkbox" id="light_sensitivity" name="priority" value="9">
+                <label for="light_sensitivity">對燈光的敏感度</label>
+            </div>
+            <div>
+                <input type="checkbox" id="friend_habit" name="priority" value="10">
+                <label for="friend_habit">帶朋友回家的習慣</label>
+            </div>
+            <div>
+                <input type="checkbox" id="hot_weather" name="priority" value="11">
+                <label for="hot_weather">熱天開冷氣的習慣</label>
+            </div>
+            <div>
+                <input type="checkbox" id="humidity" name="priority" value="12">
+                <label for="humidity">除濕習慣</label>
+            </div>
+            <div>
+                <input type="checkbox" id="pet" name="priority" value="13">
+                <label for="pet">是否養寵物</label>
+            </div>
+            <div>
+                <input type="checkbox" id="interest_similarity" name="priority" value="14">
+                <label for="interest_similarity">興趣相似度</label>
+            </div>
+
+            <div id="priorityOrder">
+                <h3>習慣及偏好權重排序：</h3>
+                <ul id="selectedPriorityList"></ul>
+            </div>
+
+            <p class="error" id="selectionError" style="display:none;color:red;">請選擇恰好三個指標。</p>
+            <button type="submit" id="submit-adjust">提交並重新排序</button>
+        </form>
+    </div>
+</div>
+
 <div id="matchModal" class="modal">
     <div class="modal-content">
-        <span class="close">&times;</span>
+        <span class="close match-close">&times;</span>
         <div id="modalDataContainer">
             <!-- compare.html 的內容將會載入到這裡 -->
         </div>
@@ -67,5 +151,6 @@
 <script src="js/compare.js"></script>
 <script src="/js/not-rented-matched.js"></script>
 <script src="js/header.js"></script>
+<!--<script src="js/chat.js"></script>-->
 </body>
 </html>

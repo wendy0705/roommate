@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/matched.css">
+    <!--    <link rel="stylesheet" href="css/chat.css">-->
     <title>Matched Users</title>
 </head>
 <body>
@@ -118,6 +119,7 @@
 <script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function () {
         initializeMatchResults();
+        addInviteEventListeners();
     });
 
     var apiKey = /*[[${googleMapsApiKey}]]*/ 'defaultKey';
@@ -130,5 +132,6 @@
 <script src="js/compare.js"></script>
 <script src="/js/rented-matched.js"></script>
 <script src="js/header.js"></script>
+<!--<script src="js/chat.js"></script>-->
 </body>
 </html>
