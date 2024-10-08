@@ -33,7 +33,7 @@ CREATE TABLE `available_room` (
   KEY `room_id` (`room_id`),
   CONSTRAINT `available_room_ibfk_1` FOREIGN KEY (`data_id`) REFERENCES `rented_house_data` (`id`) ON DELETE CASCADE,
   CONSTRAINT `available_room_ibfk_2` FOREIGN KEY (`room_id`) REFERENCES `rental_room` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `available_room` (
 
 LOCK TABLES `available_room` WRITE;
 /*!40000 ALTER TABLE `available_room` DISABLE KEYS */;
-INSERT INTO `available_room` VALUES (1,1,1,7000,6),(2,1,1,9000,4),(3,2,1,4000,6),(4,3,1,5000,6),(5,3,1,6000,3);
+INSERT INTO `available_room` VALUES (1,1,1,5000,6),(2,1,1,7000,7),(3,2,1,7000,6),(4,2,1,8000,12),(5,3,1,6000,12),(6,3,3,10000,4);
 /*!40000 ALTER TABLE `available_room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -64,7 +64,7 @@ CREATE TABLE `chat_invitation` (
   KEY `invitee_id` (`invitee_id`),
   CONSTRAINT `chat_invitation_ibfk_1` FOREIGN KEY (`inviter_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
   CONSTRAINT `chat_invitation_ibfk_2` FOREIGN KEY (`invitee_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,7 +73,6 @@ CREATE TABLE `chat_invitation` (
 
 LOCK TABLES `chat_invitation` WRITE;
 /*!40000 ALTER TABLE `chat_invitation` DISABLE KEYS */;
-INSERT INTO `chat_invitation` VALUES (30,8061066958,4640511236,'pending','2024-10-06 15:53:01'),(31,8061066958,4640511236,'pending','2024-10-06 16:04:59'),(32,NULL,5423743021,'pending','2024-10-06 16:17:03'),(33,NULL,5423743021,'pending','2024-10-06 21:47:36'),(34,NULL,6330952122,'pending','2024-10-06 21:57:51'),(35,NULL,6330952122,'pending','2024-10-06 22:03:15'),(36,NULL,6330952122,'pending','2024-10-06 22:04:14'),(37,NULL,6330952122,'pending','2024-10-06 22:06:42'),(38,NULL,6330952122,'pending','2024-10-06 22:15:26'),(39,NULL,6330952122,'pending','2024-10-06 22:23:54'),(40,NULL,6330952122,'pending','2024-10-06 22:27:59'),(41,NULL,6330952122,'pending','2024-10-06 22:28:26'),(42,7749536442,6330952122,'pending','2024-10-06 22:30:40');
 /*!40000 ALTER TABLE `chat_invitation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -234,7 +233,7 @@ CREATE TABLE `non_rented_data` (
   `rental_period` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -243,7 +242,7 @@ CREATE TABLE `non_rented_data` (
 
 LOCK TABLES `non_rented_data` WRITE;
 /*!40000 ALTER TABLE `non_rented_data` DISABLE KEYS */;
-INSERT INTO `non_rented_data` VALUES (1,1145985987,25.054304183210345,121.56419837036132,25.029109102236063,121.5408524230957,12),(2,7157718094,25.05694781132849,121.55647360839843,25.028175851697284,121.5382775024414,12),(3,8638486373,25.05492621848587,121.5654,25.029420184171716,121.53089606323242,12);
+INSERT INTO `non_rented_data` VALUES (2,5743390524,25.05492621848587,121.55355536499023,25.039374389670403,121.52883612670898,12),(3,7251645126,25.045906398036156,121.57175147094726,25.03035342524682,121.52935111083984,12),(4,2372323332,25.05585926547989,121.59526907958984,25.038596746452434,121.5382775024414,12),(8,7349542382,25.05492621848587,121.57827460327148,24.994262936635014,121.54171072998047,12),(10,3039582145,25.075607093475078,121.53604590454101,25.028798019511786,121.51561820068359,12);
 /*!40000 ALTER TABLE `non_rented_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -273,7 +272,7 @@ CREATE TABLE `occupied_room` (
 
 LOCK TABLES `occupied_room` WRITE;
 /*!40000 ALTER TABLE `occupied_room` DISABLE KEYS */;
-INSERT INTO `occupied_room` VALUES (1,'男大學生',1,1),(2,'女大學生',2,1),(3,'男律師',3,3);
+INSERT INTO `occupied_room` VALUES (1,'男大學生',1,1),(2,'女大學生',2,1),(3,'女醫生',3,1);
 /*!40000 ALTER TABLE `occupied_room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -326,7 +325,7 @@ CREATE TABLE `rented_house_data` (
 
 LOCK TABLES `rented_house_data` WRITE;
 /*!40000 ALTER TABLE `rented_house_data` DISABLE KEYS */;
-INSERT INTO `rented_house_data` VALUES (1,8766844253,0,0,'松山文創園區','{\"other\": \"訪客限制\", \"amenities\": \"冷氣、冰箱、洗衣機\", \"pet_allowed\": true, \"rental_period\": 12, \"shared_spaces\": \"客廳、廚房、衛浴\", \"additional_fees\": \"電費：5 元 / 1 度\", \"nearby_facilities\": \"便利商店、超市\"}'),(2,6276180732,25.0496452,121.5524318,'臺北田徑場','{\"other\": \"訪客限制\", \"amenities\": \"冷氣、冰箱、洗衣機\", \"pet_allowed\": true, \"rental_period\": 12, \"shared_spaces\": \"客廳、廚房、衛浴\", \"additional_fees\": \"電費：5 元 / 1 度\", \"nearby_facilities\": \"便利商店、超市\"}'),(3,4467412190,25.0499703,121.5575603,' 博仁綜合醫院','{\"other\": \"訪客限制\", \"amenities\": \"冷氣、冰箱、洗衣機\", \"pet_allowed\": true, \"rental_period\": 12, \"shared_spaces\": \"客廳、廚房、衛浴\", \"additional_fees\": \"電費：5 元 / 1 度\", \"nearby_facilities\": \"便利商店、超市\"}');
+INSERT INTO `rented_house_data` VALUES (1,6761839120,25.0442108,121.537186,'忠泰美術館','{\"other\": \"訪客限制\", \"amenities\": \"冷氣、冰箱、洗衣機\", \"pet_allowed\": true, \"rental_period\": 12, \"shared_spaces\": \"客廳、廚房、衛浴\", \"additional_fees\": \"電費：5 元 / 1 度\", \"nearby_facilities\": \"便利商店、超市\"}'),(2,2585278507,25.0421272,121.5449393,'遠東SOGO 台北忠孝館','{\"other\": \"訪客限制\", \"amenities\": \"冷氣、冰箱、洗衣機\", \"pet_allowed\": true, \"rental_period\": 12, \"shared_spaces\": \"客廳、廚房、衛浴\", \"additional_fees\": \"電費：5 元 / 1 度\", \"nearby_facilities\": \"便利商店、超市\"}'),(3,1506761450,25.0472361,121.5429923,'林東芳牛肉麵','{\"other\": \"訪客限制\\n\", \"amenities\": \"冷氣、冰箱、洗衣機\", \"pet_allowed\": true, \"rental_period\": 12, \"shared_spaces\": \"客廳、廚房、衛浴\", \"additional_fees\": \"電費：5 元 / 1 度\", \"nearby_facilities\": \"便利商店、超市\"}');
 /*!40000 ALTER TABLE `rented_house_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -422,7 +421,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1145985987,NULL,NULL,1,0,0,0,1,1,23,7,23,7,23,7,23,7,7,23,9,1,1,9,0,1,1,1,5,3,1,2,1,2,0,0,0,'',0,1,0,0,1,1,1,0,0,0,0,0,'我希望我的室友愛乾淨'),(4467412190,NULL,NULL,1,0,0,0,1,1,21,4,21,4,21,4,21,4,4,21,7,23,23,7,0,1,1,1,3,3,1,1,1,2,0,1,0,'',1,0,1,1,1,1,1,0,0,0,0,0,'我希望跟室友很帥'),(6276180732,NULL,NULL,1,0,0,0,1,1,21,4,21,4,21,4,21,4,4,21,9,3,3,9,1,0,0,1,4,4,2,2,1,2,0,0,0,'',1,0,0,1,1,0,0,0,0,0,0,0,'我希望跟室友很漂亮'),(7157718094,NULL,NULL,0,0,1,1,1,0,22,7,22,7,22,7,22,7,7,22,9,1,1,9,1,1,0,1,4,4,0,2,1,3,25,0,0,'',1,1,0,0,0,0,0,0,0,0,0,0,'我希望我的室友可以陪我運動'),(8638486373,NULL,NULL,1,0,1,0,1,1,22,9,22,9,22,9,22,9,9,22,12,2,2,12,1,1,0,1,5,5,1,1,2,2,0,0,0,'',0,1,0,1,0,0,0,0,0,0,0,1,'我希望跟室友很棒'),(8766844253,NULL,NULL,1,0,0,0,1,1,1,9,1,9,1,9,1,9,9,1,9,3,3,9,0,1,1,1,5,3,1,0,1,0,0,0,0,'',0,1,1,0,0,0,0,0,0,0,0,0,'我希望我的室友愛乾淨');
+INSERT INTO `user` VALUES (1506761450,NULL,NULL,1,0,0,0,1,1,23,8,23,8,23,8,23,8,8,23,10,1,1,10,0,1,1,0,2,5,0,0,0,0,0,0,1,'狗',1,0,1,0,1,0,1,0,0,0,0,1,'我希望我的室友愛乾淨'),(2372323332,NULL,NULL,1,0,0,0,1,1,23,8,23,8,23,8,23,8,8,23,10,1,1,10,0,1,1,0,2,5,0,0,0,2,0,0,1,'貓',1,0,1,0,1,0,1,0,0,0,0,1,'我希望我的室友跟我一起寫程式'),(2585278507,NULL,NULL,1,0,1,1,0,0,0,7,0,7,0,7,0,7,7,0,9,0,0,9,0,1,1,1,5,3,0,2,0,0,0,2,0,'',1,0,1,1,1,0,1,0,0,0,0,0,'我希望跟室友一起玩'),(3039582145,NULL,NULL,0,1,1,0,1,1,3,12,3,12,3,12,3,12,12,3,13,3,3,13,1,0,0,1,4,5,1,2,1,3,25,1,0,'',0,1,0,1,1,0,0,0,0,0,0,1,'我希望我的室友跟我一樣愛喝酒'),(5743390524,NULL,NULL,1,0,0,0,1,1,22,7,22,7,22,7,22,7,7,22,9,2,2,9,0,1,1,1,5,3,2,0,2,2,0,0,0,'',0,1,0,1,0,1,0,0,1,1,0,0,'我希望我的室友會陪我運動'),(6761839120,NULL,NULL,1,0,0,0,1,1,22,7,22,7,22,7,22,7,7,22,9,2,2,9,0,1,1,1,5,3,2,0,2,2,0,0,0,'',0,1,0,1,0,1,0,0,1,1,0,0,'我希望跟室友可以溝通'),(7251645126,NULL,NULL,1,0,1,1,0,0,0,7,0,7,0,7,0,7,7,0,9,0,0,9,0,1,1,1,5,3,0,2,0,0,0,2,0,'',1,1,0,0,0,0,0,0,0,0,0,0,'我希望我的室友是個好人'),(7349542382,NULL,NULL,1,0,0,0,1,1,2,10,2,10,2,10,2,10,10,2,9,1,1,9,0,1,1,1,5,3,0,1,0,0,0,0,0,'',0,1,0,0,1,1,0,0,0,0,0,0,'我希望我的室友會跟我一起追劇，喜歡韓劇就更棒了！');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -487,7 +486,7 @@ CREATE TABLE `user_match` (
   KEY `fk_user_2` (`user_id_2`),
   CONSTRAINT `fk_user_1` FOREIGN KEY (`user_id_1`) REFERENCES `user` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_user_2` FOREIGN KEY (`user_id_2`) REFERENCES `user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -496,7 +495,7 @@ CREATE TABLE `user_match` (
 
 LOCK TABLES `user_match` WRITE;
 /*!40000 ALTER TABLE `user_match` DISABLE KEYS */;
-INSERT INTO `user_match` VALUES (1,6276180732,1145985987,1,0.82,1.00,0.58,1.00,0.93,0,0,0.50,1,1.00,1.00,0.50,1.00),(2,4467412190,1145985987,1,0.75,1.00,0.67,0.50,0.93,1,1,1.00,1,1.00,0.50,1.00,1.00),(3,7157718094,6276180732,1,1.00,0.67,0.75,1.00,0.94,0,1,1.00,0,0.40,1.00,0.00,1.00),(4,7157718094,1145985987,1,0.82,0.67,0.67,1.00,0.98,1,0,0.50,0,0.40,1.00,0.50,1.00),(5,8638486373,6276180732,1,0.82,1.00,0.67,1.00,0.90,0,1,1.00,1,0.80,0.50,0.50,0.50),(6,8638486373,1145985987,1,0.75,1.00,0.58,1.00,0.95,1,0,0.50,1,0.80,0.50,1.00,0.50),(7,8638486373,7157718094,1,0.82,0.67,0.75,1.00,0.95,1,1,1.00,0,0.60,0.50,0.50,0.50),(8,8638486373,4467412190,1,0.65,1.00,0.42,0.50,0.89,1,0,0.50,1,0.80,1.00,1.00,0.50);
+INSERT INTO `user_match` VALUES (17,7349542382,7251645126,1,1.00,1.00,0.75,0.00,0.94,1,1,1.00,1,0.20,0.50,1.00,1.00),(18,7349542382,2585278507,1,1.00,1.00,0.50,0.00,0.94,1,1,1.00,1,0.20,0.50,1.00,1.00),(19,7349542382,1506761450,0,0.55,1.00,0.50,1.00,0.94,1,1,0.50,1,1.00,0.50,1.00,1.00),(20,7349542382,5743390524,1,1.00,0.33,0.67,1.00,0.91,1,1,1.00,1,1.00,0.50,0.00,0.00),(21,7349542382,2372323332,0,0.55,0.33,0.50,1.00,0.94,1,1,0.50,1,1.00,0.50,1.00,1.00),(29,3039582145,7251645126,1,0.72,0.00,0.67,0.50,0.88,0,0,0.50,0,0.20,1.00,0.50,0.50),(30,3039582145,5743390524,1,0.72,0.67,0.58,0.50,0.87,0,0,0.50,0,0.60,0.00,0.50,0.50);
 /*!40000 ALTER TABLE `user_match` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -518,7 +517,7 @@ CREATE TABLE `wanted_room` (
   KEY `room_id` (`room_id`),
   CONSTRAINT `wanted_room_ibfk_1` FOREIGN KEY (`data_id`) REFERENCES `non_rented_data` (`id`) ON DELETE CASCADE,
   CONSTRAINT `wanted_room_ibfk_2` FOREIGN KEY (`room_id`) REFERENCES `rental_room` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -527,7 +526,7 @@ CREATE TABLE `wanted_room` (
 
 LOCK TABLES `wanted_room` WRITE;
 /*!40000 ALTER TABLE `wanted_room` DISABLE KEYS */;
-INSERT INTO `wanted_room` VALUES (1,2000,12000,1,1),(2,4000,14000,1,3),(3,1000,8000,2,1),(4,4000,9999,2,3),(5,3000,9000,3,1);
+INSERT INTO `wanted_room` VALUES (2,2000,7000,2,1),(3,5000,10000,3,1),(4,6000,12000,3,3),(5,5000,8000,4,1),(9,2000,9997,8,1),(11,5000,7000,10,1),(12,7000,10000,10,3);
 /*!40000 ALTER TABLE `wanted_room` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -540,4 +539,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-07  9:30:39
+-- Dump completed on 2024-10-09  1:51:51
