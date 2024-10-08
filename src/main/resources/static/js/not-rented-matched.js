@@ -499,7 +499,17 @@ document.getElementById('adjustForm').addEventListener('submit', function (event
             matchResults = sortedMatchResults;
             sessionStorage.setItem('matchResults', JSON.stringify(matchResults));
 
-            currentResults = matchResults;
+            rentedResults = [];
+            nonRentedResults = [];
+            matchResults.forEach(item => {
+                if (item.rentedHouseData && item.rentedHouseData.length > 0) {
+                    rentedResults.push(item);
+                } else if (item.nonRentedData && item.nonRentedData.length > 0) {
+                    nonRentedResults.push(item);
+                }
+            });
+
+            currentResults = nonRentedResults;
             // 關閉模態窗口
             adjustModal.style.display = "none";
 
