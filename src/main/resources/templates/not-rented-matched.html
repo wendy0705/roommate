@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/matched.css">
-    <!--    <link rel="stylesheet" href="css/chat.css">-->
+    <link rel="stylesheet" href="css/chat.css">
     <title>Matched Users</title>
 </head>
 <body>
@@ -36,6 +36,18 @@
             <button id="nextPage">下一頁</button>
         </div>
     </main>
+    <div class="chat-wrapper">
+        <div class="chat-container">
+            <div class="chat-header">
+                <h2>聊天室</h2>
+            </div>
+            <div id="messages" class="chat-messages"></div>
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="輸入訊息...">
+                <button id="sendMessageBtn">發送</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -121,10 +133,22 @@
         </div>
     </div>
 </div>
+
 <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>-->
 <script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function () {
         initializeMatchResults();
+        addInviteEventListeners()
+        let websocketUrl = /*[[${websocketUrl}]]*/ '';
+        sessionStorage.setItem('websocketUrl', websocketUrl);
+        let chatServiceHost = /*[[${chatServiceHost}]]*/ '';
+        sessionStorage.setItem('chatServiceHost', chatServiceHost);
+        const chatHeader = document.querySelector('.chat-header');
+        const chatContainer = document.querySelector('.chat-container');
+
+        chatHeader.addEventListener('click', function () {
+            chatContainer.classList.toggle('minimized');
+        });
 
         document.getElementById('showNonRented').addEventListener('click', function () {
             currentResults = nonRentedResults;
@@ -151,6 +175,6 @@
 <script src="js/compare.js"></script>
 <script src="/js/not-rented-matched.js"></script>
 <script src="js/header.js"></script>
-<!--<script src="js/chat.js"></script>-->
+<script src="js/chat.js"></script>
 </body>
 </html>

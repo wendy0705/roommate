@@ -16,6 +16,12 @@ public class PageController {
     @Value("${google.maps.api.key}")
     private String googleMapsApiKey;
 
+    @Value("${websocket.url}")
+    private String websocketUrl;
+
+    @Value("${chatservice.host}")
+    private String chatServiceHost;
+
     @GetMapping("/habits")
     public String showHabits() {
         return "habits";
@@ -54,12 +60,16 @@ public class PageController {
 
     @GetMapping("/rented-matched")
     public String showRentedMatchedUsers(Model model) {
+        model.addAttribute("chatServiceHost", chatServiceHost);
+        model.addAttribute("websocketUrl", websocketUrl);
         model.addAttribute("googleMapsApiKey", googleMapsApiKey);
         return "rented-matched";
     }
 
     @GetMapping("/not-rented-matched")
     public String showNotRentedMatchedUsers(Model model) {
+        model.addAttribute("chatServiceHost", chatServiceHost);
+        model.addAttribute("websocketUrl", websocketUrl);
         model.addAttribute("googleMapsApiKey", googleMapsApiKey);
         return "not-rented-matched";
     }

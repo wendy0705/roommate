@@ -12,6 +12,7 @@ let nonRentedResults = [];
 let currentResults = [];
 
 let myId;
+let userId;
 
 function initializeMatchResults() {
     const storedResults = sessionStorage.getItem('matchResults');
@@ -60,7 +61,7 @@ function renderMatchResults() {
         const occupiedRooms = item.occupiedRooms || []; // 初始化已租房間數據
         const othersPreference = item.othersPreference;
         const commonInterests = item.commonInterests;
-        const userId = item.userId;
+        userId = item.userId;
 
         // 處理興趣和偏好部分的顯示
         let matchInfo = ''; // 處理未租房和已租房的資訊
@@ -160,6 +161,7 @@ function renderMatchResults() {
                     <div class="map-container">
                         <div id="map-${userId}" style="height: 400px; width: 100%;"></div>
                     </div>
+                   
                     <div class="info-container">
                         ${preferenceInfo}
                         ${rentedHouseData.length > 0 ? `
@@ -167,7 +169,7 @@ function renderMatchResults() {
                         
                         <div class="button-container" style="text-align: right;">
                             ${viewMoreButton}
-                            <button class="invite-button">聊聊邀請</button>
+                            <button class="invite-button" data-invitee-id="${userId}">聊聊邀請</button>
                         </div>
                     </div>
                 </div>
@@ -205,7 +207,6 @@ function renderMatchResults() {
 
     // 初始化地圖
     pageResults.forEach(item => {
-        const userId = item.userId;
         const nonRentedData = item.nonRentedData || [];
         const rentedHouseData = item.rentedHouseData || [];
 
@@ -246,15 +247,12 @@ function addViewMoreEventListeners() {
 }
 
 function runCompareJS() {
-    console.log("hi");
-    // 此函數將執行 compare.js 的邏輯
 
     const storedUserId = sessionStorage.getItem('selectedUserId');
     console.log(storedUserId);
     if (storedUserId) {
         const userId = parseInt(storedUserId, 10);
         const storedResults = sessionStorage.getItem('matchResults');
-        console.log(storedResults);
         const matchResults = storedResults ? JSON.parse(storedResults) : [];
 
         // 根據 userId 查找對應的匹配項
@@ -514,4 +512,38 @@ document.getElementById('adjustForm').addEventListener('submit', function (event
         });
 });
 
+function addInviteEventListeners() {
+    
+    const inviteButtons = document.querySelectorAll('.invite-button');
+    inviteButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            console.log("invite")
+            const inviteeId = parseInt(event.target.getAttribute('data-invitee-id'), 10);  // 假設 inviteeId 從按鈕中獲取
+
+            console.log(myId);
+            const invitationData = {
+                inviter_id: myId,
+                invitee_id: inviteeId
+            };
+
+            // 發送 POST 請求到 /invite API
+            fetch('http://localhost:8081/chat/invite', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(invitationData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('邀請成功:', data);
+                    alert('邀請已發送');
+                })
+                .catch(error => {
+                    console.error('邀請失敗:', error);
+                    alert('發送邀請時出現錯誤');
+                });
+        });
+    });
+}
 
