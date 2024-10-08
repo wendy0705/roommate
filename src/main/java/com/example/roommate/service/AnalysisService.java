@@ -240,7 +240,7 @@ public class AnalysisService {
     public double calculateWeightedMatchScore(UserMatch match, List<Integer> priorityIndicatorCodes) {
         double score = 0.0;
 
-        double[] topWeights = {0.5, 0.3, 0.1};
+        double[] topWeights = {0.7, 0.2, 0.1};
 
         Map<String, Double> weights = new HashMap<>();
 

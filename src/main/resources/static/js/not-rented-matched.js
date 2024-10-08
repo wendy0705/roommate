@@ -499,6 +499,7 @@ document.getElementById('adjustForm').addEventListener('submit', function (event
             matchResults = sortedMatchResults;
             sessionStorage.setItem('matchResults', JSON.stringify(matchResults));
 
+            currentResults = matchResults;
             // 關閉模態窗口
             adjustModal.style.display = "none";
 
@@ -513,7 +514,7 @@ document.getElementById('adjustForm').addEventListener('submit', function (event
 });
 
 function addInviteEventListeners() {
-    
+
     const inviteButtons = document.querySelectorAll('.invite-button');
     inviteButtons.forEach(button => {
         button.addEventListener('click', (event) => {

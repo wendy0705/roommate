@@ -187,12 +187,20 @@ function loadRoomTypes() {
                 lowPriceInput.classList.add('lowPrice');
                 lowPriceInput.disabled = true; // 初始禁用，只有在勾选复选框时启用
 
+                lowPriceInput.addEventListener('wheel', function (e) {
+                    e.preventDefault();
+                });
+
                 // 创建最高预算输入框
                 const highPriceInput = document.createElement('input');
                 highPriceInput.type = 'number';
                 highPriceInput.placeholder = '最高預算';
                 highPriceInput.classList.add('highPrice');
                 highPriceInput.disabled = true; // 初始禁用
+
+                highPriceInput.addEventListener('wheel', function (e) {
+                    e.preventDefault();
+                });
 
                 // 当复选框被选中时，启用对应的输入框
                 checkbox.addEventListener('change', function () {
