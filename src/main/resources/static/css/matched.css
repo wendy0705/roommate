@@ -519,3 +519,16 @@ strong {
 .chat-container.minimized .chat-input {
     display: none;
 }
+
+/* 邀請已發送狀態 */
+.invite-button.invitation-sent {
+    background-color: gray;
+    cursor: not-allowed;
+}
+
+/* 聊天按鈕狀態 */
+.invite-button.chat-button {
+    background-color: #6B8E23;
+    color: white;
+    cursor: pointer;
+}

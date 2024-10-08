@@ -16,3 +16,9 @@
 .notification-box button {
     margin-right: 10px;
 }
+
+.no-notifications {
+    color: gray;
+    text-align: center;
+    padding: 10px;
+}

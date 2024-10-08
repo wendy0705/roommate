@@ -50,12 +50,14 @@ public class AnalysisController {
         userService.savePreferenceById(myId, myPreference);
 
         Map<Long, PreferenceDto> userPreferences = new HashMap<>();
-
         Map<Long, Map<String, Object>> userAnalysisResults = new HashMap<>();
 
         for (Long matchingUserId : matchRequestDto.getMatchingUserIds()) {
 
             PreferenceDto othersPreference = userService.getByUserId(matchingUserId);
+            if (othersPreference == null) {
+                continue;
+            }
             userPreferences.put(matchingUserId, othersPreference);
 
             Map<String, Object> analysisResult = analysisService.analysis(myPreference, othersPreference);
@@ -95,7 +97,7 @@ public class AnalysisController {
                     null,
                     myPreference,
                     othersPreference,
-                    matchScore, // 使用計算後的匹配分數
+                    matchScore,
                     nonRentedData,
                     null
             );
@@ -175,7 +177,7 @@ public class AnalysisController {
                     occupiedRooms,
                     myPreference,
                     othersPreference,
-                    matchScore, // 使用計算後的匹配分數
+                    matchScore,
                     nonRentedData,
                     rentedHouseData
             );
@@ -202,7 +204,6 @@ public class AnalysisController {
             return ResponseEntity.badRequest().body("You must select exactly three priority indicators.");
         }
 
-        // 獲取所有匹配用戶的 UserMatch 資料
         Map<Long, Double> matchScores = new HashMap<>();
         for (Long matchingUserId : userIds) {
 
@@ -219,7 +220,6 @@ public class AnalysisController {
 
         log.info(matchScores.toString());
 
-        // 根據匹配分數排序（從高到低）
         List<Map.Entry<Long, Double>> sortedMatches = matchScores.entrySet().stream()
                 .sorted(Map.Entry.<Long, Double>comparingByValue().reversed())
                 .collect(Collectors.toList());

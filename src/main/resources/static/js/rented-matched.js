@@ -422,35 +422,46 @@ document.getElementById('adjustForm').addEventListener('submit', function (event
 
 function addInviteEventListeners() {
     const inviteButtons = document.querySelectorAll('.invite-button');
+
     inviteButtons.forEach(button => {
         button.addEventListener('click', (event) => {
-            console.log("invite");
-            const inviteeId = parseInt(event.target.getAttribute('data-invitee-id'), 10);  // 假設 inviteeId 從按鈕中獲取
+            const inviteeId = parseInt(event.target.getAttribute('data-invitee-id'), 10);  // 從按鈕中獲取 inviteeId
 
-            console.log(myId);
+            // 構建邀請數據
             const invitationData = {
-                inviter_id: myId,
+                inviter_id: myId,  // 假設 myId 是全局變量
                 invitee_id: inviteeId
             };
 
-            // 發送 POST 請求到 /invite API
-            fetch('http://localhost:8081/chat/invite', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(invitationData)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('邀請成功:', data);
-                    alert('邀請已發送');
-                })
-                .catch(error => {
-                    console.error('邀請失敗:', error);
-                    alert('發送邀請時出現錯誤');
-                });
+            // 發送邀請
+            sendInvitation(invitationData, button);
         });
     });
 }
+
+function sendInvitation(invitationData, button) {
+    // 禁用按鈕，防止重複點擊
+    button.disabled = true;
+
+    fetch('http://localhost:8081/chat/invite', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(invitationData)
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('邀請成功:', data);
+            button.textContent = '邀請已發送';  // 更新按鈕文字
+            button.classList.add('invitation-sent');  // 可添加自定義樣式
+            alert('邀請已發送');
+        })
+        .catch(error => {
+            console.error('邀請失敗:', error);
+            alert('發送邀請時出現錯誤');
+            button.disabled = false;  // 重新啟用按鈕
+        });
+}
+
 
