@@ -209,11 +209,14 @@ function renderMatchResults() {
     pageResults.forEach(item => {
         const nonRentedData = item.nonRentedData || [];
         const rentedHouseData = item.rentedHouseData || [];
+        const currentUserId = item.userId;
 
         if (nonRentedData.length > 0) {
-            initMap(userId, nonRentedData);
+            console.log("nonRentedData" + userId);
+            initMap(currentUserId, nonRentedData);
         } else if (rentedHouseData.length > 0) {
-            initMap(userId, rentedHouseData);
+            console.log("rentedHouseData" + userId);
+            initMap(currentUserId, rentedHouseData);
         }
     });
 }
@@ -294,6 +297,7 @@ function convertInterestKeyToText(key) {
 }
 
 function initMap(userId, data) {
+    console.log(userId);
     const mapElement = document.getElementById(`map-${userId}`);
 
     if (!mapElement) {
