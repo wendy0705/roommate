@@ -1,15 +1,14 @@
 window.onload = function () {
     initMap();
     loadRoomTypes();
-    
-    const priceInputs = document.querySelectorAll('.price');
 
-    priceInputs.forEach(function (input) {
+    const numberInputs = document.querySelectorAll('input[type="number"]');
+
+    numberInputs.forEach(function (input) {
         input.addEventListener('wheel', function (e) {
             e.preventDefault(); // 禁用滑鼠滾輪調整數值
         });
     });
-
 };
 
 function loadRoomTypes() {

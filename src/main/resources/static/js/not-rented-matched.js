@@ -204,6 +204,7 @@ function renderMatchResults() {
 
     updatePagination();
     addViewMoreEventListeners();
+    addInviteEventListeners();
 
     // 初始化地圖
     pageResults.forEach(item => {
@@ -212,10 +213,10 @@ function renderMatchResults() {
         const currentUserId = item.userId;
 
         if (nonRentedData.length > 0) {
-            console.log("nonRentedData" + userId);
+            console.log("nonRentedData" + currentUserId);
             initMap(currentUserId, nonRentedData);
         } else if (rentedHouseData.length > 0) {
-            console.log("rentedHouseData" + userId);
+            console.log("rentedHouseData" + currentUserId);
             initMap(currentUserId, rentedHouseData);
         }
     });
@@ -305,7 +306,6 @@ function initMap(userId, data) {
         return;
     }
 
-    // 判斷數據類型
     if (data[0].region_sw_lat && data[0].region_ne_lat) {
         // 尚未租房的數據，畫矩形
         const map = new google.maps.Map(mapElement, {
@@ -530,6 +530,7 @@ document.getElementById('adjustForm').addEventListener('submit', function (event
 function addInviteEventListeners() {
 
     const inviteButtons = document.querySelectorAll('.invite-button');
+
     inviteButtons.forEach(button => {
         button.addEventListener('click', (event) => {
             console.log("invite")
@@ -540,25 +541,33 @@ function addInviteEventListeners() {
                 inviter_id: myId,
                 invitee_id: inviteeId
             };
-
-            // 發送 POST 請求到 /invite API
-            fetch('http://localhost:8081/chat/invite', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(invitationData)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('邀請成功:', data);
-                    alert('邀請已發送');
-                })
-                .catch(error => {
-                    console.error('邀請失敗:', error);
-                    alert('發送邀請時出現錯誤');
-                });
+            // 發送邀請
+            // sendInvitation(invitationData, button);
         });
     });
 }
 
+// function sendInvitation(invitationData, button) {
+//     // 禁用按鈕，防止重複點擊
+//     button.disabled = true;
+//
+//     fetch('http://localhost:8081/chat/invite', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify(invitationData)
+//     })
+//         .then(response => response.json())
+//         .then(data => {
+//             console.log('邀請成功:', data);
+//             button.textContent = '邀請已發送';  // 更新按鈕文字
+//             button.classList.add('invitation-sent');  // 可添加自定義樣式
+//             alert('邀請已發送');
+//         })
+//         .catch(error => {
+//             console.error('邀請失敗:', error);
+//             alert('發送邀請時出現錯誤');
+//             button.disabled = false;  // 重新啟用按鈕
+//         });
+// }

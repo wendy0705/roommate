@@ -94,6 +94,11 @@ public class UserService {
         Optional<User> userOpt = userRepository.findById(userId);
         if (userOpt.isPresent()) {
             User user = userOpt.get();
+
+            if (!isFormFilled(user)) {
+                return null;
+            }
+
             PreferenceDto preferenceDto = new PreferenceDto();
 
             preferenceDto.setShareRoom(user.getShareRoom());
@@ -167,4 +172,55 @@ public class UserService {
             throw new RuntimeException("User not found with id: " + userId);
         }
     }
+
+    public boolean isFormFilled(User user) {
+        return user.getShareRoom() != null &&
+                user.getHauntedHouse() != null &&
+                user.getRooftopExtension() != null &&
+                user.getIllegalBuilding() != null &&
+                user.getBasement() != null &&
+                user.getWindowless() != null &&
+                user.getMondayWakeup() != null &&
+                user.getMondaySleep() != null &&
+                user.getTuesdayWakeup() != null &&
+                user.getTuesdaySleep() != null &&
+                user.getWednesdayWakeup() != null &&
+                user.getWednesdaySleep() != null &&
+                user.getThursdayWakeup() != null &&
+                user.getThursdaySleep() != null &&
+                user.getFridayWakeup() != null &&
+                user.getFridaySleep() != null &&
+                user.getSaturdayWakeup() != null &&
+                user.getSaturdaySleep() != null &&
+                user.getSundayWakeup() != null &&
+                user.getSundaySleep() != null &&
+                user.getCookingLocation() != null &&
+                user.getDiningLocation() != null &&
+                user.getDiningAlone() != null &&
+                user.getDiningNotAlone() != null &&
+                user.getSleepNoise() != null &&
+                user.getWorkNoise() != null &&
+                user.getAlarmHabit() != null &&
+                user.getLightSensitivity() != null &&
+                user.getFriendshipHabit() != null &&
+                user.getHope() != null &&
+                user.getHotWeatherPreference() != null &&
+                user.getTemperature() != null &&
+                user.getHumidityPreference() != null &&
+                user.getHasPet() != null &&
+                user.getPetType() != null &&
+                user.getInterestSports() != null &&
+                user.getInterestTravel() != null &&
+                user.getInterestReading() != null &&
+                user.getInterestWineTasting() != null &&
+                user.getInterestDrama() != null &&
+                user.getInterestAstrology() != null &&
+                user.getInterestProgramming() != null &&
+                user.getInterestHiking() != null &&
+                user.getInterestGaming() != null &&
+                user.getInterestPainting() != null &&
+                user.getInterestIdolChasing() != null &&
+                user.getInterestMusic() != null;
+    }
+
 }

@@ -126,6 +126,11 @@ public class AnalysisController {
             Long matchingUserId = entry.getKey();
 
             PreferenceDto othersPreference = userService.getByUserId(matchingUserId);
+
+            if (othersPreference == null) {
+                continue;
+            }
+            
             userPreferences.put(matchingUserId, othersPreference);
 
             Map<String, Object> analysisResult = analysisService.analysis(myPreference, othersPreference);

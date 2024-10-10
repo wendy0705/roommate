@@ -1,6 +1,14 @@
 window.onload = function () {
     initMap();
     loadRoomTypes();
+
+    const numberInputs = document.querySelectorAll('input[type="number"]');
+
+    numberInputs.forEach(function (input) {
+        input.addEventListener('wheel', function (e) {
+            e.preventDefault(); // 禁用滑鼠滾輪調整數值
+        });
+    });
 };
 
 function notRentedInit(map) {
