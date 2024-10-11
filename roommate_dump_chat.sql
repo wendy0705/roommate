@@ -33,7 +33,7 @@ CREATE TABLE `available_room` (
   KEY `room_id` (`room_id`),
   CONSTRAINT `available_room_ibfk_1` FOREIGN KEY (`data_id`) REFERENCES `rented_house_data` (`id`) ON DELETE CASCADE,
   CONSTRAINT `available_room_ibfk_2` FOREIGN KEY (`room_id`) REFERENCES `rental_room` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,6 @@ CREATE TABLE `available_room` (
 
 LOCK TABLES `available_room` WRITE;
 /*!40000 ALTER TABLE `available_room` DISABLE KEYS */;
-INSERT INTO `available_room` VALUES (1,1,1,6000,6);
 /*!40000 ALTER TABLE `available_room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -64,7 +63,7 @@ CREATE TABLE `chat_invitation` (
   KEY `invitee_id` (`invitee_id`),
   CONSTRAINT `chat_invitation_ibfk_1` FOREIGN KEY (`inviter_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
   CONSTRAINT `chat_invitation_ibfk_2` FOREIGN KEY (`invitee_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -147,7 +146,7 @@ CREATE TABLE `dorm` (
   PRIMARY KEY (`id`),
   KEY `school_id` (`school_id`),
   CONSTRAINT `dorm_ibfk_1` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,7 +155,6 @@ CREATE TABLE `dorm` (
 
 LOCK TABLES `dorm` WRITE;
 /*!40000 ALTER TABLE `dorm` DISABLE KEYS */;
-INSERT INTO `dorm` VALUES (1,'莊敬 1 舍',1),(2,'莊敬 9 舍',1),(3,'自強 7 舍',1),(4,'自強 8 舍',1),(5,'自強 9 舍',1),(6,'自強 10 舍',1),(7,'莊敬 2 舍',1),(8,'莊敬 3 舍',1),(9,'自強 5 舍',1),(10,'自強 6 舍',1),(11,'自強 1 舍',1),(12,'自強 3 舍',1),(13,'男一舍',2),(14,'男二舍',2),(15,'男三舍',2),(16,'男四舍',2),(17,'男五舍',2),(18,'男六舍',2),(19,'男七舍',2),(20,'男八舍',2),(21,'男研一舍',2),(22,'男研三舍',2),(23,'大一女舍',2),(24,'女一舍',2),(25,'女二舍',2),(26,'女三舍',2),(27,'女四舍',2),(28,'女五舍',2),(29,'女六舍',2),(30,'女八舍',2),(31,'女九舍',2),(32,'女研一舍',2),(33,'女研三舍',2);
 /*!40000 ALTER TABLE `dorm` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,7 +201,7 @@ CREATE TABLE `dorm_room` (
   PRIMARY KEY (`id`),
   KEY `dorm_id` (`dorm_id`),
   CONSTRAINT `dorm_room_ibfk_1` FOREIGN KEY (`dorm_id`) REFERENCES `dorm` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -212,7 +210,6 @@ CREATE TABLE `dorm_room` (
 
 LOCK TABLES `dorm_room` WRITE;
 /*!40000 ALTER TABLE `dorm_room` DISABLE KEYS */;
-INSERT INTO `dorm_room` VALUES (1,'2人雅房 - 莊一',1),(2,'4人雅房 - 莊一',1),(3,'2人雅房 - 莊九',2),(4,'3人雅房 - 莊九',2),(5,'4人雅房 - 莊九',2),(6,'4人雅房 - 自七',3),(7,'4人雅房 - 自八',4),(8,'4人雅房 - 自九',5),(9,'2人套房 - 自十',6),(10,'2人雅房 - 莊二',7),(11,'4人雅房 - 莊二',7),(12,'2人雅房 - 莊三',8),(13,'4人雅房 - 莊三',8),(14,'4人雅房 - 自五',9),(15,'4人雅房 - 自六',10),(16,'2人套房 - 自一',11),(17,'2人雅房 - 自九',5),(18,'2人套房 - 自十',6),(19,'4人雅房 - 男一',13),(20,'4人雅房 - 男二',14),(21,'4人雅房 - 男三',15),(22,'4人雅房 - 男四',16),(23,'4人雅房 - 男五',17),(24,'4人雅房 - 男六',18),(25,'4人雅房 - 男七',19),(26,'4人雅房 - 男八',20),(27,'2人套房 - 男研一',21),(28,'2人套房 - 男研三',22),(29,'4人雅房 - 大一女',23),(30,'4人雅房 - 女一',24),(31,'4人雅房 - 女二',25),(32,'4人雅房 - 女三',26),(33,'4人雅房 - 女四',27),(34,'4人雅房 - 女五',28),(35,'4人雅房 - 女六',29),(36,'4人雅房 - 女八',30),(37,'4人套房 - 女九',31),(38,'2人套房 - 女研一',32),(39,'2人套房 - 女研三',33);
 /*!40000 ALTER TABLE `dorm_room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -233,7 +230,7 @@ CREATE TABLE `non_rented_data` (
   `rental_period` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -242,7 +239,6 @@ CREATE TABLE `non_rented_data` (
 
 LOCK TABLES `non_rented_data` WRITE;
 /*!40000 ALTER TABLE `non_rented_data` DISABLE KEYS */;
-INSERT INTO `non_rented_data` VALUES (1,8413682333,25.05361742169519,121.55884566604122,25.025933501812112,121.54116454421505,12);
 /*!40000 ALTER TABLE `non_rented_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -315,7 +311,7 @@ CREATE TABLE `rented_house_data` (
   `details` json DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -324,7 +320,6 @@ CREATE TABLE `rented_house_data` (
 
 LOCK TABLES `rented_house_data` WRITE;
 /*!40000 ALTER TABLE `rented_house_data` DISABLE KEYS */;
-INSERT INTO `rented_house_data` VALUES (1,4548183258,25.0413275,121.5479952,'遠東SOGO 台北忠孝館','{\"other\": \"\", \"amenities\": \"\", \"pet_allowed\": true, \"rental_period\": 12, \"shared_spaces\": \"\", \"additional_fees\": \"\", \"nearby_facilities\": \"\"}');
 /*!40000 ALTER TABLE `rented_house_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -420,7 +415,6 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (4548183258,NULL,NULL,1,0,0,0,1,1,23,7,23,7,23,7,23,7,7,23,9,1,1,9,0,1,1,1,5,3,1,0,1,1,0,0,1,'狗',1,1,0,0,0,0,0,0,0,0,0,0,'我希望跟室友可以溝通'),(8413682333,NULL,NULL,1,0,0,0,1,1,23,7,23,7,23,7,23,7,7,23,9,1,1,9,0,1,1,1,5,3,2,1,2,2,0,0,0,'',1,1,0,0,0,0,0,0,0,0,0,0,'我希望跟室友可以溝通');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -485,7 +479,7 @@ CREATE TABLE `user_match` (
   KEY `fk_user_2` (`user_id_2`),
   CONSTRAINT `fk_user_1` FOREIGN KEY (`user_id_1`) REFERENCES `user` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_user_2` FOREIGN KEY (`user_id_2`) REFERENCES `user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -494,7 +488,6 @@ CREATE TABLE `user_match` (
 
 LOCK TABLES `user_match` WRITE;
 /*!40000 ALTER TABLE `user_match` DISABLE KEYS */;
-INSERT INTO `user_match` VALUES (1,8413682333,4548183258,0,1.00,0.67,1.00,1.00,1.00,1,1,1.00,1,1.00,0.50,0.50,0.50);
 /*!40000 ALTER TABLE `user_match` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -516,7 +509,7 @@ CREATE TABLE `wanted_room` (
   KEY `room_id` (`room_id`),
   CONSTRAINT `wanted_room_ibfk_1` FOREIGN KEY (`data_id`) REFERENCES `non_rented_data` (`id`) ON DELETE CASCADE,
   CONSTRAINT `wanted_room_ibfk_2` FOREIGN KEY (`room_id`) REFERENCES `rental_room` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -525,7 +518,6 @@ CREATE TABLE `wanted_room` (
 
 LOCK TABLES `wanted_room` WRITE;
 /*!40000 ALTER TABLE `wanted_room` DISABLE KEYS */;
-INSERT INTO `wanted_room` VALUES (1,3000,9000,1,1);
 /*!40000 ALTER TABLE `wanted_room` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -538,4 +530,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-11 17:04:52
+-- Dump completed on 2024-10-12  6:46:09

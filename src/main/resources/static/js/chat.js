@@ -18,7 +18,6 @@ window.addEventListener('load', function () {
         console.log("No user ID found in sessionStorage. Cannot connect to WebSocket.");
         return;
     }
-
     checkInvitationStatus();
 
     // 自動建立 WebSocket 來接收通知
@@ -26,11 +25,11 @@ window.addEventListener('load', function () {
 
     notificationSocket.onmessage = function (event) {
         const data = JSON.parse(event.data);
+        console.log("notification socket" + data.type);
 
         if (data.type === "invitation") {
             // 當接收到邀請消息時，顯示接受或拒絕邀請的按鈕
             console.log("receive invitation");
-            console.log(data.inviter_id, data.invitee_id);
             showInvitation(data.inviter_id, data.invitee_id);
         } else if (data.type === "accepted") {
             // 當接收到邀請已被接受的通知時，更新按鈕狀態
@@ -46,6 +45,7 @@ window.addEventListener('load', function () {
 
                 // 重新選取新的按鈕元素，並綁定新的事件來打開聊天
                 const newButton = document.querySelector(`.invite-button[data-invitee-id="${data.invitee_id}"]`);
+                // 修改這裡，只傳遞 otherUserId 和 currentUserId
                 newButton.addEventListener('click', () => startChat(data.invitee_id, currentUserId));
             }
 
@@ -78,10 +78,12 @@ function updateChatroomList() {
         console.log(chatRooms);
         chatroomList.innerHTML = '';  // 清空之前的列表
         chatRooms.forEach(otherUserId => {
+            
             const roomElement = document.createElement('div');
             roomElement.className = 'chatroom-item';
             roomElement.textContent = `與${otherUserId}的聊天室`;
             roomElement.addEventListener('click', function () {
+                // 修改這裡，只傳遞 otherUserId 和 currentUserId
                 startChat(otherUserId, currentUserId);  // 點擊後進入該聊天室
             });
             chatroomList.appendChild(roomElement);
@@ -93,6 +95,7 @@ function getChatRoomsForCurrentUser() {
     return fetch(`${chatServiceHost}/chat/chatrooms?userId=${currentUserId}`)
         .then(response => response.json())
         .then(data => {
+            console.log("get chatrooms for current users", data);
             return data;
         })
         .catch(error => {
@@ -100,7 +103,6 @@ function getChatRoomsForCurrentUser() {
             return [];
         });
 }
-
 
 // 顯示邀請按鈕的邏輯
 function showInvitation(inviterId, inviteeId) {
@@ -216,17 +218,15 @@ function checkInvitationStatus() {
 
                         button.replaceWith(button.cloneNode(true));
 
-                        const newButton = document.querySelector(`.invite-button[data-invitee-id="${data.invitee_id}"]`);
-                        newButton.addEventListener('click', () => startChat(data.invitee_id, currentUserId));
+                        // 修改這裡，只傳遞 otherUserId 和 currentUserId
+                        const newButton = document.querySelector(`.invite-button[data-invitee-id="${userId}"]`);
+                        newButton.addEventListener('click', () => startChat(userId, currentUserId));
 
                         updateChatroomList();
                     } else if (status === 'declined') {
-                        const button = document.querySelector(`.invite-button[data-invitee-id="${data.invitee_id}"]`);
-                        if (button) {
-                            button.classList.remove('invitation-sent', 'chat-button');
-                            button.textContent = '邀請聊聊';
-                            button.disabled = false;
-                        }
+                        button.classList.remove('invitation-sent', 'chat-button');
+                        button.textContent = '邀請聊聊';
+                        button.disabled = false;
                     }
                 }
             });
@@ -235,7 +235,6 @@ function checkInvitationStatus() {
             console.error('Error checking invitation status:', error);
         });
 }
-
 
 function acceptInvitation(inviterId, inviteeId) {
     fetch(`${chatServiceHost}/chat/accept`, {
@@ -248,7 +247,8 @@ function acceptInvitation(inviterId, inviteeId) {
         .then(response => response.text())
         .then(data => {
             console.log(data);
-            startChat(inviteeId, currentUserId);
+            // 修改這裡，只傳遞 otherUserId 和 currentUserId
+            startChat(inviterId, currentUserId);
         })
         .catch(error => {
             console.error('Error accepting invitation:', error);
@@ -274,6 +274,7 @@ function declineInvitation(inviterId, inviteeId) {
 }
 
 function startChat(otherUserId, currentUserId) {
+    console.log(`Starting chat with user ${otherUserId}`);
     const sortedIds = [otherUserId, currentUserId].sort();
     const roomName = `${sortedIds[0]}_${sortedIds[1]}`;
 
@@ -296,20 +297,27 @@ function startChat(otherUserId, currentUserId) {
         addMessage('系統', '連接錯誤，請稍後再試。', 'system');
     };
 
-    document.getElementById('sendMessageBtn').addEventListener('click', sendMessage);
-    document.getElementById('messageInput').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-            sendMessage();
-        }
-    });
+    // 移除之前的事件監聽器以避免多次綁定
+    const sendMessageBtn = document.getElementById('sendMessageBtn');
+    const messageInput = document.getElementById('messageInput');
+    sendMessageBtn.removeEventListener('click', sendMessage);
+    messageInput.removeEventListener('keypress', handleKeyPress);
+
+    sendMessageBtn.addEventListener('click', sendMessage);
+    messageInput.addEventListener('keypress', handleKeyPress);
 
     function sendMessage() {
-        const messageInput = document.getElementById('messageInput');
         const message = messageInput.value.trim();
         if (message) {
             socket.send(message);
             addMessage('你', message, 'sent');
             messageInput.value = '';
+        }
+    }
+
+    function handleKeyPress(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
         }
     }
 
