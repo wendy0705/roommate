@@ -542,32 +542,32 @@ function addInviteEventListeners() {
                 invitee_id: inviteeId
             };
             // 發送邀請
-            // sendInvitation(invitationData, button);
+            sendInvitation(invitationData, button);
         });
     });
 }
 
-// function sendInvitation(invitationData, button) {
-//     // 禁用按鈕，防止重複點擊
-//     button.disabled = true;
-//
-//     fetch('http://localhost:8081/chat/invite', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify(invitationData)
-//     })
-//         .then(response => response.json())
-//         .then(data => {
-//             console.log('邀請成功:', data);
-//             button.textContent = '邀請已發送';  // 更新按鈕文字
-//             button.classList.add('invitation-sent');  // 可添加自定義樣式
-//             alert('邀請已發送');
-//         })
-//         .catch(error => {
-//             console.error('邀請失敗:', error);
-//             alert('發送邀請時出現錯誤');
-//             button.disabled = false;  // 重新啟用按鈕
-//         });
-// }
+function sendInvitation(invitationData, button) {
+    // 禁用按鈕，防止重複點擊
+    button.disabled = true;
+
+    fetch('http://localhost:8081/chat/invite', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(invitationData)
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('邀請成功:', data);
+            button.textContent = '邀請已發送';  // 更新按鈕文字
+            button.classList.add('invitation-sent');  // 可添加自定義樣式
+            alert('邀請已發送');
+        })
+        .catch(error => {
+            console.error('邀請失敗:', error);
+            alert('發送邀請時出現錯誤');
+            button.disabled = false;  // 重新啟用按鈕
+        });
+}

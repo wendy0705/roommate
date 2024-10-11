@@ -30,4 +30,5 @@ public class DataController {
         ;
         return ResponseEntity.ok(roomTypes);
     }
+
 }
