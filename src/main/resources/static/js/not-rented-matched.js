@@ -551,7 +551,7 @@ function sendInvitation(invitationData, button) {
     // 禁用按鈕，防止重複點擊
     button.disabled = true;
 
-    fetch('http://localhost:8081/chat/invite', {
+    fetch(`${chatServiceHost}/chat/invite`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
