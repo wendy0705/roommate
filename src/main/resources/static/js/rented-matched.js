@@ -109,7 +109,7 @@ function renderMatchResults() {
                         </div>
                         <div class="button-container" style="text-align: right;">
                             ${viewMoreButton}
-                            <button class="invite-button" data-invitee-id="${userId}">聊聊邀請</button>
+                            <button class="invite-button" id="sendInviteBtn" data-invitee-id="${userId}">聊聊邀請</button>
                         </div>
                     </div>
                 </div>
