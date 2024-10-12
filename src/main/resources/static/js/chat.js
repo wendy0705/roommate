@@ -72,34 +72,39 @@ window.addEventListener('load', function () {
     };
 });
 
-document.getElementById('sendInviteBtn').addEventListener('click', function () {
-    const inviteeId = document.getElementById('inviteeId').value;
+document.addEventListener('click', function (event) {
+    if (event.target && event.target.classList.contains('invite-button')) {
+        const inviteeId = event.target.getAttribute('data-invitee-id');
 
-    if (!currentUserId || !inviteeId) {
-        alert("Please make sure both your user ID and invitee ID are entered.");
-        return;
+        console.log("invite button by 8080");
+
+        if (!currentUserId || !inviteeId) {
+            alert("Please make sure both your user ID and invitee ID are entered.");
+            return;
+        }
+
+        // 發送邀請 API 請求
+        fetch(`${chatServiceHost}/chat/invite`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                inviter_id: currentUserId,  // 發送者的 ID
+                invitee_id: inviteeId  // 接收邀請者的 ID
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(JSON.stringify(data));
+                document.getElementById('result').innerText = `Invitation sent: ${JSON.stringify(data)}`;
+            })
+            .catch(error => {
+                console.error('Error sending invitation:', error);
+            });
     }
-
-    // 發送邀請 API 請求
-    fetch(`${chatServiceHost}/chat/invite`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            inviter_id: currentUserId,  // 發送者的 ID
-            invitee_id: inviteeId  // 接收邀請者的 ID
-        })
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log(JSON.stringify(data));
-            document.getElementById('result').innerText = `Invitation sent: ${JSON.stringify(data)}`;
-        })
-        .catch(error => {
-            console.error('Error sending invitation:', error);
-        });
 });
+
 
 function updateChatroomList() {
     const chatroomList = document.getElementById('chatroom-list');
