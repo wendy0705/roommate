@@ -8,8 +8,10 @@ let hasPendingInvitation = false;
 window.addEventListener('load', function () {
     currentUserId = sessionStorage.getItem('myId');
     currentUserId = BigInt(currentUserId);
+
     websocketUrl = sessionStorage.getItem('websocketUrl');
     chatServiceHost = sessionStorage.getItem('chatServiceHost');
+
     console.log(websocketUrl);
 
     console.log("window.addEventListener('load', function ()");
@@ -70,6 +72,35 @@ window.addEventListener('load', function () {
     };
 });
 
+document.getElementById('sendInviteBtn').addEventListener('click', function () {
+    const inviteeId = document.getElementById('inviteeId').value;
+
+    if (!currentUserId || !inviteeId) {
+        alert("Please make sure both your user ID and invitee ID are entered.");
+        return;
+    }
+
+    // 發送邀請 API 請求
+    fetch(`${chatServiceHost}/chat/invite`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            inviter_id: currentUserId,  // 發送者的 ID
+            invitee_id: inviteeId  // 接收邀請者的 ID
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(JSON.stringify(data));
+            document.getElementById('result').innerText = `Invitation sent: ${JSON.stringify(data)}`;
+        })
+        .catch(error => {
+            console.error('Error sending invitation:', error);
+        });
+});
+
 function updateChatroomList() {
     const chatroomList = document.getElementById('chatroom-list');
     chatroomList.style.display = 'block';
@@ -78,7 +109,7 @@ function updateChatroomList() {
         console.log(chatRooms);
         chatroomList.innerHTML = '';  // 清空之前的列表
         chatRooms.forEach(otherUserId => {
-            
+
             const roomElement = document.createElement('div');
             roomElement.className = 'chatroom-item';
             roomElement.textContent = `與${otherUserId}的聊天室`;
