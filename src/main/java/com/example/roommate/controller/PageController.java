@@ -55,8 +55,9 @@ public class PageController {
 
     @GetMapping("/mainpage")
     public String showMainpage() {
-        return "mainpage";
+        return "mainpage"; // 如果驗證成功，繼續顯示主頁面
     }
+
 
     @GetMapping("/rented-matched")
     public String showRentedMatchedUsers(Model model) {
@@ -77,5 +78,10 @@ public class PageController {
     @GetMapping("/compare")
     public String showCompare() {
         return "compare";
+    }
+
+    @GetMapping("/auth")
+    public String showAuth() {
+        return "auth";
     }
 }

@@ -4,6 +4,8 @@ let websocketUrl;
 let chatServiceHost;
 let inviteMessage = null;
 let hasPendingInvitation = false;
+let activeSocket = null; // 用來追蹤當前的 WebSocket 連線
+let currentRoomName = null; // 追蹤當前聊天室的名稱
 
 window.addEventListener('load', function () {
     currentUserId = sessionStorage.getItem('myId');
@@ -21,6 +23,7 @@ window.addEventListener('load', function () {
         return;
     }
     checkInvitationStatus();
+    updateChatroomList();
 
     // 自動建立 WebSocket 來接收通知
     notificationSocket = new WebSocket(`${websocketUrl}/notifications?userId=${currentUserId}`);
@@ -70,6 +73,7 @@ window.addEventListener('load', function () {
     notificationSocket.onopen = function () {
         console.log('Notification WebSocket connected for user ID: ' + currentUserId);
     };
+
 });
 
 
@@ -184,6 +188,7 @@ function displayNoNotifications() {
 
 function checkInvitationStatus() {
     const storedResults = sessionStorage.getItem('matchResults');
+    console.log('Stored matchResults:', storedResults);
     if (!storedResults) {
         alert('無匹配結果可調整');
         return;
@@ -206,31 +211,38 @@ function checkInvitationStatus() {
         .then(response => response.json())
         .then(data => {
             data.forEach(statusObj => {
+                console.log(statusObj);
                 const {userId, status} = statusObj;
+                console.log(`User ID: ${userId}, Status: ${status}`);
                 const button = document.querySelector(`.invite-button[data-invitee-id="${userId}"]`);
+                console.log('Button found:', button);
                 if (button) {
+                    // 先移除所有已經存在的事件監聽器
+                    const newButton = button.cloneNode(true);
+                    button.replaceWith(newButton);
+
                     if (status === 'pending') {
-                        button.classList.add('invitation-sent');
-                        button.textContent = '邀請已發送';
-                        button.disabled = true;
+                        newButton.classList.add('invitation-sent');
+                        newButton.textContent = '邀請已發送';
+                        newButton.disabled = true;
                     } else if (status === 'accepted') {
-                        button.classList.remove('invitation-sent');
-                        button.classList.add('chat-button');
-                        button.textContent = '跟他聊聊';
-                        button.disabled = false;
+                        console.log("accepted");
+                        newButton.classList.remove('invitation-sent');
+                        newButton.classList.add('chat-button');
+                        newButton.textContent = '跟他聊聊';
+                        newButton.disabled = false;
 
-                        button.replaceWith(button.cloneNode(true));
-
-                        // 修改這裡，只傳遞 otherUserId 和 currentUserId
-                        const newButton = document.querySelector(`.invite-button[data-invitee-id="${userId}"]`);
+                        // 綁定新的點擊事件，改為開始聊天
                         newButton.addEventListener('click', () => startChat(userId, currentUserId));
 
                         updateChatroomList();
                     } else if (status === 'declined') {
-                        button.classList.remove('invitation-sent', 'chat-button');
-                        button.textContent = '邀請聊聊';
-                        button.disabled = false;
+                        newButton.classList.remove('invitation-sent', 'chat-button');
+                        newButton.textContent = '邀請聊聊';
+                        newButton.disabled = false;
                     }
+                } else {
+                    console.log(`Button for user ${userId} not found.`);
                 }
             });
         })
@@ -251,7 +263,7 @@ function acceptInvitation(inviterId, inviteeId) {
         .then(data => {
             console.log(data);
             // 修改這裡，只傳遞 otherUserId 和 currentUserId
-            startChat(inviterId, currentUserId);
+            updateChatroomList();
         })
         .catch(error => {
             console.error('Error accepting invitation:', error);
@@ -281,21 +293,60 @@ function startChat(otherUserId, currentUserId) {
     const sortedIds = [otherUserId, currentUserId].sort();
     const roomName = `${sortedIds[0]}_${sortedIds[1]}`;
 
+    if (activeSocket && currentRoomName === roomName && activeSocket.readyState === WebSocket.OPEN) {
+        console.log(`Already connected to room: ${roomName}, using existing WebSocket connection.`);
+        showChatWindow();
+        return;
+    }
+
+    currentRoomName = roomName;
+    sessionStorage.setItem('currentRoomName', currentRoomName);
+
+    showChatWindow();
+
     const chatWrapper = document.querySelector('.chat-wrapper');
     chatWrapper.style.display = 'block';
 
-    const socket = new WebSocket(`${websocketUrl}/chat?userId=${currentUserId}&roomName=${roomName}`);
+    activeSocket = new WebSocket(`${websocketUrl}/chat?userId=${currentUserId}&roomName=${roomName}`);
 
-    socket.onopen = function () {
+    activeSocket.onopen = function () {
         console.log('WebSocket connection established');
         addMessage('系統', `已連接到聊天室: ${roomName}`, 'system');
     };
 
-    socket.onmessage = function (event) {
-        addMessage('對方', event.data, 'received');
+    activeSocket.onmessage = function (event) {
+
+        console.log('Received message:', event.data);
+
+        // 解析訊息以提取發送者和訊息內容
+        const messageText = event.data;
+        const separatorIndex = messageText.indexOf(':');
+
+        if (separatorIndex === -1) {
+            // 如果沒有找到分隔符，將訊息視為系統訊息
+            addMessage('系統', messageText, 'system');
+            return;
+        }
+
+        const sender = messageText.substring(0, separatorIndex).trim();
+        const text = messageText.substring(separatorIndex + 1).trim();
+
+        // 判斷訊息類型：'sent' 或 'received'
+        let type;
+        let senderName;
+
+        if (sender === '我' || sender === '你') { // 根據您的識別方式調整
+            type = 'sent';
+            senderName = '你';
+        } else {
+            type = 'received';
+            senderName = '對方';
+        }
+
+        addMessage(senderName, text, type);
     };
 
-    socket.onerror = function (error) {
+    activeSocket.onerror = function (error) {
         console.error('WebSocket error:', error);
         addMessage('系統', '連接錯誤，請稍後再試。', 'system');
     };
@@ -311,8 +362,8 @@ function startChat(otherUserId, currentUserId) {
 
     function sendMessage() {
         const message = messageInput.value.trim();
-        if (message) {
-            socket.send(message);
+        if (message && activeSocket && activeSocket.readyState === WebSocket.OPEN) {
+            activeSocket.send(message);
             addMessage('你', message, 'sent');
             messageInput.value = '';
         }
@@ -328,8 +379,32 @@ function startChat(otherUserId, currentUserId) {
         const messagesDiv = document.getElementById('messages');
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${type}`;
-        messageDiv.innerHTML = `<strong>${sender}:</strong> ${text}`;
+
+        // 根據訊息的來源選擇不同的樣式
+        const messageBubble = document.createElement('div');
+        messageBubble.className = 'message-bubble';
+        messageBubble.textContent = `${text}`;
+        messageDiv.appendChild(messageBubble);
+
         messagesDiv.appendChild(messageDiv);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
+
 }
+
+function showChatWindow() {
+    const chatWrapper = document.querySelector('.chat-wrapper');
+    chatWrapper.style.display = 'block'; // 顯示聊天視窗
+}
+
+// 隱藏聊天窗口的函數
+function hideChatWindow() {
+    const chatWrapper = document.querySelector('.chat-wrapper');
+    chatWrapper.style.display = 'none'; // 隱藏聊天視窗
+}
+
+// 綁定叉叉按鈕的點擊事件來隱藏聊天窗口
+const closeButton = document.querySelector('.close-button');
+closeButton.addEventListener('click', function () {
+    hideChatWindow();
+});

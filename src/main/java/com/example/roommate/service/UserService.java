@@ -5,6 +5,7 @@ import com.example.roommate.entity.User;
 import com.example.roommate.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -13,6 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
     public User savePreferenceById(Long userId, PreferenceDto preferenceDto) {
@@ -221,6 +223,29 @@ public class UserService {
                 user.getInterestPainting() != null &&
                 user.getInterestIdolChasing() != null &&
                 user.getInterestMusic() != null;
+    }
+
+    public User registerUser(String email, String password, String name) throws Exception {
+        if (userRepository.existsByEmail(email)) {
+            throw new Exception("Email 已被使用！");
+        }
+
+        // 這裡可以添加更多的驗證邏輯
+
+        User user = new User(email, passwordEncoder.encode(password), name);
+        return userRepository.save(user);
+    }
+
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public boolean authenticate(String email, String rawPassword) {
+        Optional<User> userOpt = userRepository.findByEmail(email);
+        if (userOpt.isPresent()) {
+            return passwordEncoder.matches(rawPassword, userOpt.get().getPassword());
+        }
+        return false;
     }
 
 }

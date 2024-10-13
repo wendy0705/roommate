@@ -1,0 +1,175 @@
+body {
+    font-family: 'LXGW WenKai TC', sans-serif;
+    background: linear-gradient(135deg, #FFE6DF 0%, #FFF5EE 100%);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: #333;
+}
+
+.logo-title-container {
+    margin-left: 60px;
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 40px;
+    width: auto;
+}
+
+.site-title {
+    font-size: 1.5rem;
+    color: #2c2658;
+    font-weight: 700;
+    font-family: 'LXGW WenKai TC', sans-serif;
+    margin: 0 15px;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(225, 133, 94, 0.2);
+    overflow: hidden;
+    width: 100%;
+    max-width: 450px;
+    transition: all 0.3s ease;
+}
+
+.container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(225, 133, 94, 0.3);
+}
+
+.form-container {
+    padding: 40px;
+}
+
+.form-box {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.form-box.hidden {
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+h2 {
+    color: #E1855E;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 2px solid #E1855E;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+input:focus {
+    outline: none;
+    border-color: #D67348;
+    box-shadow: 0 0 10px rgba(225, 133, 94, 0.3);
+}
+
+button {
+    background-color: #E1855E;
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    background-color: #D67348;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+p {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+a {
+    color: #E1855E;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #D67348;
+    text-decoration: underline;
+}
+
+/* 添加響應式設計 */
+@media (max-width: 480px) {
+
+    .main-content {
+        padding: 10px;
+    }
+
+
+    .container {
+        max-width: 100%;
+    }
+
+    .form-container {
+        padding: 20px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    input, button {
+        font-size: 14px;
+    }
+}
+
+/* 添加動畫效果 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-box {
+    animation: fadeIn 0.5s ease-out;
+}

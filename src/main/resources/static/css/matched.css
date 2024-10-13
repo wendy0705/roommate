@@ -465,13 +465,22 @@ strong {
     background-color: #E1855E;
     color: white;
     padding: 10px;
-    text-align: center;
-    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .chat-header h2 {
     margin: 0;
     font-size: 18px;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
 }
 
 .chat-messages {
@@ -480,6 +489,40 @@ strong {
     padding: 10px;
     display: flex;
     flex-direction: column;
+}
+
+.message {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.message.sent {
+    justify-content: flex-end; /* 您的訊息顯示在右側 */
+}
+
+.message.received {
+    justify-content: flex-start; /* 對方的訊息顯示在左側 */
+}
+
+.message .message-bubble {
+    padding: 10px;
+    border-radius: 20px;
+    max-width: 70%;
+}
+
+.message.sent .message-bubble {
+    background-color: #E1855E;
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 0;
+}
+
+.message.received .message-bubble {
+    background-color: #f1f1f1;
+    color: #333;
+    align-self: flex-start;
+    border-bottom-left-radius: 0;
 }
 
 .chat-input {
@@ -510,15 +553,21 @@ strong {
     background-color: #D67348;
 }
 
-/* 添加最小化功能的樣式 */
-.chat-container.minimized {
-    height: auto;
+/* 叉叉按鈕的樣式 */
+.close-button {
+    font-size: 24px;
+    cursor: pointer;
+    color: #fff;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
 }
 
-.chat-container.minimized .chat-messages,
-.chat-container.minimized .chat-input {
-    display: none;
+.close-button:hover {
+    color: #ffdddd;
 }
+
 
 /* 邀請已發送狀態 */
 .invite-button.invitation-sent {

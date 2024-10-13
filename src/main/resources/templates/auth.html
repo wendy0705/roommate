@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入/註冊</title>
+    <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+<div class="logo-title-container">
+    <div class="logo">
+        <img src="https://roommatebucket.s3.ap-southeast-2.amazonaws.com/roommate_logo.png" alt="Logo"/>
+    </div>
+    <h1 class="site-title">室友媒合平台</h1>
+</div>
+<main class="main-content">
+    <div class="container">
+        <div class="form-container">
+            <div class="form-box login">
+                <h2>登入</h2>
+                <form id="loginForm">
+                    <input type="email" placeholder="電子郵件" required>
+                    <input type="password" placeholder="密碼" required>
+                    <button type="submit">登入</button>
+                </form>
+                <p>還沒有帳號？ <a href="#" class="switch-form" data-form="signup">註冊</a></p>
+            </div>
+            <div class="form-box signup hidden">
+                <h2>註冊</h2>
+                <form id="signupForm">
+                    <input type="text" id="lastName" placeholder="姓氏" required>
+                    <div>
+                        <label>
+                            <input type="radio" name="gender" value="先生" required> 先生
+                        </label>
+                        <label>
+                            <input type="radio" name="gender" value="小姐" required> 小姐
+                        </label>
+                    </div>
+
+                    <input type="email" placeholder="電子郵件" required>
+                    <input type="password" placeholder="密碼" required>
+                    <button type="submit">註冊</button>
+                </form>
+                <p>已有帳號？ <a href="#" class="switch-form" data-form="login">登入</a></p>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="js/auth.js"></script>
+</body>
+</html>

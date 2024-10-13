@@ -32,10 +32,10 @@
         </div>
     </main>
     <div class="chat-wrapper" style="display: none;">
-        <div class=" chat-container
-    ">
+        <div class=" chat-container">
             <div class="chat-header">
                 <h2>聊天室</h2>
+                <button class="close-button">×</button>
             </div>
             <div id="messages" class="chat-messages"></div>
             <div class="chat-input">
@@ -138,12 +138,7 @@
         sessionStorage.setItem('websocketUrl', websocketUrl);
         let chatServiceHost = /*[[${chatServiceHost}]]*/ '';
         sessionStorage.setItem('chatServiceHost', chatServiceHost);
-        const chatHeader = document.querySelector('.chat-header');
-        const chatContainer = document.querySelector('.chat-container');
 
-        chatHeader.addEventListener('click', function () {
-            chatContainer.classList.toggle('minimized');
-        });
     });
 
     var apiKey = /*[[${googleMapsApiKey}]]*/ 'defaultKey';
