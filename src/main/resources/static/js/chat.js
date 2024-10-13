@@ -87,18 +87,27 @@ function updateChatroomList() {
         console.log(chatRooms);
         chatroomList.innerHTML = '';  // 清空之前的列表
         chatRooms.forEach(otherUserId => {
-
-            const roomElement = document.createElement('div');
-            roomElement.className = 'chatroom-item';
-            roomElement.textContent = `與${otherUserId}的聊天室`;
-            roomElement.addEventListener('click', function () {
-                // 修改這裡，只傳遞 otherUserId 和 currentUserId
-                startChat(otherUserId, currentUserId);  // 點擊後進入該聊天室
-            });
-            chatroomList.appendChild(roomElement);
+            // 獲取其他用戶的名稱
+            fetch(`/api/1.0/users/${otherUserId}/name`)
+                .then(response => response.text())
+                .then(otherUserName => {
+                    // 創建並顯示聊天室列表元素
+                    const roomElement = document.createElement('div');
+                    roomElement.className = 'chatroom-item';
+                    roomElement.textContent = `與${otherUserName}的聊天室`;
+                    roomElement.addEventListener('click', function () {
+                        // 點擊後進入該聊天室，傳遞 otherUserId 和 currentUserId
+                        startChat(otherUserId, currentUserId);
+                    });
+                    chatroomList.appendChild(roomElement);
+                })
+                .catch(error => {
+                    console.error('獲取用戶名稱失敗:', error);
+                });
         });
     });
 }
+
 
 function getChatRoomsForCurrentUser() {
     return fetch(`${chatServiceHost}/chat/chatrooms?userId=${currentUserId}`)
@@ -124,49 +133,57 @@ function showInvitation(inviterId, inviteeId) {
         // 隱藏紅點
         notificationDot.style.display = 'none';
 
-        // 創建並顯示通知框
-        if (!document.querySelector('.notification-box')) {
-            inviteMessage = document.createElement('div');
-            inviteMessage.classList.add('notification-box');
-            inviteMessage.innerHTML = `
-                <div class="notification-header">
-                    <span>通知</span>
-                    <button class="close-button">&times;</button>
-                </div>
-                <p>You have a new chat invitation from User ${inviterId}. Do you want to accept?</p>
-                <button id="acceptBtn">Accept</button>
-                <button id="declineBtn">Decline</button>
-            `;
-            document.getElementById('header-placeholder').appendChild(inviteMessage);
+        // 獲取邀請者名稱
+        fetch(`/api/1.0/users/${inviterId}/name`)
+            .then(response => response.text())
+            .then(inviterName => {
+                // 創建並顯示通知框
+                if (!document.querySelector('.notification-box')) {
+                    inviteMessage = document.createElement('div');
+                    inviteMessage.classList.add('notification-box');
+                    inviteMessage.innerHTML = `
+                        <div class="notification-header">
+                            <span>通知</span>
+                            <button class="close-button">&times;</button>
+                        </div>
+                        <p>${inviterName} 邀請您進行聊天，您是否接受？</p>
+                        <button id="acceptBtn">接受</button>
+                        <button id="declineBtn">拒絕</button>
+                    `;
+                    document.getElementById('header-placeholder').appendChild(inviteMessage);
 
-            document.querySelector('.close-button').addEventListener('click', function () {
-                inviteMessage.style.display = 'none'; // 隱藏通知框
-            });
+                    document.querySelector('.close-button').addEventListener('click', function () {
+                        inviteMessage.style.display = 'none'; // 隱藏通知框
+                    });
 
-            // 處理接受邀請的邏輯
-            document.getElementById('acceptBtn').addEventListener('click', function () {
-                acceptInvitation(inviterId, inviteeId);
-                inviteMessage.style.display = 'none';
-                hasPendingInvitation = false;
-            });
+                    // 處理接受邀請的邏輯
+                    document.getElementById('acceptBtn').addEventListener('click', function () {
+                        acceptInvitation(inviterId, inviteeId);
+                        inviteMessage.style.display = 'none';
+                        hasPendingInvitation = false;
+                    });
 
-            // 處理拒絕邀請的邏輯
-            document.getElementById('declineBtn').addEventListener('click', function () {
-                declineInvitation(inviterId, inviteeId);
-                inviteMessage.style.display = 'none';
-                hasPendingInvitation = false;
-            });
-        } else {
-            if (inviteMessage.style.display === 'none') {
-                if (hasPendingInvitation) {
-                    inviteMessage.style.display = 'block'; // 顯示未處理的邀請
+                    // 處理拒絕邀請的邏輯
+                    document.getElementById('declineBtn').addEventListener('click', function () {
+                        declineInvitation(inviterId, inviteeId);
+                        inviteMessage.style.display = 'none';
+                        hasPendingInvitation = false;
+                    });
                 } else {
-                    displayNoNotifications(); // 顯示「沒有新的通知」
+                    if (inviteMessage.style.display === 'none') {
+                        if (hasPendingInvitation) {
+                            inviteMessage.style.display = 'block'; // 顯示未處理的邀請
+                        } else {
+                            displayNoNotifications(); // 顯示「沒有新的通知」
+                        }
+                    } else {
+                        inviteMessage.style.display = 'block';
+                    }
                 }
-            } else {
-                inviteMessage.style.display = 'block';
-            }
-        }
+            })
+            .catch(error => {
+                console.error('獲取邀請者名稱失敗:', error);
+            });
     });
 }
 

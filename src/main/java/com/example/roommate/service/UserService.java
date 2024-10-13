@@ -5,11 +5,13 @@ import com.example.roommate.entity.User;
 import com.example.roommate.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -230,7 +232,7 @@ public class UserService {
             throw new Exception("Email 已被使用！");
         }
 
-        // 這裡可以添加更多的驗證邏輯
+        log.info("save user: " + email);
 
         User user = new User(email, passwordEncoder.encode(password), name);
         return userRepository.save(user);
@@ -246,6 +248,21 @@ public class UserService {
             return passwordEncoder.matches(rawPassword, userOpt.get().getPassword());
         }
         return false;
+    }
+
+    public Optional<String> getUserNameById(Long userId) {
+        log.info("Fetching user name for user ID: {}", userId); // 記錄查詢前的log
+
+        Optional<User> user = userRepository.findById(userId);
+
+        if (user.isPresent()) {
+            String userName = user.get().getName();
+            log.info("User found. Name: {}", userName); // 記錄查詢成功的log
+            return Optional.of(userName);
+        } else {
+            log.warn("User with ID {} not found", userId); // 如果找不到用戶，記錄警告
+            return Optional.empty();
+        }
     }
 
 }

@@ -46,10 +46,8 @@ public class RentService {
         AreaDto area = notRentedDto.getArea();
 
         NonRentedData nonRentedData = new NonRentedData();
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-        User user = new User();
-        user.setId(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         userRepository.save(user);
 

@@ -18,7 +18,8 @@ import java.util.List;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MatchResultDto {
-    
+
+    private String name;
     private Long userId;
     private InterestDto commonInterests;
     private List<AvailableRoomDto> availableRooms;

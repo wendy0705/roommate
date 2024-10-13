@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -37,6 +39,14 @@ public class UserController {
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+    }
+
+    @GetMapping("/{userId}/name")
+    public ResponseEntity<String> getUserName(@PathVariable Long userId) {
+        Optional<String> nameOpt = userService.getUserNameById(userId);
+        String name = nameOpt.orElse("Unknown User");
+
+        return ResponseEntity.ok(name);
     }
 
 }

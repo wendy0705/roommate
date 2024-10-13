@@ -24,10 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -91,6 +88,9 @@ public class AnalysisController {
             PreferenceDto othersPreference = userPreferences.get(matchingUserId);
             log.info("matchingUserId: " + matchingUserId + ": " + othersPreference);
 
+            Optional<String> matchingUserNameOpt = userService.getUserNameById(matchingUserId);
+            String matchingUserName = matchingUserNameOpt.orElse("Unknown User");
+
             List<NonRentedMatchDto> nonRentedData = nonRentedDataRepository.getNonRentedInfo(matchingUserId);
 
             analysisService.save(myId, matchingUserId, userAnalysisResults.get(matchingUserId));
@@ -98,6 +98,7 @@ public class AnalysisController {
             InterestDto commonInterests = analysisService.compareInterests(myPreference.getInterest(), othersPreference.getInterest());
 
             MatchResultDto matchResult = new MatchResultDto(
+                    matchingUserName,
                     matchingUserId,
                     commonInterests,
                     null,
@@ -168,6 +169,9 @@ public class AnalysisController {
 
             PreferenceDto othersPreference = userPreferences.get(matchingUserId);
 
+            Optional<String> matchingUserNameOpt = userService.getUserNameById(matchingUserId);
+            String matchingUserName = matchingUserNameOpt.orElse("Unknown User");
+
             List<NonRentedMatchDto> nonRentedData = null;
             List<RentedHouseMatchDto> rentedHouseData = null;
             List<AvailableRoomDto> availableRooms = null;
@@ -186,6 +190,7 @@ public class AnalysisController {
             InterestDto commonInterests = analysisService.compareInterests(myPreference.getInterest(), othersPreference.getInterest());
 
             MatchResultDto matchResult = new MatchResultDto(
+                    matchingUserName,
                     matchingUserId,
                     commonInterests,
                     availableRooms,

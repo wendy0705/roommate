@@ -28,8 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
-
-        log.info("JwtAuthenticationFilter is running for URL: {}", request.getRequestURI());
+        
         String token = null;
         String email = null;
         Long userId;
@@ -46,22 +45,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (token != null) {
-            log.info("Found token: {}", token);
             if (jwtUtils.validateJwtToken(token)) {
                 email = jwtUtils.getEmailFromJwtToken(token);
                 userId = jwtUtils.getUserIdFromJwtToken(token);
-                log.info("Email extracted from token: {}", email);
-                log.info("User ID extracted from token: {}", userId);
-
                 // 將 userId 或其他資訊設置到 HttpServletRequest
                 request.setAttribute("userId", userId);
             }
         }
 
-        log.info("Email: {}", email);
 
         if (email == null) {
-            log.info("Unauthorized access, redirecting to /auth");
             response.sendRedirect("/auth");
             return;
         }

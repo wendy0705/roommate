@@ -8,6 +8,7 @@ let currentPage = 1;
 const itemsPerPage = 6;
 let matchResults = [];
 let myId;
+let name;
 
 function initializeMatchResults() {
     const storedResults = sessionStorage.getItem('matchResults');
@@ -38,6 +39,7 @@ function renderMatchResults() {
         const commonInterests = item.commonInterests;
         userId = item.userId;
         userNonRented = item.nonRentedData;
+        name = item.name;
 
 // 將興趣項目轉換為一個字符串，顯示用戶的興趣
         let interestHtmlArray = [];
@@ -67,6 +69,9 @@ function renderMatchResults() {
 
 // 動態填充 HTML 的興趣和希望部分
         const preferenceInfo = `
+            <div class="name">
+                ${name}
+            </div>
             <div class="preference-info">
                 <h2>興趣 </h2>
                 <div class="preference-details">

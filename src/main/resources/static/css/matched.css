@@ -577,7 +577,15 @@ strong {
 
 /* 聊天按鈕狀態 */
 .invite-button.chat-button {
-    background-color: #6B8E23;
+    background-color: #74B3F2;
     color: white;
     cursor: pointer;
 }
+
+.name {
+    font-size: 20px; /* 調整字體大小 */
+    color: #2c2658; /* 字體顏色，可以依據需求更改 */
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+

@@ -13,6 +13,7 @@ let currentResults = [];
 
 let myId;
 let userId;
+let name;
 
 function initializeMatchResults() {
     const storedResults = sessionStorage.getItem('matchResults');
@@ -62,6 +63,7 @@ function renderMatchResults() {
         const othersPreference = item.othersPreference;
         const commonInterests = item.commonInterests;
         userId = item.userId;
+        name = item.name;
 
         // 處理興趣和偏好部分的顯示
         let matchInfo = ''; // 處理未租房和已租房的資訊
@@ -93,6 +95,9 @@ function renderMatchResults() {
 
 // 動態填充 HTML 的興趣和希望部分
         const preferenceInfo = `
+            <div class="name">
+                ${name}
+            </div>
             <div class="preference-info">
                 <h2>興趣 </h2>
                 <div class="preference-details">
