@@ -150,7 +150,6 @@ document.getElementById('preferencesForm').addEventListener('submit', function (
 
     // 1. 收集資料
     const formData = new FormData(this);
-    const myId = getCookieValue('userId')
 
     let schedule = {
         monday: [formData.get('schedule[monday_sleep_hour]') || formData.get('schedule[weekday_sleep_hour]'), formData.get('schedule[monday_wake_hour]') || formData.get('schedule[weekday_wake_hour]')],
@@ -218,7 +217,7 @@ document.getElementById('preferencesForm').addEventListener('submit', function (
 
     if (Array.isArray(matchingUserIds)) {
         // 處理 List<Long>，發送到 rented 的 API
-        fetch(`/api/1.0/analysis/rented/match?myId=${myId}`, {
+        fetch(`/api/1.0/analysis/rented/match`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -240,7 +239,7 @@ document.getElementById('preferencesForm').addEventListener('submit', function (
             });
     } else if (typeof matchingUserIds === 'object' && matchingUserIds !== null) {
 
-        fetch(`/api/1.0/analysis/not-rented/match?myId=${myId}`, {
+        fetch(`/api/1.0/analysis/not-rented/match`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

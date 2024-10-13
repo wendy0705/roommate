@@ -5,11 +5,11 @@ import com.example.roommate.service.UserService;
 import com.example.roommate.utils.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -21,7 +21,6 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtils jwtUtils;
-
     private final UserService userService;
 
     @Override
@@ -31,21 +30,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         log.info("JwtAuthenticationFilter is running for URL: {}", request.getRequestURI());
-        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        String token;
+        String token = null;
         String email = null;
+        Long userId;
 
-
-        if (header != null && header.startsWith("Bearer ")) {
-            token = header.substring(7);
-            log.info(token);
-            if (jwtUtils.validateJwtToken(token)) {
-                email = jwtUtils.getEmailFromJwtToken(token);
-                log.info(email); //test@gmail.com
+        // 從 Cookie 中讀取 JWT Token
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("JWT_TOKEN".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    break;
+                }
             }
         }
 
-        log.info(email);
+        if (token != null) {
+            log.info("Found token: {}", token);
+            if (jwtUtils.validateJwtToken(token)) {
+                email = jwtUtils.getEmailFromJwtToken(token);
+                userId = jwtUtils.getUserIdFromJwtToken(token);
+                log.info("Email extracted from token: {}", email);
+                log.info("User ID extracted from token: {}", userId);
+
+                // 將 userId 或其他資訊設置到 HttpServletRequest
+                request.setAttribute("userId", userId);
+            }
+        }
+
+        log.info("Email: {}", email);
 
         if (email == null) {
             log.info("Unauthorized access, redirecting to /auth");
@@ -56,4 +69,3 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
-

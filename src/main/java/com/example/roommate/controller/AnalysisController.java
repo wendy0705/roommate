@@ -15,10 +15,14 @@ import com.example.roommate.entity.UserMatch;
 import com.example.roommate.repository.*;
 import com.example.roommate.service.AnalysisService;
 import com.example.roommate.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,8 +45,10 @@ public class AnalysisController {
     private final UserMatchRepository userMatchRepository;
 
     @PostMapping("rented/match")
-    public ResponseEntity<?> matchPreferences(@RequestParam Long myId, @RequestBody RentedMatchRequestDto matchRequestDto) {
+    public ResponseEntity<?> matchPreferences(@RequestBody RentedMatchRequestDto matchRequestDto, HttpServletRequest request) {
 
+        Long myId = (Long) request.getAttribute("userId");
+        log.info("myId: {}", myId);
         log.info("Received NotRentedMatchRequestDto: " + matchRequestDto);
         List<MatchResultDto> matchResults = new ArrayList<>();
         PreferenceDto myPreference = matchRequestDto.getMyPreference();
@@ -83,6 +89,7 @@ public class AnalysisController {
             Double matchScore = entry.getValue();
 
             PreferenceDto othersPreference = userPreferences.get(matchingUserId);
+            log.info("matchingUserId: " + matchingUserId + ": " + othersPreference);
 
             List<NonRentedMatchDto> nonRentedData = nonRentedDataRepository.getNonRentedInfo(matchingUserId);
 
@@ -110,8 +117,10 @@ public class AnalysisController {
     }
 
     @PostMapping("/not-rented/match")
-    public ResponseEntity<?> processNotRentedMatch(@RequestParam Long myId, @RequestBody NotRentedMatchRequestDto matchRequestDto) {
+    public ResponseEntity<?> processNotRentedMatch(@RequestBody NotRentedMatchRequestDto matchRequestDto, HttpServletRequest request) {
 
+        Long myId = (Long) request.getAttribute("userId");
+        log.info("myId: {}", myId);
         log.info("Received NotRentedMatchRequestDto: " + matchRequestDto);
         List<MatchResultDto> matchResults = new ArrayList<>();
         PreferenceDto myPreference = matchRequestDto.getMyPreference();
@@ -126,11 +135,12 @@ public class AnalysisController {
             Long matchingUserId = entry.getKey();
 
             PreferenceDto othersPreference = userService.getByUserId(matchingUserId);
+            log.info("matchingUserId: " + matchingUserId + ": " + othersPreference);
 
             if (othersPreference == null) {
                 continue;
             }
-            
+
             userPreferences.put(matchingUserId, othersPreference);
 
             Map<String, Object> analysisResult = analysisService.analysis(myPreference, othersPreference);

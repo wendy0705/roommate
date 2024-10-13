@@ -202,7 +202,7 @@ function loadRoomTypesForNewRoom(roomTypeSelect) {
 // 提交表單
 function submitForm() {
     // 獲取表單數據
-    const userId = document.getElementById('userIdInput').value;
+    // const userId = sessionStorage.getItem("myId")
     const houseName = document.getElementById("houseName").value;
     const neLat = document.getElementById("neLat").value;
     const neLng = document.getElementById("neLng").value;
@@ -268,9 +268,8 @@ function submitForm() {
 
     console.log(rentalData);
 
-    document.cookie = `userId=${userId}; path=/`;
 
-    fetch(`/api/1.0/rent/rented/${userId}`, {
+    fetch(`/api/1.0/rent/rented`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -280,7 +279,7 @@ function submitForm() {
         if (response.ok) {
             console.log('POST success, now fetching matching user IDs...');
             // 2. POST 成功後，發送 GET 請求來獲取 matchingUserIds
-            return fetch(`/api/1.0/rent/rented/${userId}`, {  // 假設有一個 GET 請求用來獲取 matchingUserIds
+            return fetch(`/api/1.0/rent/rented`, {  // 假設有一個 GET 請求用來獲取 matchingUserIds
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

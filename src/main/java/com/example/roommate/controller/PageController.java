@@ -1,5 +1,7 @@
 package com.example.roommate.controller;
 
+import com.example.roommate.utils.JwtUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Slf4j
 @RequestMapping
 @Controller
+@RequiredArgsConstructor
 public class PageController {
 
     @Value("${google.maps.api.key}")
@@ -21,6 +24,8 @@ public class PageController {
 
     @Value("${chatservice.host}")
     private String chatServiceHost;
+
+    private final JwtUtils jwtUtils;
 
     @GetMapping("/habits")
     public String showHabits() {
@@ -55,7 +60,7 @@ public class PageController {
 
     @GetMapping("/mainpage")
     public String showMainpage() {
-        return "mainpage"; // 如果驗證成功，繼續顯示主頁面
+        return "mainpage";
     }
 
 

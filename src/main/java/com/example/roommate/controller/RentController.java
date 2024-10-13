@@ -7,6 +7,8 @@ import com.example.roommate.repository.RentedHouseDataRepository;
 import com.example.roommate.service.AnalysisService;
 import com.example.roommate.service.RentService;
 import com.example.roommate.service.UserService;
+import com.example.roommate.utils.JwtUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -31,33 +33,59 @@ public class RentController {
 
     private final RentedHouseDataRepository rentedHouseDataRepository;
 
-    @PostMapping("/rented/{myId}")
-    public ResponseEntity<?> saveRentedData(@RequestBody RentedDto rentedDto, @PathVariable Long myId) {
-        System.out.println(rentedDto);
-        rentService.saveRentedData(rentedDto, myId); // save basic data
+    private final JwtUtils jwtUtils;
+
+    @PostMapping("/rented")
+    public ResponseEntity<?> saveRentedData(@RequestBody RentedDto rentedDto, HttpServletRequest request) {
+
+        Long myId = (Long) request.getAttribute("userId");
+
+        // 保存基本數據，將 myId 傳遞給 service
+        rentService.saveRentedData(rentedDto, myId);
         return ResponseEntity.ok(200);
+
     }
 
-    @GetMapping("/rented/{myId}")
-    public ResponseEntity<?> searchRentedMatches(@PathVariable Long myId) {
+
+    @GetMapping("/rented")
+    public ResponseEntity<?> searchRentedMatches(HttpServletRequest request) {
+
+        Long myId = (Long) request.getAttribute("userId"); // 提取 userId
+
+        // 使用 myId 查找 matchingUserIds
         List<Long> matchingUserIds = rentService.findRentedMatches(myId);
-        log.info("matching:" + matchingUserIds.toString());
+        log.info("matching: " + matchingUserIds.toString());
+
         return ResponseEntity.ok(matchingUserIds);
+
     }
 
-    @PostMapping("/not-rented/{myId}")
-    public ResponseEntity<?> submitNotRented(@RequestBody NotRentedDto notRentedDto, @PathVariable Long myId) {
-        rentService.saveNotRentedData(notRentedDto, myId); //save basic data
+
+    @PostMapping("/not-rented")
+    public ResponseEntity<?> submitNotRented(@RequestBody NotRentedDto notRentedDto, HttpServletRequest request) {
+
+        // 從 HttpServletRequest 中提取 userId
+        Long myId = (Long) request.getAttribute("userId");
+
+        // 保存基本數據，將 myId 傳遞給 service
+        rentService.saveNotRentedData(notRentedDto, myId);
         return ResponseEntity.ok(200);
     }
 
-    @GetMapping("/not-rented/{myId}")
-    public ResponseEntity<?> searchNotRentedMatches(@PathVariable Long myId) {
 
+    @GetMapping("/not-rented")
+    public ResponseEntity<?> searchNotRentedMatches(HttpServletRequest request) {
+
+        // 從 HttpServletRequest 中提取 userId
+        Long myId = (Long) request.getAttribute("userId");
+
+        // 使用 myId 查找匹配的用戶
         Map<Long, Integer> userIdsWithSource = rentService.findNotRentedMatches(myId);
         log.info(userIdsWithSource.toString());
+
         return ResponseEntity.ok(userIdsWithSource);
     }
+
 
 //    List<MatchDetailDto> matchDetails = new ArrayList<>();
 //    PreferenceDto myIdPreference = userService.getByUserId(myId);

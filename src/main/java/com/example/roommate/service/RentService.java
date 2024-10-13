@@ -81,10 +81,8 @@ public class RentService {
         try {
             log.info(String.valueOf(userId));
             RentedHouseData rentedHouseData = new RentedHouseData();
-//            User user = userRepository.findById(userId)
-//                    .orElseThrow(() -> new RuntimeException("User not found"));
-            User user = new User();
-            user.setId(userId);
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
 
             userRepository.save(user);
 

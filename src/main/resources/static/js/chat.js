@@ -9,7 +9,7 @@ let currentRoomName = null; // 追蹤當前聊天室的名稱
 
 window.addEventListener('load', function () {
     currentUserId = sessionStorage.getItem('myId');
-    currentUserId = BigInt(currentUserId);
+    currentUserId = parseInt(currentUserId, 10);
 
     websocketUrl = sessionStorage.getItem('websocketUrl');
     chatServiceHost = sessionStorage.getItem('chatServiceHost');
@@ -22,11 +22,13 @@ window.addEventListener('load', function () {
         console.log("No user ID found in sessionStorage. Cannot connect to WebSocket.");
         return;
     }
-    checkInvitationStatus();
-    updateChatroomList();
+
+
+    console.log(currentUserId);
 
     // 自動建立 WebSocket 來接收通知
     notificationSocket = new WebSocket(`${websocketUrl}/notifications?userId=${currentUserId}`);
+    console.log(notificationSocket);
 
     notificationSocket.onmessage = function (event) {
         const data = JSON.parse(event.data);
@@ -300,7 +302,6 @@ function startChat(otherUserId, currentUserId) {
     }
 
     currentRoomName = roomName;
-    sessionStorage.setItem('currentRoomName', currentRoomName);
 
     showChatWindow();
 

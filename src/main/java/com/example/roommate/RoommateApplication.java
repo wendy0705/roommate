@@ -21,9 +21,28 @@ public class RoommateApplication {
     public FilterRegistrationBean<JwtAuthenticationFilter> jwtFilter() {
         FilterRegistrationBean<JwtAuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(jwtAuthenticationFilter);
-        registrationBean.setOrder(1);  // 設置優先順序
+        registrationBean.setOrder(1);
 
-        registrationBean.addUrlPatterns("/api/1.0/user/*", "/mainpage");
+        registrationBean.addUrlPatterns(
+                "/api/1.0/users/*",
+                "/mainpage",
+                "/api/1.0/rent/*",
+                "/habits",
+                "/api/1.0/analysis/*",
+                "/not-rented-matched",
+                "/rented-matched",
+                "/js/chat.js",
+                "/js/compare.js",
+                "/js/header.js",
+                "/js/rented-matched.js",
+                "/js/not-rented-matched.js",
+                "/header",
+                "/css/matched.css",
+                "/css/chat.css",
+                "/css/header.css",
+                "/favicon.icon"
+        );
+
 
         return registrationBean;
     }

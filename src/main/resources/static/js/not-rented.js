@@ -72,7 +72,6 @@ function notRentedInit(map) {
 
 
 function submitForm() {
-    const userId = document.getElementById('userIdInput').value;
     const neLat = document.getElementById("neLat").value;
     const neLng = document.getElementById("neLng").value;
     const swLat = document.getElementById("swLat").value;
@@ -115,10 +114,8 @@ function submitForm() {
 
     console.log(formData);
 
-    document.cookie = `userId=${userId}; path=/`;
-    console.log(document.cookie);
 
-    fetch(`api/1.0/rent/not-rented/${userId}`, {
+    fetch(`api/1.0/rent/not-rented`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -129,7 +126,7 @@ function submitForm() {
             if (response.ok) {
                 console.log('POST success, now fetching matching user IDs...');
                 // 2. POST 成功後，發送 GET 請求來獲取 matchingUserIds
-                return fetch(`/api/1.0/rent/not-rented/${userId}`, {  // 假設有一個 GET 請求用來獲取 matchingUserIds
+                return fetch(`/api/1.0/rent/not-rented`, {  // 假設有一個 GET 請求用來獲取 matchingUserIds
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

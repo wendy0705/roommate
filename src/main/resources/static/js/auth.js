@@ -44,21 +44,17 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     })
                         .then(response => {
-                            if (response.redirected) {
-                                window.location.href = response.url;
-                            } else if (response.ok) {
-                                return response.text(); // Assuming /mainpage returns HTML
+                            if (response.ok) {
+                                window.location.href = "/mainpage";
                             } else {
-                                throw new Error('Failed to load mainpage');
+                                alert("無法載入主頁面");
+                                console.error("Failed to load mainpage", response);
                             }
                         })
-                        .then(htmlContent => {
-                            document.body.innerHTML = htmlContent; // Or inject into a specific container
-                        })
                         .catch(error => {
-                            alert("無法載入主頁面"); // "Unable to load the main page"
-                            console.error("Failed to load mainpage", error);
+                            console.error('Error fetching mainpage:', error);
                         });
+
                 } else {
                     alert("登入失敗");
                     console.error('Token not received:', data);
@@ -94,19 +90,19 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => response.json())
             .then(data => {
-                if (data.token) {
-                    sessionStorage.setItem('jwtToken', data.token);
-                    console.log('Token stored:', data.token);
+                if (data.message === "Signup successful") {
                     alert("註冊成功！");
-                    window.location.href = '/mainpage';
+                    window.location.href = '/mainpage'; // 直接跳轉到主頁
                 } else {
                     alert("註冊失敗！");
-                    console.error('Token not received:', data);
+                    console.error('Signup failed:', data);
                 }
             })
             .catch(error => {
                 // 捕獲錯誤，彈出 alert
                 alert('註冊失敗，請再試一次！');
+                console.error('Error during signup:', error);
             });
     });
+
 });
