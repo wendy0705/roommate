@@ -90,12 +90,32 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => response.json())
             .then(data => {
-                if (data.message === "Signup successful") {
-                    alert("註冊成功！");
-                    window.location.href = '/mainpage'; // 直接跳轉到主頁
+                if (data.token) {
+                    sessionStorage.setItem('jwtToken', data.token);
+                    console.log('Token stored:', data.token);
+                    const token = sessionStorage.getItem('jwtToken');
+
+                    fetch('/mainpage', {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                window.location.href = "/mainpage";
+                            } else {
+                                alert("無法載入主頁面");
+                                console.error("Failed to load mainpage", response);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching mainpage:', error);
+                        });
+
                 } else {
-                    alert("註冊失敗！");
-                    console.error('Signup failed:', data);
+                    alert("註冊失敗");
+                    console.error('Token not received:', data);
                 }
             })
             .catch(error => {

@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/1.0/auth")
@@ -62,29 +64,39 @@ public class AuthController {
     // 註冊端點
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest, HttpServletResponse response) {
+        Optional<User> existingUser = userService.findByEmail(signUpRequest.getEmail());
+
+        // 檢查用戶是否已經存在
+        if (existingUser.isPresent()) {
+            log.info("Email {} is already in use", signUpRequest.getEmail());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already in use");
+        }
+
         try {
+            // 註冊新用戶
             User user = userService.registerUser(
                     signUpRequest.getEmail(),
                     signUpRequest.getPassword(),
                     signUpRequest.getName()
             );
 
-            // 註冊成功後生成 JWT Token
-            String jwt = jwtUtils.generateJwtToken(user.getId(), user.getEmail());
+            // 獲取自動生成的 userId
+            Long userId = user.getId();
+            log.info("User registered successfully with ID: {}", userId);
+            String jwt = jwtUtils.generateJwtToken(userId, user.getEmail()); // 傳入 userId 和 email
 
-            // 將 JWT Token 存入 Cookie
             Cookie cookie = new Cookie("JWT_TOKEN", jwt);
             cookie.setHttpOnly(false); // 防止 JavaScript 訪問
             cookie.setSecure(false);  // 僅在 HTTPS 下傳輸
-            cookie.setMaxAge(-1);     // Session cookie
+            cookie.setMaxAge(-1);     // session cookie，瀏覽器關閉後消失
             cookie.setPath("/");      // Cookie 對整個應用程式可見
 
             response.addCookie(cookie);
 
-            return ResponseEntity.ok(new JwtResponse("Signup successful"));
+            return ResponseEntity.ok(new JwtResponse(jwt));
         } catch (Exception e) {
             return ResponseEntity
-                    .badRequest()
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(e.getMessage());
         }
     }
@@ -108,7 +120,7 @@ public class AuthController {
 
             response.addCookie(cookie);
 
-            return ResponseEntity.ok(new JwtResponse("Login successful"));
+            return ResponseEntity.ok(new JwtResponse(jwt));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
         }
