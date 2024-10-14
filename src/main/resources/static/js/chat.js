@@ -29,7 +29,7 @@ window.addEventListener('load', function () {
     notificationSocket = new WebSocket(`${websocketUrl}/notifications?userId=${currentUserId}`);
     console.log(notificationSocket);
 
-    checkInvitationStatus();
+    // checkInvitationStatus();
 
     notificationSocket.onmessage = function (event) {
         const data = JSON.parse(event.data);
@@ -349,7 +349,6 @@ function startChat(otherUserId, currentUserId) {
 
     activeSocket.onopen = function () {
         console.log('WebSocket connection established');
-        addMessage('系統', `已連接到聊天室: ${roomName}`, 'system');
     };
 
     activeSocket.onmessage = function (event) {
