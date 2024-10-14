@@ -23,12 +23,13 @@ window.addEventListener('load', function () {
         return;
     }
 
-
     console.log(currentUserId);
 
     // 自動建立 WebSocket 來接收通知
     notificationSocket = new WebSocket(`${websocketUrl}/notifications?userId=${currentUserId}`);
     console.log(notificationSocket);
+
+    checkInvitationStatus();
 
     notificationSocket.onmessage = function (event) {
         const data = JSON.parse(event.data);
@@ -234,7 +235,11 @@ function checkInvitationStatus() {
                 const {userId, status} = statusObj;
                 console.log(`User ID: ${userId}, Status: ${status}`);
                 const button = document.querySelector(`.invite-button[data-invitee-id="${userId}"]`);
+                console.log(`.invite-button[data-invitee-id="${userId}"]`);
                 console.log('Button found:', button);
+                if (status === 'none') {
+                    return;
+                }
                 if (button) {
                     // 先移除所有已經存在的事件監聽器
                     const newButton = button.cloneNode(true);
