@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     chatroomList.style.display = 'none';
                 } else {
                     chatroomList.style.display = 'block';
+                    console.log("updateChatroomList" + currentUserId);
                     updateChatroomList(currentUserId); // Update the list when showing
                 }
             });

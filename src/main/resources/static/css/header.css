@@ -72,6 +72,28 @@
     margin-left: 5px;
 }
 
+.header-container {
+    position: relative; /* 讓 chatroom-list 的絕對定位以 header-container 為基準 */
+}
+
+.chatroom-list {
+    position: absolute;
+    top: 100%; /* 在 header 的下方顯示 */
+    right: 0; /* 根據需求可以設定從右邊對齊 */
+    width: 300px; /* 設定寬度，可根據需要調整 */
+    background-color: white; /* 背景色讓它顯示出來 */
+    border: 1px solid #ccc; /* 邊框讓它更加突出 */
+    border-radius: 8px; /* 圓角讓它看起來更美觀 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 添加陰影效果 */
+    z-index: 10; /* 保證 chatroom-list 在最前面顯示 */
+    display: none; /* 預設隱藏 */
+}
+
+.chatroom-list.active {
+    display: block; /* 當點擊時展示 */
+    max-height: 400px; /* 可選：設置最大高度 */
+    overflow-y: auto; /* 當列表超過最大高度時，顯示滾動條 */
+}
 
 @media (max-width: 768px) {
     .main-nav {

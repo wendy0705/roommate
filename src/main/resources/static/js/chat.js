@@ -80,10 +80,12 @@ window.addEventListener('load', function () {
 });
 
 
-function updateChatroomList() {
+function updateChatroomList(currentUserId) {
     /*    const chatroomList = document.getElementById('chatroom-link');
         console.log(chatroomList);
         chatroomList.style.display = 'block';*/
+    const chatroomList = document.getElementById('chatroom-list');
+    console.log(chatroomList);
 
     getChatRoomsForCurrentUser().then(chatRooms => {
         console.log(chatRooms);
@@ -96,12 +98,24 @@ function updateChatroomList() {
                     // 創建並顯示聊天室列表元素
                     const roomElement = document.createElement('div');
                     roomElement.className = 'chatroom-item';
-                    roomElement.textContent = `與${otherUserName}的聊天室`;
+
+                    const roomInfoElement = document.createElement('div');
+                    roomInfoElement.className = 'chatroom-info';
+// 添加使用者名稱和一些簡短描述
+                    const userNameElement = document.createElement('div');
+                    userNameElement.className = 'chatroom-username';
+                    userNameElement.textContent = `與 ${otherUserName} 的聊天室`;
+
+                    roomInfoElement.appendChild(userNameElement);
+                    roomElement.appendChild(roomInfoElement);
+
                     roomElement.addEventListener('click', function () {
-                        // 點擊後進入該聊天室，傳遞 otherUserId 和 currentUserId
-                        startChat(otherUserId, currentUserId);
+                        startChat(otherUserId, currentUserId);  // 點擊後進入聊天室
                     });
+
+// 最後將整個聊天室項目加入列表中
                     chatroomList.appendChild(roomElement);
+
                 })
                 .catch(error => {
                     console.error('獲取用戶名稱失敗:', error);

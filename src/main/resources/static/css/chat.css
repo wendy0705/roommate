@@ -22,3 +22,29 @@
     text-align: center;
     padding: 10px;
 }
+
+.chatroom-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f7f7f7;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.chatroom-item:hover {
+    background-color: #eaeaea;
+}
+
+.chatroom-info {
+    flex-grow: 1;
+}
+
+.chatroom-username {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
