@@ -81,8 +81,9 @@ window.addEventListener('load', function () {
 
 
 function updateChatroomList() {
-    const chatroomList = document.getElementById('chatroom-list');
-    chatroomList.style.display = 'block';
+    /*    const chatroomList = document.getElementById('chatroom-link');
+        console.log(chatroomList);
+        chatroomList.style.display = 'block';*/
 
     getChatRoomsForCurrentUser().then(chatRooms => {
         console.log(chatRooms);

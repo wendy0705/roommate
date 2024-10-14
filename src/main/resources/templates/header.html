@@ -24,9 +24,12 @@
                     <a href="#" id="notification-link" class="nav-link">NOTIFICATION</a>
                     <span id="notification-dot" class="notification-dot" style="display: none;"></span>
                 </li>
-                <li><a href="#" id="chatroom-link" class="nav-link">CHATROOM</a></li>
+                <li>
+                    <a href="#" id="chatroom-link" class="nav-link">CHATROOM</a>
+                </li>
             </ul>
-            <div id="chatroom-list" class="chatroom-list" style="display: none;"></div> <!-- 移出 <ul> -->
+            <div id="chatroom-list" class="chatroom-list" style="display: none;">wwwww</div>
+            <!-- 移出 <ul> -->
         </nav>
         <div class="hamburger">
             <span></span>
@@ -35,15 +38,32 @@
         </div>
     </div>
 </header>
-</body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const hamburger = document.querySelector('.hamburger');
         const mainNav = document.querySelector('.main-nav');
-
+        console.log("hamburger");
         hamburger.addEventListener('click', function () {
             mainNav.classList.toggle('active');
         });
     });
+
+    const chatroomLink = document.getElementById('chatroom-link');
+    console.log("chatroomLink");
+    console.log(chatroomLink);
+    const chatroomList = document.getElementById('chatroom-list');
+    // Toggle chatroom list on chatroom link click
+    chatroomLink.addEventListener('click', function (event) {
+
+        console.log("I've clicked header html")
+        event.preventDefault(); // Prevent default link behavior
+        if (chatroomList.style.display === 'block') {
+            chatroomList.style.display = 'none';
+        } else {
+            chatroomList.style.display = 'block';
+            updateChatroomList(currentUserId); // Update the list when showing
+        }
+    });
 </script>
+</body>
 </html>
