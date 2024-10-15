@@ -28,7 +28,48 @@
     </div>
 
 </div>
+<script>
+    function toggleForms() {
+        var status = document.getElementById("status").value;
+        window.location.href = "/rental-form?status=" + status;
+    }
 
+
+    // 當頁面加載時生成一個隨機的 BigInt 並設置到 hidden input 中
+    document.addEventListener('DOMContentLoaded', function () {
+
+        fetch('/api/1.0/users/user-info', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user info');
+                }
+                return response.json(); // 假設伺服器回傳的資料為 JSON 格式
+            })
+            .then(userId => {
+                console.log('User ID from server:', userId); // 用於調試
+
+                sessionStorage.setItem('myId', userId);
+
+                fetch(`/api/1.0/users/${userId}/name`)
+                    .then(response => response.text())
+                    .then(name => {
+                        document.getElementById('welcome-message').textContent = '您好，' + name;
+                    });
+            })
+            .catch(error => {
+                console.error('Error fetching user info:', error);
+            });
+
+
+    });
+
+</script>
 <script src="js/mainpage.js"></script>
+<script src="js/header.js"></script>
 </body>
 </html>

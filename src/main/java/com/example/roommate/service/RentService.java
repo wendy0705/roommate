@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,17 +40,23 @@ public class RentService {
 
     private final ObjectMapper objectMapper;
 
+    @Transactional
     public void saveNotRentedData(NotRentedDto notRentedDto, Long userId) {
 
         log.info(String.valueOf(userId));
+
+        List<NonRentedData> existingNonRentedDataList = nonRentedDataRepository.findByUserId(userId);
+        for (NonRentedData existingData : existingNonRentedDataList) {
+            wantedRoomRepository.deleteByNonRentedDataId(existingData.getId());
+        }
+
+        nonRentedDataRepository.deleteByUserId(userId);
 
         AreaDto area = notRentedDto.getArea();
 
         NonRentedData nonRentedData = new NonRentedData();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
-        userRepository.save(user);
 
         nonRentedData.setUser(user);
         nonRentedData.setRegionNeLat(area.getRegionNeLat());
@@ -75,14 +82,21 @@ public class RentService {
         }
     }
 
+    @Transactional
     public void saveRentedData(RentedDto rentedDto, Long userId) {
         try {
             log.info(String.valueOf(userId));
+
+            List<RentedHouseData> existingRentedData = rentedHouseDataRepository.findByUserId(userId);
+            for (RentedHouseData rentedHouseData : existingRentedData) {
+                availableRoomRepository.deleteByRentedHouseDataId(rentedHouseData.getId());
+                occupiedRoomRepository.deleteByRentedHouseDataId(rentedHouseData.getId());
+            }
+            rentedHouseDataRepository.deleteByUserId(userId);
+
             RentedHouseData rentedHouseData = new RentedHouseData();
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new RuntimeException("User not found"));
-
-            userRepository.save(user);
 
             rentedHouseData.setUser(user);
             rentedHouseData.setAddressLat(rentedDto.getNeLat());

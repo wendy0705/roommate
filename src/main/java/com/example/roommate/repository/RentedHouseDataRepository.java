@@ -26,7 +26,9 @@ public interface RentedHouseDataRepository extends JpaRepository<RentedHouseData
             "WHERE r.user.id = :userId")
     List<RentedHouseMatchDto> getRentedHouseInfo(@Param("userId") Long userId);
 
+    List<RentedHouseData> findByUserId(Long userId);
 
+    void deleteByUserId(Long userId);
 }
 
 

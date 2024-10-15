@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,6 +42,7 @@ public class AnalysisController {
     private final OccupiedRoomRepository occupiedRoomRepository;
     private final UserMatchRepository userMatchRepository;
 
+    @Transactional
     @PostMapping("rented/match")
     public ResponseEntity<?> matchPreferences(@RequestBody RentedMatchRequestDto matchRequestDto, HttpServletRequest request) {
 
@@ -81,6 +83,8 @@ public class AnalysisController {
                 .sorted(Map.Entry.<Long, Double>comparingByValue().reversed())
                 .collect(Collectors.toList());
 
+        userMatchRepository.deleteByUserId1(myId);
+
         for (Map.Entry<Long, Double> entry : sortedMatches) {
             Long matchingUserId = entry.getKey();
             Double matchScore = entry.getValue();
@@ -117,6 +121,7 @@ public class AnalysisController {
 
     }
 
+    @Transactional
     @PostMapping("/not-rented/match")
     public ResponseEntity<?> processNotRentedMatch(@RequestBody NotRentedMatchRequestDto matchRequestDto, HttpServletRequest request) {
 
@@ -161,6 +166,8 @@ public class AnalysisController {
         List<Map.Entry<Long, Double>> sortedMatches = matchScores.entrySet().stream()
                 .sorted(Map.Entry.<Long, Double>comparingByValue().reversed())
                 .collect(Collectors.toList());
+
+        userMatchRepository.deleteByUserId1(myId);
 
         for (Map.Entry<Long, Double> entry : sortedMatches) {
             Long matchingUserId = entry.getKey();

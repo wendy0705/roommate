@@ -1,4 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
+
+    const myId = sessionStorage.getItem("myId");
+    console.log(myId);
+
+    fetch(`/api/1.0/users/${myId}/name`)
+        .then(response => response.text())
+        .then(name => {
+            console.log("name");
+            console.log(name);
+            console.log("document.getElementById('welcome-message')");
+            console.log(document.getElementById('welcome-message'));
+            document.getElementById('welcome-message').textContent = '您好，' + name;
+        });
+
     fetch('/header')
         .then(response => response.text())
         .then(data => {
@@ -33,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         });
 
-});
+})
+;
 
 

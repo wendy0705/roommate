@@ -16,5 +16,7 @@ public interface AvailableRoomRepository extends JpaRepository<AvailableRoom, Lo
             "WHERE a.rentedHouseData.user.id = :userId")
     List<AvailableRoomDto> getAvailableRooms(@Param("userId") Long userId);
 
+    void deleteByRentedHouseDataId(Long rentedHouseDataId);
+
 }
 

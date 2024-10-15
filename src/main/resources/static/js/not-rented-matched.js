@@ -18,6 +18,8 @@ let name;
 function initializeMatchResults() {
     const storedResults = sessionStorage.getItem('matchResults');
     myId = sessionStorage.getItem('myId');
+
+    console.log("initializeMatchResults()");
     if (storedResults) {
         matchResults = JSON.parse(storedResults);
         // 將 matchResults 分類為 rented 和 non-rented
@@ -49,6 +51,16 @@ function setActiveButton(activeButton) {
 
 
 function renderMatchResults() {
+
+    const showRentedBtn = document.getElementById('showRented');
+    const showNonRentedBtn = document.getElementById('showNonRented');
+
+    if (showNonRentedBtn.classList.contains('active')) {
+        currentResults = nonRentedResults;
+    } else if (showRentedBtn.classList.contains('active')) {
+        currentResults = rentedResults;
+    }
+    
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const pageResults = currentResults.slice(startIndex, endIndex);

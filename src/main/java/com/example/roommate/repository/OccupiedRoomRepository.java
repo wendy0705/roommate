@@ -16,5 +16,7 @@ public interface OccupiedRoomRepository extends JpaRepository<OccupiedRoom, Long
             "WHERE o.rentedHouseData.user.id = :userId")
     List<OccupiedRoomDto> getOccupiedRooms(@Param("userId") Long userId);
 
+    void deleteByRentedHouseDataId(Long rentedHouseDataId);
+
 }
 

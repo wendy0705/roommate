@@ -32,9 +32,17 @@
     margin: 0 15px;
 }
 
+.main-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .main-nav ul {
     display: flex;
     list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-link {
@@ -44,6 +52,12 @@
     font-weight: 500;
     transition: color 0.3s ease;
 }
+
+.welcome-message {
+    margin-left: 15px; /* 調整和 CHATROOM 的距離 */
+    font-weight: bold;
+}
+
 
 .nav-link:hover {
     color: #E1855E;

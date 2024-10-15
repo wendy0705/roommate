@@ -43,5 +43,8 @@ public interface NonRentedDataRepository extends JpaRepository<NonRentedData, Lo
             "WHERE n.user.id = :userId")
     List<NonRentedMatchDto> getNonRentedInfo(@Param("userId") Long userId);
 
+    List<NonRentedData> findByUserId(Long userId);
+
+    void deleteByUserId(Long userId);
 }
 
