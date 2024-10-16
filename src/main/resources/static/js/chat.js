@@ -8,8 +8,7 @@ let activeSocket = null; // 用來追蹤當前的 WebSocket 連線
 let currentRoomName = null; // 追蹤當前聊天室的名稱
 
 window.addEventListener('load', function () {
-    currentUserId = sessionStorage.getItem('myId');
-    currentUserId = parseInt(currentUserId, 10);
+    let currentUserId = sessionStorage.getItem('myId') ? parseInt(sessionStorage.getItem('myId'), 10) : null;
 
     websocketUrl = sessionStorage.getItem('websocketUrl');
     chatServiceHost = sessionStorage.getItem('chatServiceHost');
@@ -81,9 +80,6 @@ window.addEventListener('load', function () {
 
 
 function updateChatroomList(currentUserId) {
-    /*    const chatroomList = document.getElementById('chatroom-link');
-        console.log(chatroomList);
-        chatroomList.style.display = 'block';*/
     const chatroomList = document.getElementById('chatroom-list');
     console.log(chatroomList);
 
@@ -110,6 +106,7 @@ function updateChatroomList(currentUserId) {
                     roomElement.appendChild(roomInfoElement);
 
                     roomElement.addEventListener('click', function () {
+                        console.log(currentUserId);
                         startChat(otherUserId, currentUserId);  // 點擊後進入聊天室
                     });
 
