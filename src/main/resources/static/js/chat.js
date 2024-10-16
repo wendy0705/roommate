@@ -8,7 +8,7 @@ let activeSocket = null; // 用來追蹤當前的 WebSocket 連線
 let currentRoomName = null; // 追蹤當前聊天室的名稱
 
 window.addEventListener('load', function () {
-    let currentUserId = sessionStorage.getItem('myId') ? parseInt(sessionStorage.getItem('myId'), 10) : null;
+    currentUserId = sessionStorage.getItem('myId') ? parseInt(sessionStorage.getItem('myId'), 10) : null;
 
     websocketUrl = sessionStorage.getItem('websocketUrl');
     chatServiceHost = sessionStorage.getItem('chatServiceHost');
