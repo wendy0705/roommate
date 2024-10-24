@@ -143,3 +143,68 @@
         color: #E1855E;
     }
 }
+
+.notification-box {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 200px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    font-family: 'LXGW WenKai TC', sans-serif;
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.notification-header span {
+    font-weight: bold;
+    font-size: 16px;
+    flex-grow: 1; /* 確保 span 佔據可用空間 */
+    white-space: nowrap; /* 防止文字換行 */
+}
+
+.notification-box .close-button {
+    background: none; /* 覆蓋全局的背景色 */
+    color: #888; /* 自定義的按鈕顏色 */
+    border: none; /* 移除邊框 */
+    font-size: 20px; /* 調整字體大小 */
+    cursor: pointer;
+    padding: 0; /* 覆蓋全局的 padding */
+    transition: color 0.3s ease;
+    box-shadow: none; /* 移除陰影 */
+    width: auto; /* 自動調整寬度，避免太寬 */
+    height: auto; /* 自動調整高度 */
+    display: inline; /* 強制按鈕不佔過多的寬度 */
+    line-height: 1; /* 調整按鈕內文字的行高 */
+    margin-left: 10px; /* 給文字和按鈕間加上空間 */
+}
+
+.notification-box .close-button:hover {
+    color: #ff0000; /* 滑鼠懸停時變紅 */
+}
+
+
+.notification-box p {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

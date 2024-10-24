@@ -19,7 +19,7 @@
         </div>
         <nav class="main-nav">
             <ul>
-                <li><a href="#" class="nav-link">HOME</a></li>
+                <li><a href="#" id="rematch-link" class="nav-link">REMATCH</a></li>
                 <li>
                     <a href="#" id="notification-link" class="nav-link">NOTIFICATION</a>
                     <span id="notification-dot" class="notification-dot" style="display: none;"></span>
@@ -48,23 +48,7 @@
             mainNav.classList.toggle('active');
         });
     });
-
-    const chatroomLink = document.getElementById('chatroom-link');
-    console.log("chatroomLink");
-    console.log(chatroomLink);
-    const chatroomList = document.getElementById('chatroom-list');
-    // Toggle chatroom list on chatroom link click
-    chatroomLink.addEventListener('click', function (event) {
-
-        console.log("I've clicked header html")
-        event.preventDefault(); // Prevent default link behavior
-        if (chatroomList.style.display === 'block') {
-            chatroomList.style.display = 'none';
-        } else {
-            chatroomList.style.display = 'block';
-            updateChatroomList(currentUserId); // Update the list when showing
-        }
-    });
+    
 </script>
 </body>
 </html>

@@ -138,12 +138,8 @@ function insertHourOptions() {
 
 window.onload = function () {
     insertHourOptions();
-
-    const timeSelects = document.querySelectorAll('.hour-select');
-    timeSelects.forEach(select => {
-        select.addEventListener('change', checkTimeSelection);
-    });
 }
+
 
 document.getElementById('preferencesForm').addEventListener('submit', function (event) {
     event.preventDefault(); // 防止表單提交刷新頁面
