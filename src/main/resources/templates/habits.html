@@ -68,7 +68,8 @@
                 </div>
             </div>
 
-            <div class="schedule-section">
+            <div class="schedule-section"
+                 style="padding-bottom: 15px; margin-bottom: 15px; border-bottom: 1px solid #d3d3d3;">
                 <h3 class="section-title">作息：</h3>
                 <div class="schedule-content">
                     <div class="schedule-item">
@@ -97,100 +98,100 @@
             </div>
 
             <!-- 按鈕展開自由填寫作息 -->
-            <div class="custom-schedule-section"
-                 style="padding-bottom: 15px; margin-bottom: 15px; border-bottom: 1px solid #d3d3d3;">
-                <button type="button" id="customScheduleButton" onclick="toggleCustomSchedule()">自由填寫作息</button>
+            <!--            <div class="custom-schedule-section"-->
+            <!--                 style="padding-bottom: 15px; margin-bottom: 15px; border-bottom: 1px solid #d3d3d3;">-->
+            <!--                <button type="button" id="customScheduleButton" onclick="toggleCustomSchedule()">自由填寫作息</button>-->
 
-                <div id="customSchedule" class="hidden">
-                    <div class="custom-schedule-grid">
-                        <div class="day-schedule">
-                            <h4>週一</h4>
-                            <div class="time-selection">
-                                <label>睡眠時間：</label>
-                                <select class="hour-select" name="schedule[monday_sleep_hour]"></select>
-                            </div>
-                            <div class="time-selection">
-                                <label>起床時間：</label>
-                                <select class="hour-select" name="schedule[monday_wake_hour]"></select>
-                            </div>
-                        </div>
+            <!--                <div id="customSchedule" class="hidden">-->
+            <!--                    <div class="custom-schedule-grid">-->
+            <!--                        <div class="day-schedule">-->
+            <!--                            <h4>週一</h4>-->
+            <!--                            <div class="time-selection">-->
+            <!--                                <label>睡眠時間：</label>-->
+            <!--                                <select class="hour-select" name="schedule[monday_sleep_hour]"></select>-->
+            <!--                            </div>-->
+            <!--                            <div class="time-selection">-->
+            <!--                                <label>起床時間：</label>-->
+            <!--                                <select class="hour-select" name="schedule[monday_wake_hour]"></select>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
 
-                        <div class="day-schedule">
-                            <h4>週二</h4>
-                            <div class="time-selection">
-                                <label>睡眠時間：</label>
-                                <select class="hour-select" name="schedule[tuesday_sleep_hour]"></select>
-                            </div>
-                            <div class="time-selection">
-                                <label>起床時間：</label>
-                                <select class="hour-select" name="schedule[tuesday_wake_hour]"></select>
-                            </div>
-                        </div>
+            <!--                        <div class="day-schedule">-->
+            <!--                            <h4>週二</h4>-->
+            <!--                            <div class="time-selection">-->
+            <!--                                <label>睡眠時間：</label>-->
+            <!--                                <select class="hour-select" name="schedule[tuesday_sleep_hour]"></select>-->
+            <!--                            </div>-->
+            <!--                            <div class="time-selection">-->
+            <!--                                <label>起床時間：</label>-->
+            <!--                                <select class="hour-select" name="schedule[tuesday_wake_hour]"></select>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
 
-                        <div class="day-schedule">
-                            <h4>週三</h4>
-                            <div class="time-selection">
-                                <label>睡眠時間：</label>
-                                <select class="hour-select" name="schedule[tuesday_sleep_hour]"></select>
-                            </div>
-                            <div class="time-selection">
-                                <label>起床時間：</label>
-                                <select class="hour-select" name="schedule[tuesday_wake_hour]"></select>
-                            </div>
-                        </div>
+            <!--                        <div class="day-schedule">-->
+            <!--                            <h4>週三</h4>-->
+            <!--                            <div class="time-selection">-->
+            <!--                                <label>睡眠時間：</label>-->
+            <!--                                <select class="hour-select" name="schedule[tuesday_sleep_hour]"></select>-->
+            <!--                            </div>-->
+            <!--                            <div class="time-selection">-->
+            <!--                                <label>起床時間：</label>-->
+            <!--                                <select class="hour-select" name="schedule[tuesday_wake_hour]"></select>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
 
-                        <div class="day-schedule">
-                            <h4>週四</h4>
-                            <div class="time-selection">
-                                <label>睡眠時間：</label>
-                                <select class="hour-select" name="schedule[tuesday_sleep_hour]"></select>
-                            </div>
-                            <div class="time-selection">
-                                <label>起床時間：</label>
-                                <select class="hour-select" name="schedule[tuesday_wake_hour]"></select>
-                            </div>
-                        </div>
+            <!--                        <div class="day-schedule">-->
+            <!--                            <h4>週四</h4>-->
+            <!--                            <div class="time-selection">-->
+            <!--                                <label>睡眠時間：</label>-->
+            <!--                                <select class="hour-select" name="schedule[tuesday_sleep_hour]"></select>-->
+            <!--                            </div>-->
+            <!--                            <div class="time-selection">-->
+            <!--                                <label>起床時間：</label>-->
+            <!--                                <select class="hour-select" name="schedule[tuesday_wake_hour]"></select>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
 
-                        <div class="day-schedule">
-                            <h4>週五</h4>
-                            <div class="time-selection">
-                                <label>睡眠時間：</label>
-                                <select class="hour-select" name="schedule[tuesday_sleep_hour]"></select>
-                            </div>
-                            <div class="time-selection">
-                                <label>起床時間：</label>
-                                <select class="hour-select" name="schedule[tuesday_wake_hour]"></select>
-                            </div>
-                        </div>
+            <!--                        <div class="day-schedule">-->
+            <!--                            <h4>週五</h4>-->
+            <!--                            <div class="time-selection">-->
+            <!--                                <label>睡眠時間：</label>-->
+            <!--                                <select class="hour-select" name="schedule[tuesday_sleep_hour]"></select>-->
+            <!--                            </div>-->
+            <!--                            <div class="time-selection">-->
+            <!--                                <label>起床時間：</label>-->
+            <!--                                <select class="hour-select" name="schedule[tuesday_wake_hour]"></select>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
 
-                        <div class="day-schedule">
-                            <h4>週六</h4>
-                            <div class="time-selection">
-                                <label>睡眠時間：</label>
-                                <select class="hour-select" name="schedule[tuesday_sleep_hour]"></select>
-                            </div>
-                            <div class="time-selection">
-                                <label>起床時間：</label>
-                                <select class="hour-select" name="schedule[tuesday_wake_hour]"></select>
-                            </div>
-                        </div>
+            <!--                        <div class="day-schedule">-->
+            <!--                            <h4>週六</h4>-->
+            <!--                            <div class="time-selection">-->
+            <!--                                <label>睡眠時間：</label>-->
+            <!--                                <select class="hour-select" name="schedule[tuesday_sleep_hour]"></select>-->
+            <!--                            </div>-->
+            <!--                            <div class="time-selection">-->
+            <!--                                <label>起床時間：</label>-->
+            <!--                                <select class="hour-select" name="schedule[tuesday_wake_hour]"></select>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
 
-                        <div class="day-schedule">
-                            <h4>週日</h4>
-                            <div class="time-selection">
-                                <label>睡眠時間：</label>
-                                <select class="hour-select" name="schedule[tuesday_sleep_hour]"></select>
-                            </div>
-                            <div class="time-selection">
-                                <label>起床時間：</label>
-                                <select class="hour-select" name="schedule[tuesday_wake_hour]"></select>
-                            </div>
-                        </div>
-                        <!-- 重複相同的結構為週三到週日 -->
+            <!--                        <div class="day-schedule">-->
+            <!--                            <h4>週日</h4>-->
+            <!--                            <div class="time-selection">-->
+            <!--                                <label>睡眠時間：</label>-->
+            <!--                                <select class="hour-select" name="schedule[tuesday_sleep_hour]"></select>-->
+            <!--                            </div>-->
+            <!--                            <div class="time-selection">-->
+            <!--                                <label>起床時間：</label>-->
+            <!--                                <select class="hour-select" name="schedule[tuesday_wake_hour]"></select>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                        &lt;!&ndash; 重複相同的結構為週三到週日 &ndash;&gt;-->
 
-                    </div>
-                </div>
-            </div>
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
 
             <!-- 開伙地點 -->
             <div class="radio-group"
@@ -251,7 +252,9 @@
             <hr style="border: none; border-bottom: 1px solid #d3d3d3; margin-bottom: 15px;">
             <!-- 鬧鐘使用習慣 -->
             <h3>鬧鐘使用習慣：</h3>
-            <button type="button" value="0" data-group="alarm" onclick="toggleButtonGroup(this)">#不使用</button>
+            <button type="button" value="0" class="selected" data-group="alarm" onclick="toggleButtonGroup(this)">
+                #不使用
+            </button>
             <button type="button" value="1" data-group="alarm" onclick="toggleButtonGroup(this)">#響一下關閉
             </button>
             <button type="button" value="2" data-group="alarm" onclick="toggleButtonGroup(this)">#需要他人協助關閉
@@ -260,7 +263,8 @@
 
             <hr style="border: none; border-bottom: 1px solid #d3d3d3; margin-bottom: 15px;">
             <h3>燈光敏感度：</h3>
-            <button type="button" value="0" data-group="light" onclick="toggleButtonGroup(this)">#開大燈
+            <button type="button" value="0" class="selected" data-group="light" onclick="toggleButtonGroup(this)">
+                #開大燈
             </button>
             <button type="button" value="1" data-group="light" onclick="toggleButtonGroup(this)">#開小燈</button>
             <button type="button" value="2" data-group="light" onclick="toggleButtonGroup(this)">#全暗</button>
@@ -268,7 +272,9 @@
 
             <hr style="border: none; border-bottom: 1px solid #d3d3d3; margin-bottom: 15px;">
             <h3>交友習慣：</h3>
-            <button type="button" value="0" data-group="friendship" onclick="toggleButtonGroup(this)">#不會帶朋友回家
+            <button type="button" value="0" class="selected" data-group="friendship"
+                    onclick="toggleButtonGroup(this)">
+                #不會帶朋友回家
             </button>
             <button type="button" value="1" data-group="friendship" onclick="toggleButtonGroup(this)">
                 #可能會帶朋友回家
@@ -280,7 +286,7 @@
 
             <hr style="border: none; border-bottom: 1px solid #d3d3d3; margin-bottom: 15px;">
             <h3>天氣熱時：</h3>
-            <button type="button" value="0" data-group="weather"
+            <button type="button" value="0" class="selected" data-group="weather"
                     onclick="toggleButtonGroup(this); toggleTemperatureInput()">
                 #不開冷氣
             </button>

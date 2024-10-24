@@ -98,43 +98,43 @@ function insertHourOptions() {
 
 }
 
-function checkTimeSelection() {
-    const weekdaySleep = document.querySelector('select[name="schedule[weekday_sleep_hour]"]').value;
-    const weekdayWake = document.querySelector('select[name="schedule[weekday_wake_hour]"]').value;
-    const weekendSleep = document.querySelector('select[name="schedule[weekend_sleep_hour]"]').value;
-    const weekendWake = document.querySelector('select[name="schedule[weekend_wake_hour]"]').value;
+// function checkTimeSelection() {
+//     const weekdaySleep = document.querySelector('select[name="schedule[weekday_sleep_hour]"]').value;
+//     const weekdayWake = document.querySelector('select[name="schedule[weekday_wake_hour]"]').value;
+//     const weekendSleep = document.querySelector('select[name="schedule[weekend_sleep_hour]"]').value;
+//     const weekendWake = document.querySelector('select[name="schedule[weekend_wake_hour]"]').value;
+//
+//     const customScheduleButton = document.getElementById("customScheduleButton");
+//
+//     if (weekdaySleep === "" && weekdayWake === "" && weekendSleep === "" && weekendWake === "") {
+//         // 平日和假日都沒有選擇時數，解鎖按鈕
+//         customScheduleButton.disabled = false;
+//     } else {
+//         // 只要有選擇時數，就禁用按鈕
+//         customScheduleButton.disabled = true;
+//     }
+// }
 
-    const customScheduleButton = document.getElementById("customScheduleButton");
-
-    if (weekdaySleep === "" && weekdayWake === "" && weekendSleep === "" && weekendWake === "") {
-        // 平日和假日都沒有選擇時數，解鎖按鈕
-        customScheduleButton.disabled = false;
-    } else {
-        // 只要有選擇時數，就禁用按鈕
-        customScheduleButton.disabled = true;
-    }
-}
-
-function toggleCustomSchedule() {
-    const customScheduleDiv = document.getElementById("customSchedule");
-    const regularScheduleDiv = document.getElementById("regularSchedule"); // 包含平日和假日作息區塊
-    const customSelects = customScheduleDiv.querySelectorAll('select'); // 選取所有的 <select> 元素
-
-    if (customScheduleDiv.classList.contains("hidden")) {
-        // 顯示自定義作息區域，隱藏平日和假日作息區域
-        customScheduleDiv.classList.remove("hidden");
-        regularScheduleDiv.classList.add("hidden");
-    } else {
-        // 隱藏自定義作息區域，顯示平日和假日作息區域，並清空自定義作息選項
-        customScheduleDiv.classList.add("hidden");
-        regularScheduleDiv.classList.remove("hidden");
-
-        // 清空所有 <select> 的值
-        customSelects.forEach(select => {
-            select.value = ""; // 清空每個 <select> 的值
-        });
-    }
-}
+// function toggleCustomSchedule() {
+//     const customScheduleDiv = document.getElementById("customSchedule");
+//     const regularScheduleDiv = document.getElementById("regularSchedule"); // 包含平日和假日作息區塊
+//     const customSelects = customScheduleDiv.querySelectorAll('select'); // 選取所有的 <select> 元素
+//
+//     if (customScheduleDiv.classList.contains("hidden")) {
+//         // 顯示自定義作息區域，隱藏平日和假日作息區域
+//         customScheduleDiv.classList.remove("hidden");
+//         regularScheduleDiv.classList.add("hidden");
+//     } else {
+//         // 隱藏自定義作息區域，顯示平日和假日作息區域，並清空自定義作息選項
+//         customScheduleDiv.classList.add("hidden");
+//         regularScheduleDiv.classList.remove("hidden");
+//
+//         // 清空所有 <select> 的值
+//         customSelects.forEach(select => {
+//             select.value = ""; // 清空每個 <select> 的值
+//         });
+//     }
+// }
 
 window.onload = function () {
     insertHourOptions();

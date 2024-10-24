@@ -1,24 +1,30 @@
 <div id="nonRentalForm" th:fragment="notRented(mapType)">
 
     <h3>框出欲居住的區域：</h3>
-    <input type="hidden" id="neLat" name="neLat">
-    <input type="hidden" id="neLng" name="neLng">
-    <input type="hidden" id="swLat" name="swLat">
-    <input type="hidden" id="swLng" name="swLng">
-    <div id="map" th:attr="data-map-type=${mapType}" style="height: 400px; width: 100%;"></div> <!-- 傳遞 'drawing' 類型 -->
-
+    <input type="hidden" id="neLat" name="neLat" value="25.055158873446654">
+    <input type="hidden" id="neLng" name="neLng" value="121.55930602111816">
+    <input type="hidden" id="swLat" name="swLat" value="25.029497346951665">
+    <input type="hidden" id="swLng" name="swLng" value="121.52600371398925">
+    <div id="map" data-map-type="drawing" style="height: 400px; width: 100%; background-color: #f0f0f0;">
+        <!-- 地圖區域，可以放置地圖相關的內容 -->
+        地圖顯示區域
+    </div> <!-- 傳遞 'drawing' 類型 -->
     <!-- 房型選擇 -->
     <div class="room-type-selection-section">
         <h3>選擇您想要的房型及預算：</h3>
         <div id="roomTypeContainer" class="room-type-options">
-            <!-- 房型選項將動態加載 -->
+            <!-- 房型選項將由 JavaScript 硬編碼添加 -->
         </div>
     </div>
 
+
     <!-- 租期 -->
-    <h3 for="rentalPeriod">租期（月）：</h3>
-    <input type="number" id="rentalPeriod" name="rentalPeriod">
+    <div class="rental-period-section">
+        <h3 for="rentalPeriod">租期（月）：</h3>
+        <input type="number" id="rentalPeriod" name="rentalPeriod" value="12" min="1" max="60">
+    </div>
 
     <button type="button" onclick="submitForm()">送出</button>
 </div>
+
 

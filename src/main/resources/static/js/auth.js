@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (data.token) {
                     sessionStorage.setItem('jwtToken', data.token);
                     console.log('Token stored:', data.token);
-                    alert("登入成功！");
                     const token = sessionStorage.getItem('jwtToken');
 
                     fetch('/mainpage', {

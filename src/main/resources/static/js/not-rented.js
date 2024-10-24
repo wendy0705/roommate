@@ -1,7 +1,140 @@
 window.onload = function () {
     initMap();
     loadRoomTypes();
+    disableWheelOnNumberInputs();
+};
 
+function notRentedInit(map) {
+    // 初始化 DrawingManager，不自动进入绘制模式
+    const drawingManager = new google.maps.drawing.DrawingManager({
+        drawingMode: null, // 设置为 null，避免自动进入绘制模式
+        drawingControl: true,
+        drawingControlOptions: {
+            position: google.maps.ControlPosition.TOP_CENTER,
+            drawingModes: ['rectangle'], // 仅允许绘制矩形
+        },
+        rectangleOptions: {
+            fillColor: '#FF0000',
+            fillOpacity: 0.2,
+            strokeWeight: 2,
+            clickable: true, // 允许点击
+            editable: true,  // 允许编辑
+            zIndex: 1
+        }
+    });
+
+    // 将 DrawingManager 添加到地图上
+    drawingManager.setMap(map);
+
+    let currentRectangle = null;
+
+    const defaultRectangle = loadDefaultRectangle(map);
+    currentRectangle = defaultRectangle;
+
+    // 监听用户绘制完成的事件
+    google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
+        if (event.type === google.maps.drawing.OverlayType.RECTANGLE) {
+
+            if (currentRectangle) {
+                currentRectangle.setMap(null); // 移除之前的矩形
+            }
+
+            currentRectangle = event.overlay;
+
+            const bounds = currentRectangle.getBounds();
+            const ne = bounds.getNorthEast();
+            const sw = bounds.getSouthWest();
+
+            console.log("北东角 (NE): " + ne.lat() + ", " + ne.lng());
+            console.log("南西角 (SW): " + sw.lat() + ", " + sw.lng());
+
+            // 更新隐藏的输入栏位
+            document.getElementById("neLat").value = ne.lat();
+            document.getElementById("neLng").value = ne.lng();
+            document.getElementById("swLat").value = sw.lat();
+            document.getElementById("swLng").value = sw.lng();
+
+            // 可选：添加事件监听器以响应用户对新矩形的编辑
+            currentRectangle.addListener('bounds_changed', function () {
+                const updatedBounds = currentRectangle.getBounds();
+                const updatedNe = updatedBounds.getNorthEast();
+                const updatedSw = updatedBounds.getSouthWest();
+
+                document.getElementById("neLat").value = updatedNe.lat();
+                document.getElementById("neLng").value = updatedNe.lng();
+                document.getElementById("swLat").value = updatedSw.lat();
+                document.getElementById("swLng").value = updatedSw.lng();
+            });
+        }
+    });
+}
+
+/**
+ * 加载并添加默认矩形到地图上
+ * @param {google.maps.Map} map - Google Map 实例
+ * @returns {google.maps.Rectangle} - 添加到地图上的矩形实例
+ */
+function loadDefaultRectangle(map) {
+    // 从隐藏的输入栏位获取预设的边界值
+    const neLat = parseFloat(document.getElementById("neLat").value);
+    const neLng = parseFloat(document.getElementById("neLng").value);
+    const swLat = parseFloat(document.getElementById("swLat").value);
+    const swLng = parseFloat(document.getElementById("swLng").value);
+
+    // 创建边界对象
+    const bounds = new google.maps.LatLngBounds(
+        new google.maps.LatLng(swLat, swLng),
+        new google.maps.LatLng(neLat, neLng)
+    );
+
+    // 创建矩形对象
+    const rectangle = new google.maps.Rectangle({
+        bounds: bounds,
+        editable: true,
+        draggable: true,
+        fillColor: '#FF0000',
+        fillOpacity: 0.2,
+        strokeWeight: 2,
+        zIndex: 1
+    });
+
+    // 将矩形添加到地图上
+    rectangle.setMap(map);
+
+    // 调整地图视野以包含矩形
+    map.fitBounds(bounds);
+
+    // 监听矩形的边界变化事件，更新隐藏的输入栏位
+    rectangle.addListener('bounds_changed', function () {
+        const newBounds = rectangle.getBounds();
+        const ne = newBounds.getNorthEast();
+        const sw = newBounds.getSouthWest();
+
+        document.getElementById("neLat").value = ne.lat();
+        document.getElementById("neLng").value = ne.lng();
+        document.getElementById("swLat").value = sw.lat();
+        document.getElementById("swLng").value = sw.lng();
+    });
+
+    return rectangle;
+}
+
+// function haveIntersection(bounds1, bounds2) {
+//     var ne1 = bounds1.getNorthEast();
+//     var sw1 = bounds1.getSouthWest();
+//
+//     var ne2 = bounds2.getNorthEast();
+//     var sw2 = bounds2.getSouthWest();
+//
+//     if (sw1.lat() > ne2.lat() || ne1.lat() < sw2.lat() ||
+//         sw1.lng() > ne2.lng() || ne1.lng() < sw2.lng()) {
+//         return false;
+//     }
+//     return true;
+// }
+
+
+function disableWheelOnNumberInputs() {
     const numberInputs = document.querySelectorAll('input[type="number"]');
 
     numberInputs.forEach(function (input) {
@@ -9,65 +142,6 @@ window.onload = function () {
             e.preventDefault(); // 禁用滑鼠滾輪調整數值
         });
     });
-};
-
-function notRentedInit(map) {
-    // 框选区域的地图逻辑
-    const drawingManager = new google.maps.drawing.DrawingManager({
-        drawingMode: google.maps.drawing.OverlayType.RECTANGLE,
-        drawingControl: true,
-        drawingControlOptions: {
-            position: google.maps.ControlPosition.TOP_CENTER,
-            drawingModes: ['rectangle'],
-        },
-    });
-
-    drawingManager.setMap(map);
-
-    let rectangles = [];
-    google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
-        if (event.type === google.maps.drawing.OverlayType.RECTANGLE) {
-            const rectangle = event.overlay;
-            rectangles.push(rectangle);
-
-            const bounds = rectangle.getBounds();
-            const ne = bounds.getNorthEast();
-            const sw = bounds.getSouthWest();
-
-            console.log("北东角 (NE): " + ne.lat() + ", " + ne.lng());
-            console.log("南西角 (SW): " + sw.lat() + ", " + sw.lng());
-
-            document.getElementById("neLat").value = ne.lat();
-            document.getElementById("neLng").value = ne.lng();
-            document.getElementById("swLat").value = sw.lat();
-            document.getElementById("swLng").value = sw.lng();
-
-            if (rectangles.length > 1) {
-                var secondRectangleBounds = rectangles[rectangles.length - 1].getBounds();
-                var firstRectangleBounds = rectangles[rectangles.length - 2].getBounds();
-
-                if (haveIntersection(firstRectangleBounds, secondRectangleBounds)) {
-                    console.log("两个矩形有交集");
-                } else {
-                    console.log("两个矩形没有交集");
-                }
-            }
-        }
-    });
-
-    function haveIntersection(bounds1, bounds2) {
-        var ne1 = bounds1.getNorthEast();
-        var sw1 = bounds1.getSouthWest();
-
-        var ne2 = bounds2.getNorthEast();
-        var sw2 = bounds2.getSouthWest();
-
-        if (sw1.lat() > ne2.lat() || ne1.lat() < sw2.lat() ||
-            sw1.lng() > ne2.lng() || ne1.lng() < sw2.lng()) {
-            return false;
-        }
-        return true;
-    }
 }
 
 
@@ -90,8 +164,12 @@ function submitForm() {
             const lowPriceInput = option.querySelector('.lowPrice');
             const highPriceInput = option.querySelector('.highPrice');
 
+            console.log(roomTypeId);
+
             const lowPrice = lowPriceInput.value;
             const highPrice = highPriceInput.value;
+            console.log(lowPrice);
+            console.log(highPrice);
 
             selectedRoomTypes.push({
                 type_id: roomTypeId,
@@ -166,23 +244,13 @@ function loadRoomTypes() {
                 // 创建复选框
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
-                checkbox.id = `
-    roomType_$
-    {
-        roomType.id
-    }
-    `;
+                checkbox.id = `roomType_${roomType.id}`;
                 checkbox.name = 'roomTypes';
                 checkbox.value = roomType.id;
 
                 // 创建标签 <label>
                 const label = document.createElement('label');
-                label.htmlFor = `
-    roomType_$
-    {
-        roomType.id
-    }
-    `;
+                label.htmlFor = `roomType_${roomType.id}`;
                 label.textContent = roomType.room_type;
 
                 // 创建最低预算输入框
@@ -209,10 +277,16 @@ function loadRoomTypes() {
 
                 // 当复选框被选中时，启用对应的输入框
                 checkbox.addEventListener('change', function () {
-                    lowPriceInput.disabled = !this.checked;
-                    highPriceInput.disabled = !this.checked;
+                    if (this.checked) {
+                        lowPriceInput.disabled = false;
+                        highPriceInput.disabled = false;
+                    } else {
+                        lowPriceInput.disabled = true;
+                        highPriceInput.disabled = true;
+                        lowPriceInput.value = '';
+                        highPriceInput.value = '';
+                    }
                 });
-
                 // 将元素添加到 wrapperDiv
                 wrapperDiv.appendChild(checkbox);
                 wrapperDiv.appendChild(label);
@@ -222,6 +296,34 @@ function loadRoomTypes() {
                 // 将 wrapperDiv 添加到容器中
                 container.appendChild(wrapperDiv);
             });
+            autoSelectRoomTypes([1, 3], {
+                1: {low_price: "3000", high_price: "9000"},
+                3: {low_price: "4000", high_price: "10000"}
+            });
         })
         .catch(error => console.error('Error loading room types:', error));
+}
+
+function autoSelectRoomTypes(roomIds, presetValues) {
+    roomIds.forEach(id => {
+        // 根據房型 ID 找到復選框
+        const checkbox = document.querySelector(`input[type="checkbox"][value="${id}"]`);
+        if (checkbox) {
+            // 選中復選框
+            checkbox.checked = true;
+
+            checkbox.dispatchEvent(new Event('change'));
+
+            // 啟用並設置價格輸入框
+            const lowPriceInput = checkbox.parentElement.querySelector('.lowPrice');
+            const highPriceInput = checkbox.parentElement.querySelector('.highPrice');
+
+            if (lowPriceInput && highPriceInput && presetValues[id]) {
+                lowPriceInput.value = presetValues[id].low_price;
+                highPriceInput.value = presetValues[id].high_price;
+            }
+        } else {
+            console.error(`Checkbox with value ${id} not found`);
+        }
+    });
 }
