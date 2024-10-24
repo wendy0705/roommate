@@ -71,6 +71,13 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         } else {
             // 如果已經有通知框，只是隱藏狀態，那麼顯示它
+            inviteMessage.innerHTML = `
+            <div class="notification-header">
+                <span>通知</span>
+                <button class="close-button">&times;</button>
+            </div>
+            <p>沒有新的通知</p>
+        `;
             inviteMessage.style.display = 'block';
         }
     }

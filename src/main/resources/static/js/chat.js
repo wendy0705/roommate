@@ -151,48 +151,43 @@ function showInvitation(inviterId, inviteeId) {
             .then(response => response.text())
             .then(inviterName => {
                 // 創建並顯示通知框
-                if (!document.querySelector('.notification-box')) {
+                inviteMessage = document.querySelector('.notification-box');
+                if (!inviteMessage) {
                     inviteMessage = document.createElement('div');
                     inviteMessage.classList.add('notification-box');
-                    inviteMessage.innerHTML = `
-                        <div class="notification-header">
-                            <span>通知</span>
-                            <button class="close-button">&times;</button>
-                        </div>
-                        <p>${inviterName} 邀請您進行聊天，您是否接受？</p>
-                        <button id="acceptBtn">接受</button>
-                        <button id="declineBtn">拒絕</button>
-                    `;
                     document.getElementById('header-placeholder').appendChild(inviteMessage);
-
-                    document.querySelector('.close-button').addEventListener('click', function () {
-                        inviteMessage.style.display = 'none'; // 隱藏通知框
-                    });
-
-                    // 處理接受邀請的邏輯
-                    document.getElementById('acceptBtn').addEventListener('click', function () {
-                        acceptInvitation(inviterId, inviteeId);
-                        inviteMessage.style.display = 'none';
-                        hasPendingInvitation = false;
-                    });
-
-                    // 處理拒絕邀請的邏輯
-                    document.getElementById('declineBtn').addEventListener('click', function () {
-                        declineInvitation(inviterId, inviteeId);
-                        inviteMessage.style.display = 'none';
-                        hasPendingInvitation = false;
-                    });
-                } else {
-                    if (inviteMessage.style.display === 'none') {
-                        if (hasPendingInvitation) {
-                            inviteMessage.style.display = 'block'; // 顯示未處理的邀請
-                        } else {
-                            displayNoNotifications(); // 顯示「沒有新的通知」
-                        }
-                    } else {
-                        inviteMessage.style.display = 'block';
-                    }
                 }
+
+                // 更新通知框的內容
+                inviteMessage.innerHTML = `
+                    <div class="notification-header">
+                        <span>通知</span>
+                        <button class="close-button">&times;</button>
+                    </div>
+                    <p>${inviterName} 邀請您進行聊天，您是否接受？</p>
+                    <button id="acceptBtn">接受</button>
+                    <button id="declineBtn">拒絕</button>
+                `;
+
+                // 添加關閉按鈕邏輯
+                document.querySelector('.close-button').addEventListener('click', function () {
+                    inviteMessage.style.display = 'none'; // 隱藏通知框
+                });
+
+                // 處理接受邀請的邏輯
+                document.getElementById('acceptBtn').addEventListener('click', function () {
+                    acceptInvitation(inviterId, inviteeId);
+                    inviteMessage.style.display = 'none';
+                });
+
+                // 處理拒絕邀請的邏輯
+                document.getElementById('declineBtn').addEventListener('click', function () {
+                    declineInvitation(inviterId, inviteeId);
+                    inviteMessage.style.display = 'none';
+                });
+
+                // 顯示通知框
+                inviteMessage.style.display = 'block';
             })
             .catch(error => {
                 console.error('獲取邀請者名稱失敗:', error);
