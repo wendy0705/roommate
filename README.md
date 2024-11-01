@@ -16,6 +16,7 @@
 - **學生或上班族**：需要與人共住家庭式房型，但希望有合適的生活習慣及租屋偏好匹配的室友。
 
 ## 系統架構
+![image](https://github.com/wendy0705/roommate/blob/main/%E6%9E%B6%E6%A7%8B%E5%9C%96.jpeg)
 
 
 ## 功能說明
