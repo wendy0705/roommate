@@ -4,6 +4,10 @@
 
 ![image](https://github.com/wendy0705/roommate/blob/main/%E5%8C%B9%E9%85%8D%E7%B5%90%E6%9E%9C%E9%A0%81%E9%9D%A2.png)
 
+### 測試帳號
+
+您可以使用以下連結進入測試帳號頁面，體驗「室友媒合平台」的功能：[測試帳號連結](https://wendystylish.online/mainpage)
+
 ## 專案概述
 
 - **專案名稱**：室友媒合平台
