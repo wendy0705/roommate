@@ -56,12 +56,6 @@
 - **即時通信**：WebSocket
 - **地圖服務**：Google Maps API
 
-### 安裝步驟
-1. 克隆專案到本地：`git clone <repository-url>`
-2. 安裝依賴：`mvn install`
-3. 配置 `.env` 文件，包括數據庫和 Google Maps API 金鑰
-4. 啟動服務：`mvn spring-boot:run`
-
 ## 使用說明
 
 1. **註冊並登入**：填寫租屋及生活習慣資訊。
@@ -72,12 +66,6 @@
 ## 開發者資訊
 - **開發者**：江彤恩
 - **技術支援**：AppWorks School
-- **聯絡方式**：若有問題請聯繫[開發者Email]
+- **聯絡方式**：若有問題請聯繫：wendy9007054@gmail.com
 
-## 貢獻
-歡迎開發者對此專案提出貢獻，可透過 Issue 或 Pull Request 提交建議或更新。
-
-## 版權
-
-此專案依據 MIT 授權條款開放。
 
