@@ -25,7 +25,7 @@
 - **反向代理**：Nginx
 
 ## Schema
-
+![image](https://github.com/wendy0705/roommate/blob/main/%E6%9E%B6%E6%A7%8B%E5%9C%96.jpeg](https://github.com/wendy0705/roommate/blob/main/schema.jpeg)
 
 ## 功能說明
 「室友媒合平台」主要服務於尋找家庭式租屋的使用者，分為兩種情境：
